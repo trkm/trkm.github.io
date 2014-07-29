@@ -2,12 +2,18 @@
 <head>
 <title>Console</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+  function sendRq(){
+    var rq = document.forms.rqform.request.value;
+    alert(rq);
+  }
+</script>
 </head>
 <body>
 <form id="rqform">
   <input name="url" type="text" value="http://192.168.100.83:8088/post/"><br>
   <textarea name="request" rows="15" cols="40"></textarea><br>
-  <button onClick="alert('Yeh!');">Send</button><br>
+  <button onClick="sendRq();">Send</button><br>
   <textarea name="response" rows="15" cols="40" readonly>Response:</textarea>
 </form>
 </body>
