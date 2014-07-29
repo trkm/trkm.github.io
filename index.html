@@ -6,7 +6,7 @@
   function sendRq(){
     var rq = document.forms.rqform.request.value;
     var url = document.forms.rqform.url.value;
-    
+    document.forms.rqform.response.value = 'Url: ' + url + "\nRequest:\n" + rq
     return false;
   }
 </script>
