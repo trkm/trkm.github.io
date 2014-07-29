@@ -6,7 +6,21 @@
   function sendRq(){
     var rq = document.forms.rqform.request.value;
     var url = document.forms.rqform.url.value;
-    document.forms.rqform.response.value = 'Url: ' + url + "\nRequest:\n" + rq
+    $.ajax({
+    type: 'POST',
+    url: url,
+    crossDomain: true,
+    data: rq,
+    dataType: 'json',
+    success: function(responseData, textStatus, jqXHR) {
+        document.forms.rqform.response.value = responseData
+        //var value = responseData.someKey;
+    },
+    error: function (responseData, textStatus, errorThrown) {
+        alert('POST failed.');
+    }
+});
+    //document.forms.rqform.response.value = 'Url: ' + url + "\nRequest:\n" + rq
     return false;
   }
 </script>
