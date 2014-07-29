@@ -5,16 +5,18 @@
 <script>
   function sendRq(){
     var rq = document.forms.rqform.request.value;
-    alert(rq);
+    var url = document.forms.rqform.url.value;
+    
+    return false;
   }
 </script>
 </head>
 <body>
 <form id="rqform">
-  <input name="url" type="text" value="http://192.168.100.83:8088/post/"><br>
-  <textarea name="request" rows="15" cols="40"></textarea><br>
+  <input name="url" type="text" value="http://192.168.100.83:8088/post/" style="width: 400;"><br>
+  <textarea name="request" rows="15" style="width: 400;"></textarea><br>
   <button onClick="sendRq();">Send</button><br>
-  <textarea name="response" rows="15" cols="40" readonly>Response:</textarea>
+  <textarea name="response" rows="15" style="width: 400;" readonly>Response:</textarea>
 </form>
 </body>
 </html>
