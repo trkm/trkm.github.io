@@ -13,7 +13,7 @@
     data: rq,
     dataType: 'json',
     success: function(responseData, textStatus, jqXHR) {
-        document.forms.rqform.response.value = JSON.stringify(responseData)
+        document.forms.rqform.response.value = JSON.stringify(responseData, undefined, 2)
         //var value = responseData.someKey;
     },
     error: function (responseData, textStatus, errorThrown) {
