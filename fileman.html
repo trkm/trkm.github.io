@@ -140,20 +140,18 @@
         
         function showDir(data){
             $('#data').html('');
-            alert(JSON.stringify(data));
-	    for( i = 0; i < data.dir.length ; i++){
+            //alert(JSON.stringify(data));
+            dirdata = data;
+	    /*for( i = 0; i < data.dir.length ; i++){
                 //dirdata.list[i].dir = (dirdata.list[i].dir == 'true' ? true : false);
-            }
-            //$('title').text('Dir[' + dirdata.name + ']');
-            //alert("p=" + dirdata.parentDir);
-            /*
-            if(data.parentDir !== undefined){
+            }*/
+            $('title').text('Dir[' + data.name + ']');
+            if(data.parent !== undefined){
                 $('#data').append('<div class="line" data-info="parent">' + 
                                   '<div class="name">..PARENT..</div>' + 
                                   '<div class="size">DIR</div>' + 
                                   '<div class="date"></div></div>');
             }
-            */
             for( i = 0; i < data.dir.length ; i++){
                 var item = data.dir[i];
                 $('#data').append('<div class="line" data-info="' +
