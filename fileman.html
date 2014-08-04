@@ -140,7 +140,8 @@
         
         function showDir(data){
             $('#data').html('');
-			dirdata = data;            
+            alert(JSON.stringify(data));
+	    dirdata = data;            
             for( i = 0; i < data.list.length ; i++){
                 //dirdata.list[i].dir = (dirdata.list[i].dir == 'true' ? true : false);
             }
