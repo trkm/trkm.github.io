@@ -86,7 +86,7 @@
   function onDirItem(item){
     //alert("test func id=" + item.data("info") + ' txt:' + item.html() + " data:" + JSON.stringify(item.data()) );
             if(item.data("info") == 'parent'){
-                rqDir(dirdata.parent);
+                sendRequest(dirdata.parent);
                 return;
             }
             //alert(JSON.stringify(dirdata.dir));
