@@ -118,25 +118,20 @@
   function onDirItem(item){
     //alert("test func id=" + item.data("info") + ' txt:' + item.html() + " data:" + JSON.stringify(item.data()) );
             if(item.data("info") == 'parent'){
-                rqDir(dirdata.parentDir);
+                rqDir(dirdata.parent);
                 return;
             }
-			var di = dirdata.list[item.data("info")];
-			if(di.dir){
-                if(di.name == '..'){
-                    rqDir('');
-                }
-				else{
-                    rqDir(dirdata.name == '' ? di.name : dirdata.name + '/' + di.name);
-				}
-			}
-			else{
-				var url = "ide2.html#" +
-                 (dirdata.name == '' ? di.name : dirdata.name + '/' + di.name);
-				var win=window.open(url, '_blank');
-				win.focus();
-			}
+			var di = dirdata.dir[item.data("info")];
+	if(di.dir){
+                rqDir(dirdata.name == '' ? di.name : dirdata.name + '/' + di.name);
+	}
+	else{
+		alert("open editor:" 
+                 (dirdata.name == '' ? di.name : dirdata.name + '/' + di.name));
+				//var win=window.open(url, '_blank');
+				//win.focus();
         }
+  }
         
         function showDir(data){
             $('#data').html('');
