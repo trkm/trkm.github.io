@@ -121,7 +121,9 @@
                 rqDir(dirdata.parent);
                 return;
             }
-			var di = dirdata.dir[item.data("info")];
+            alert(JSON.stringify(dirdata.dir));
+            alert(item.data("info"));
+	    var di = dirdata.dir[item.data("info")];
 	if(di.dir){
                 rqDir(dirdata.name == '' ? di.name : dirdata.name + '/' + di.name);
 	}
