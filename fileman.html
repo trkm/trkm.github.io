@@ -2,30 +2,6 @@
 <head>
 <title>Fileman</title>
 <style type='text/css'>
-#out {
-    /*position: fixed;*/
-	height: 20px;
-	background-color: #ccc;
-	border: 1px solid #999;
-	text-overflow: ellipsis;
-	/*  overflow: hidden;*/
-	/*    display: none;*/
-}
-#out2 {
-	/*position: fixed;*/
-	height: 20px;
-	background-color: #fcc;
-	border: 1px solid #999;
-	text-overflow: ellipsis;
-	/*  overflow: hidden;*/
-	/*    display: none;*/
-}
-#test {
-    /*visibility: hidden;*/
-    /*display: none;
-    overflow: hidden;
-    display: none;*/
-}
 .line {
     height: 30px;
     width: 100%;
@@ -46,6 +22,7 @@
 	width:170px;
     text-align: left;
     padding-left: 5px;    
+    text-overflow: ellipsis;
 	/*background-color: #efe;*/
 }
 .size {
@@ -64,7 +41,7 @@
 	background-color: #eee;
 }
 #data{
-	width: 415px;
+	width: 800px;
 	display: block;
 	left: 50%;
 	position: absolute;
@@ -77,15 +54,6 @@
 	-moz-user-select: moz-none;
 	-ms-user-select: none;
 	user-select: none;
-}
-#file{
-    width: 600px;
-	height: 300px;
-	display: block;
-	left: 50%;
-	position: absolute;
-	margin-left: -300px;
-	margin-bottom: 0; 
 }
 </style>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -306,7 +274,5 @@
 </head>
 <body>
 <div id="data">loading...</div>
-	<div id="out"></div>
-	<div id="out2"></div>
 </body>
 </html>
