@@ -125,7 +125,7 @@
             alert(item.data("info"));
 	    var di = dirdata.dir[item.data("info")];
 	if(di.dir){
-                rqDir(dirdata.name == '' ? di.name : dirdata.name + '/' + di.name);
+            sendRequest(dirdata.name == '' ? di.name : dirdata.name + '/' + di.name);
 	}
 	else{
 		alert("open editor:" 
