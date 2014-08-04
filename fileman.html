@@ -89,14 +89,14 @@
                 rqDir(dirdata.parent);
                 return;
             }
-            alert(JSON.stringify(dirdata.dir));
-            alert(item.data("info"));
+            //alert(JSON.stringify(dirdata.dir));
+            //alert(item.data("info"));
 	    var di = dirdata.dir[item.data("info")];
 	if(di.dir){
             sendRequest(dirdata.name == '' ? di.name : dirdata.name + '/' + di.name);
 	}
 	else{
-		alert("open editor:" 
+		alert("open editor:" +
                  (dirdata.name == '' ? di.name : dirdata.name + '/' + di.name));
 				//var win=window.open(url, '_blank');
 				//win.focus();
