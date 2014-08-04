@@ -141,26 +141,27 @@
         function showDir(data){
             $('#data').html('');
             alert(JSON.stringify(data));
-	    dirdata = data;            
-            for( i = 0; i < data.list.length ; i++){
+	    for( i = 0; i < data.dir.length ; i++){
                 //dirdata.list[i].dir = (dirdata.list[i].dir == 'true' ? true : false);
             }
-            $('title').text('Dir[' + dirdata.name + ']');
+            //$('title').text('Dir[' + dirdata.name + ']');
             //alert("p=" + dirdata.parentDir);
-            if(dirdata.parentDir !== undefined){
+            /*
+            if(data.parentDir !== undefined){
                 $('#data').append('<div class="line" data-info="parent">' + 
                                   '<div class="name">..PARENT..</div>' + 
                                   '<div class="size">DIR</div>' + 
                                   '<div class="date"></div></div>');
             }
-            for( i = 0; i < data.list.length ; i++){
-                var item = dirdata.list[i];
+            */
+            for( i = 0; i < data.dir.length ; i++){
+                var item = data.dir[i];
                 $('#data').append('<div class="line" data-info="' +
                     i + '"><div class="name">' +
                     item.name + '</div><div class="size">' +
                     sizeToStr(item.size, item.dir) +
                     '</div><div class="date">' +
-                    dateToStr(item.modified) + '</div></div>');
+                    dateToStr(item.date) + '</div></div>');
             }
             $('#data').children().first().addClass('selected');
             $('.line').click(function(){selectItem($(this));});
