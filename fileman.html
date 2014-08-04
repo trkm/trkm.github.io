@@ -90,46 +90,33 @@
 </style>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>//<![CDATA[ 
-  function sendRq(func){
-    var rq = document.forms.rqform.request.value;
-    var url = //document.forms.rqform.url.value;
+  function sendRequest(path){
+    var rq = {"method": "dir", "path": path};
+    var url = "http://192.168.100.83/ide2.php";//document.forms.rqform.url.value;
     $.ajax({
-    type: 'POST',
-    url: url,
-    crossDomain: true,
-    data: rq,
-    dataType: 'json',
-    success: function(responseData, textStatus, jqXHR) {
-        document.forms.rqform.response.value = JSON.stringify(responseData, undefined, 2)
-        //var value = responseData.someKey;
-    },
-    error: function (responseData, textStatus, errorThrown) {
-        alert('POST failed.');
-    }
-});
+      type: 'POST',
+      url: url,
+      crossDomain: true,
+      data: rq,
+      dataType: 'json',
+      success: function(responseData, textStatus, jqXHR) {
+    	showDir(responseData);
+      },
+      error: function (responseData, textStatus, errorThrown) {
+        alert('Error!');
+      }
+    });
     //document.forms.rqform.response.value = 'Url: ' + url + "\nRequest:\n" + rq
     return false;
   }
   
   $(function(){
-            var hash = window.location.hash;
-            if(hash.substring(0,1)=='#'){
-                $("#data").text("loading file:" + hash.substring(1));
-                mode = 'file';
-                rqFile(hash.substring(1));
-				$(document).keydown(function (e) {return fileKeyProc(e);});
-				$(document).keyup(function (e) {return fileKeyProc2(e);});
-            }
-            else{
-                $("#data").text("loading dir...");
-                mode = 'dir';
-                rqDir('');
-				$(document).keydown(function (e) {return dirKeyProc(e);});
-            }
-        });
+    $(document).keydown(function (e) {return dirKeyProc(e);});
+    sendRequest('');
+  });
         
-        function onDirItem(item){
-            //alert("test func id=" + item.data("info") + ' txt:' + item.html() + " data:" + JSON.stringify(item.data()) );
+  function onDirItem(item){
+    //alert("test func id=" + item.data("info") + ' txt:' + item.html() + " data:" + JSON.stringify(item.data()) );
             if(item.data("info") == 'parent'){
                 rqDir(dirdata.parentDir);
                 return;
@@ -151,54 +138,12 @@
 			}
         }
         
-        function onMkDir(){
-            var name = prompt("New dir name");
-            if(name == null){
-                return;
-            }
-            var parent_dir_path = dirdata.name;
-            sendRequest({mkdir: {dir: parent_dir_path, name: name}});
-        }
-        
-        function onMkFile(){
-            var name = prompt("New file name");
-            if(name == null){
-                return;
-            }
-            var parent_dir_path = dirdata.name;
-            sendRequest({mkfile: {dir: parent_dir_path, name: name}});
-        }
-        
-        function rqDir(path){
-            sendRequest({dir: path});
-        }
-        
-        function rqFile(path){
-            sendRequest({file: {path: path}});
-        }
-
-		function saveFile(){
-		    //alert($('#file').val());
-			sendRequest({save: {path: filedata.path,
-						 content: $('#file').val()}});
-		}
-        
-        function sortByName(a,b){
-            var aa = (a.dir ? 'A' : 'Z') + a.name;
-            var bb = (b.dir ? 'A' : 'Z') + b.name;
-            if(aa < bb){
-                return -1;
-            }
-            return 1;
-        }
-        
         function showDir(data){
             $('#data').html('');
 			dirdata = data;            
             for( i = 0; i < data.list.length ; i++){
-                dirdata.list[i].dir = (dirdata.list[i].dir == 'true' ? true : false);
+                //dirdata.list[i].dir = (dirdata.list[i].dir == 'true' ? true : false);
             }
-            dirdata.list.sort(sortByName);
             $('title').text('Dir[' + dirdata.name + ']');
             //alert("p=" + dirdata.parentDir);
             if(dirdata.parentDir !== undefined){
@@ -223,52 +168,6 @@
             });
         }
 
-		function showFile(data){
-            filedata = data;
-			$('#data').html('<textarea id="file"><textarea>');
-			$('#file').text(filedata.content);
-            var filename = filedata.path; //TODO
-			$('title').text(filename);
-		}
-        
-        function showError(error){
-            alert("Error resp: " + error.code + " " + error.param);
-        }
-        
-        function successRequest(sresponse){
-            //alert("Resp: " + JSON.stringify(sresponse));
-            //try{
-                var data = sresponse;
-                if(data.error){
-                    showError(data.error);
-                    return;
-                }
-                if(data.dir){
-                    showDir(data.dir);
-                    return;
-                }
-                if(data.file){
-                    showFile(data.file);
-                    return;
-                }
-            //}
-            /*catch(ex){
-                alert("Ex: response:" + ex.name + " " + sresponse);
-            } */           
-        }
-        
-        function errorRequest(jqXHR, textStatus, errorThrown){
-            alert("errorRequest:" + errorThrown + ' ' + textStatus);
-        }
-        
-        function sendRequest(rq){
-            //var url = "http://trkm.freeiz.com/rest.php";
-			var url = "rest2.php";
-            $.ajax({type: 'POST', url: url, data: rq,
-                    dataType: "json", //crossDomain: true,
-                    cache:false,
-                    success: successRequest, error: errorRequest});
-        }
         
         function dateToStr(uts){
       var d = new Date(uts*1000);
@@ -344,20 +243,6 @@
       });
     }
 
-	function fileKeyProc(e){
-		$('#out').text(e.which);
-		return true;
-	}
-
-	function fileKeyProc2(e){
-	    if(e.which == 113){//F2
-		  saveFile();
-		  return false;
-		}
-		$('#out2').text(e.which);
-		return true;
-	}
-    
     function dirKeyProc(e){
       switch(e.which){
         case 115: //F4
@@ -423,12 +308,8 @@
 </script>
 </head>
 <body>
-<form id="rqform">
-  <input name="url" type="text" value="http://192.168.100.83:8088/p/test" style="width: 700;">
-  <input type="button" onClick="sendRq();" value="Send"><br>
-  <textarea name="request" rows="15" style="width: 700;">{"test": "foo"}</textarea><br>
-  Response:<br>
-  <textarea name="response" rows="35" style="width: 700;" readonly>Response:</textarea>
-</form>
+<div id="data">loading...</div>
+	<div id="out"></div>
+	<div id="out2"></div>
 </body>
 </html>
