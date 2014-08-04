@@ -91,7 +91,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>//<![CDATA[ 
   function sendRequest(path){
-    var rq = {"method": "dir", "path": path};
+    var rq = JSON.stringify({"method": "dir", "path": path});
     var url = "http://192.168.100.83/ide2.php";//document.forms.rqform.url.value;
     $.ajax({
       type: 'POST',
