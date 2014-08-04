@@ -1,0 +1,434 @@
+<html>
+<head>
+<title>Fileman</title>
+<style type='text/css'>
+#out {
+    /*position: fixed;*/
+	height: 20px;
+	background-color: #ccc;
+	border: 1px solid #999;
+	text-overflow: ellipsis;
+	/*  overflow: hidden;*/
+	/*    display: none;*/
+}
+#out2 {
+	/*position: fixed;*/
+	height: 20px;
+	background-color: #fcc;
+	border: 1px solid #999;
+	text-overflow: ellipsis;
+	/*  overflow: hidden;*/
+	/*    display: none;*/
+}
+#test {
+    /*visibility: hidden;*/
+    /*display: none;
+    overflow: hidden;
+    display: none;*/
+}
+.line {
+    height: 30px;
+    width: 100%;
+    background: #fff;
+    line-height: 30px;
+    position: relative;
+    display: block;
+    cursor: default;
+    clear: both;
+    float: left;
+    white-space: nowrap;
+    border-bottom: 1px solid #eee;
+}
+.line div {
+	float: left;
+}
+.name {
+	width:170px;
+    text-align: left;
+    padding-left: 5px;    
+	/*background-color: #efe;*/
+}
+.size {
+	width:80px;
+    text-align: right;
+    padding-right: 5px;
+    --background-color: #eef;
+}
+.date {
+	width:150px;
+    text-align: right;
+    padding-right: 5px;
+	/*background-color: #fee;*/
+}
+.selected {
+	background-color: #eee;
+}
+#data{
+	width: 415px;
+	display: block;
+	left: 50%;
+	position: absolute;
+	margin-left: -200px;
+	margin-bottom: 0; 
+	/* disable selection: */
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: moz-none;
+	-ms-user-select: none;
+	user-select: none;
+}
+#file{
+    width: 600px;
+	height: 300px;
+	display: block;
+	left: 50%;
+	position: absolute;
+	margin-left: -300px;
+	margin-bottom: 0; 
+}
+</style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>//<![CDATA[ 
+  function sendRq(func){
+    var rq = document.forms.rqform.request.value;
+    var url = //document.forms.rqform.url.value;
+    $.ajax({
+    type: 'POST',
+    url: url,
+    crossDomain: true,
+    data: rq,
+    dataType: 'json',
+    success: function(responseData, textStatus, jqXHR) {
+        document.forms.rqform.response.value = JSON.stringify(responseData, undefined, 2)
+        //var value = responseData.someKey;
+    },
+    error: function (responseData, textStatus, errorThrown) {
+        alert('POST failed.');
+    }
+});
+    //document.forms.rqform.response.value = 'Url: ' + url + "\nRequest:\n" + rq
+    return false;
+  }
+  
+  $(function(){
+            var hash = window.location.hash;
+            if(hash.substring(0,1)=='#'){
+                $("#data").text("loading file:" + hash.substring(1));
+                mode = 'file';
+                rqFile(hash.substring(1));
+				$(document).keydown(function (e) {return fileKeyProc(e);});
+				$(document).keyup(function (e) {return fileKeyProc2(e);});
+            }
+            else{
+                $("#data").text("loading dir...");
+                mode = 'dir';
+                rqDir('');
+				$(document).keydown(function (e) {return dirKeyProc(e);});
+            }
+        });
+        
+        function onDirItem(item){
+            //alert("test func id=" + item.data("info") + ' txt:' + item.html() + " data:" + JSON.stringify(item.data()) );
+            if(item.data("info") == 'parent'){
+                rqDir(dirdata.parentDir);
+                return;
+            }
+			var di = dirdata.list[item.data("info")];
+			if(di.dir){
+                if(di.name == '..'){
+                    rqDir('');
+                }
+				else{
+                    rqDir(dirdata.name == '' ? di.name : dirdata.name + '/' + di.name);
+				}
+			}
+			else{
+				var url = "ide2.html#" +
+                 (dirdata.name == '' ? di.name : dirdata.name + '/' + di.name);
+				var win=window.open(url, '_blank');
+				win.focus();
+			}
+        }
+        
+        function onMkDir(){
+            var name = prompt("New dir name");
+            if(name == null){
+                return;
+            }
+            var parent_dir_path = dirdata.name;
+            sendRequest({mkdir: {dir: parent_dir_path, name: name}});
+        }
+        
+        function onMkFile(){
+            var name = prompt("New file name");
+            if(name == null){
+                return;
+            }
+            var parent_dir_path = dirdata.name;
+            sendRequest({mkfile: {dir: parent_dir_path, name: name}});
+        }
+        
+        function rqDir(path){
+            sendRequest({dir: path});
+        }
+        
+        function rqFile(path){
+            sendRequest({file: {path: path}});
+        }
+
+		function saveFile(){
+		    //alert($('#file').val());
+			sendRequest({save: {path: filedata.path,
+						 content: $('#file').val()}});
+		}
+        
+        function sortByName(a,b){
+            var aa = (a.dir ? 'A' : 'Z') + a.name;
+            var bb = (b.dir ? 'A' : 'Z') + b.name;
+            if(aa < bb){
+                return -1;
+            }
+            return 1;
+        }
+        
+        function showDir(data){
+            $('#data').html('');
+			dirdata = data;            
+            for( i = 0; i < data.list.length ; i++){
+                dirdata.list[i].dir = (dirdata.list[i].dir == 'true' ? true : false);
+            }
+            dirdata.list.sort(sortByName);
+            $('title').text('Dir[' + dirdata.name + ']');
+            //alert("p=" + dirdata.parentDir);
+            if(dirdata.parentDir !== undefined){
+                $('#data').append('<div class="line" data-info="parent">' + 
+                                  '<div class="name">..PARENT..</div>' + 
+                                  '<div class="size">DIR</div>' + 
+                                  '<div class="date"></div></div>');
+            }
+            for( i = 0; i < data.list.length ; i++){
+                var item = dirdata.list[i];
+                $('#data').append('<div class="line" data-info="' +
+                    i + '"><div class="name">' +
+                    item.name + '</div><div class="size">' +
+                    sizeToStr(item.size, item.dir) +
+                    '</div><div class="date">' +
+                    dateToStr(item.modified) + '</div></div>');
+            }
+            $('#data').children().first().addClass('selected');
+            $('.line').click(function(){selectItem($(this));});
+            $('.line').dblclick(function(){
+                selectItem($(this));onDirItem($(this));
+            });
+        }
+
+		function showFile(data){
+            filedata = data;
+			$('#data').html('<textarea id="file"><textarea>');
+			$('#file').text(filedata.content);
+            var filename = filedata.path; //TODO
+			$('title').text(filename);
+		}
+        
+        function showError(error){
+            alert("Error resp: " + error.code + " " + error.param);
+        }
+        
+        function successRequest(sresponse){
+            //alert("Resp: " + JSON.stringify(sresponse));
+            //try{
+                var data = sresponse;
+                if(data.error){
+                    showError(data.error);
+                    return;
+                }
+                if(data.dir){
+                    showDir(data.dir);
+                    return;
+                }
+                if(data.file){
+                    showFile(data.file);
+                    return;
+                }
+            //}
+            /*catch(ex){
+                alert("Ex: response:" + ex.name + " " + sresponse);
+            } */           
+        }
+        
+        function errorRequest(jqXHR, textStatus, errorThrown){
+            alert("errorRequest:" + errorThrown + ' ' + textStatus);
+        }
+        
+        function sendRequest(rq){
+            //var url = "http://trkm.freeiz.com/rest.php";
+			var url = "rest2.php";
+            $.ajax({type: 'POST', url: url, data: rq,
+                    dataType: "json", //crossDomain: true,
+                    cache:false,
+                    success: successRequest, error: errorRequest});
+        }
+        
+        function dateToStr(uts){
+      var d = new Date(uts*1000);
+      var dd = d.getDate();
+      dd = (dd < 10 ? '0' + dd : dd);
+      var mm = d.getMonth() + 1;
+      mm = (mm < 10 ? '0' + mm : mm);
+      var hh = d.getHours();
+      hh = (hh < 10 ? '0' + hh : hh);
+      var min = d.getMinutes()
+      min = (min < 10 ? '0' + min : min);
+      return  dd + '.' + mm + '.' + d.getFullYear() + ' ' +
+              hh + ':' + min;
+    }
+    
+    function sizeToStr(size, dir){
+	//alert('dir='+dir);
+      if(dir){
+        return 'DIR';
+    }
+      if(size <= 0){
+        return '0 KB';
+      }
+      if(size <= 1024){
+        return '1 KB';
+      }
+      return Math.ceil(size/1024) + ' KB';
+    }
+    
+    function selectItem(item){    
+      if(!item.length){
+        return;
+      }
+      //$('#out').text('selectItem ' + item.text())
+      $('.selected').removeClass('selected');
+      item.addClass('selected');            
+      var docViewTop = $(window).scrollTop();
+      var elemTop = item.offset().top;
+      if(elemTop < docViewTop){
+        $('html,body').animate({scrollTop: item.offset().top}, 0);
+        return;
+      }
+      var docViewBottom = docViewTop + $(window).height();
+      var elemBottom = elemTop + item.height();
+      if(elemBottom > docViewBottom){
+        $('html,body').animate({scrollTop: item.offset().top - $(window).height() + item.height()}, 0);
+        return;
+      }
+    }
+    
+    function getFirstVisibleItem(){
+      var docViewTop = $(window).scrollTop();
+      return $('.line').filter(function(){
+        return $(this).offset().top >= docViewTop;
+      }).first();
+    }
+    
+    function getLastVisibleItem(){
+      var docViewTop = $(window).scrollTop();
+      var docViewBottom = docViewTop + $(window).height();
+    //alert('bp1');
+      var res =  $('.line').filter(function(){
+        return $(this).offset().top + $(this).height() <= docViewBottom;
+      }).last();
+    //alert('bp2');
+      return res;
+    }
+    
+    function getItemByOffset(y){
+      return $('.line').filter(function(){
+        return $(this).offset().top < y &&
+               $(this).offset().top + $(this).height() > y;
+      });
+    }
+
+	function fileKeyProc(e){
+		$('#out').text(e.which);
+		return true;
+	}
+
+	function fileKeyProc2(e){
+	    if(e.which == 113){//F2
+		  saveFile();
+		  return false;
+		}
+		$('#out2').text(e.which);
+		return true;
+	}
+    
+    function dirKeyProc(e){
+      switch(e.which){
+        case 115: //F4
+            onMkFile();
+            break;
+        case 118: //F7
+            onMkDir();
+            break;
+        case 13: //enter
+            onDirItem($('.selected'));
+            break;
+        case 38: //arrow up
+            selectItem($('.selected').prev());
+            break;
+        case 40: //arrow down
+            selectItem($('.selected').next());
+            break;
+        case 36: //home
+            selectItem($('#data').children().first());
+            break;
+        case 35: //end
+            selectItem($('#data').children().last());
+            break;
+        case 33: //pg up:
+            var item = getFirstVisibleItem();
+            if(item.hasClass('selected')){
+                var item2 = getItemByOffset(item.offset().top + item.height()/2 - $(window).height());
+                if(item2.length){
+                    selectItem(item2);
+                }else{
+                    selectItem($('#data').children().first());
+                }
+            }
+            else{
+                selectItem(item);
+            }
+            break;
+        case 34: //pg down:            
+            //alert("pg d");
+            var item = getLastVisibleItem();
+            //alert("item=" + item.text());
+            if(item.hasClass('selected')){
+                var item2 = getItemByOffset(item.offset().top + item.height()/2 + $(window).height());
+                if(item2.length){
+                    selectItem(item2);
+                }else{
+                    selectItem($('#data').children().last());
+                }
+            }
+            else{
+                selectItem(item);
+            }
+            break;
+        default:
+            $('#out').text(e.which);
+			return true;
+            break;
+            
+      }
+      return false;
+    }
+        //]]>
+</script>
+</head>
+<body>
+<form id="rqform">
+  <input name="url" type="text" value="http://192.168.100.83:8088/p/test" style="width: 700;">
+  <input type="button" onClick="sendRq();" value="Send"><br>
+  <textarea name="request" rows="15" style="width: 700;">{"test": "foo"}</textarea><br>
+  Response:<br>
+  <textarea name="response" rows="35" style="width: 700;" readonly>Response:</textarea>
+</form>
+</body>
+</html>
