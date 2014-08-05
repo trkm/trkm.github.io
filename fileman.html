@@ -51,11 +51,12 @@ body{
 }
 #title{
 	width: 100%;
+	height: 30px;
 	display: block;
 	left: 0%;
 	position: absolute;
-	/*margin-left: -200px;
-	margin-bottom: 0; 
+	margin-top: 0px;
+	margin-left: 0px;
 	/* disable selection: */
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -72,6 +73,7 @@ body{
 	display: block;
 	left: 0%;
 	position: absolute;
+	margin-top: 30px;
 	/*margin-left: -200px;
 	margin-bottom: 0; 
 	/* disable selection: */
@@ -140,7 +142,7 @@ body{
             $('title').text('Dir[' + data.name + ']');
             if(data.parent !== undefined){
                 $('#data').append('<div class="line dir" data-info="parent">' + 
-                                  '<div class="size">DIR;</div>' + 
+                                  '<div class="size">DIR</div>' + 
                                   '<div class="date">&nbsp;</div>' +
                                   '<div class="name">..</div>' + 
                                   '</div>');
