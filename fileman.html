@@ -18,6 +18,9 @@
   font-size: 22px;
   font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;
 }
+.dir {
+  color: #b9ca4a;
+}
 .line div {
 	float: left;
 }
@@ -115,17 +118,17 @@
             }*/
             $('title').text('Dir[' + data.name + ']');
             if(data.parent !== undefined){
-                $('#data').append('<div class="line" data-info="parent">' + 
-                                  '<div class="size">DIR</div>' + 
-                                  '<div class="date"></div>' +
+                $('#data').append('<div class="line dir" data-info="parent">' + 
+                                  '<div class="size">&nbsp;</div>' + 
+                                  '<div class="date">&nbsp;</div>' +
                                   '<div class="name">..</div>' + 
                                   '</div>');
             }
             for( i = 0; i < data.dir.length ; i++){
                 var item = data.dir[i];
-                $('#data').append('<div class="line" data-info="' + i + '">' + 
+                $('#data').append('<div class="line' + (item.dir ? ' dir' : '') + '" data-info="' + i + '">' + 
                     '<div class="size">' + sizeToStr(item.size, item.dir) + '</div>' + 
-                    '<div class="date">' + dateToStr(item.date) + '</div>' + 
+                    '<div class="date">' + dateToStr(item.date, item.dir) + '</div>' + 
                     '<div class="name">' + item.name + '</div>' +
                     '</div>');
             }
@@ -137,7 +140,10 @@
         }
 
         
-        function dateToStr(uts){
+        function dateToStr(uts, item.dir){
+        	if(item.dir){
+        		return '&nbsp;';
+        	}
       var d = new Date(uts*1000);
       var dd = d.getDate();
       dd = (dd < 10 ? '0' + dd : dd);
@@ -154,7 +160,7 @@
     function sizeToStr(size, dir){
 	//alert('dir='+dir);
       if(dir){
-        return 'DIR';
+        return '&nbsp;';
     }
       if(size <= 0){
         return '0 KB';
