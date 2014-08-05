@@ -5,7 +5,7 @@
 .line {
     height: 30px;
     width: 100%;
-    background: #fff;
+    background: #000;
     line-height: 30px;
     position: relative;
     display: block;
@@ -13,32 +13,33 @@
     clear: both;
     float: left;
     white-space: nowrap;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #111;
+    color: #999;
 }
 .line div {
 	float: left;
 }
 .name {
-	width:170px;
+    /*width:170px;*/
     text-align: left;
     padding-left: 5px;    
     text-overflow: ellipsis;
 	/*background-color: #efe;*/
 }
 .size {
-	width:80px;
-    text-align: right;
-    padding-right: 5px;
-    --background-color: #eef;
+  width:80px;
+  text-align: right;
+  padding-right: 5px;
+  --background-color: #eef;
 }
 .date {
-	width:150px;
-    text-align: right;
-    padding-right: 5px;
+  width:150px;
+  text-align: right;
+  padding-right: 5px;
 	/*background-color: #fee;*/
 }
 .selected {
-	background-color: #eee;
+  background-color: #333;
 }
 #data{
 	width: 800px;
@@ -113,18 +114,18 @@
             $('title').text('Dir[' + data.name + ']');
             if(data.parent !== undefined){
                 $('#data').append('<div class="line" data-info="parent">' + 
-                                  '<div class="name">..</div>' + 
                                   '<div class="size">DIR</div>' + 
-                                  '<div class="date"></div></div>');
+                                  '<div class="date"></div>' +
+                                  '<div class="name">..</div>' + 
+                                  '</div>');
             }
             for( i = 0; i < data.dir.length ; i++){
                 var item = data.dir[i];
-                $('#data').append('<div class="line" data-info="' +
-                    i + '"><div class="name">' +
-                    item.name + '</div><div class="size">' +
-                    sizeToStr(item.size, item.dir) +
-                    '</div><div class="date">' +
-                    dateToStr(item.date) + '</div></div>');
+                $('#data').append('<div class="line" data-info="' + i + '">' + 
+                    '<div class="size">' + sizeToStr(item.size, item.dir) + '</div>' + 
+                    '<div class="date">' + dateToStr(item.date) + '</div>' + 
+                    '<div class="name">' + item.name + '</div>' +
+                    '</div>');
             }
             $('#data').children().first().addClass('selected');
             $('.line').click(function(){selectItem($(this));});
