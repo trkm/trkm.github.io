@@ -18,6 +18,22 @@
   font-size: 22px;
   font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;
 }
+.error {
+  height: 30px;
+  width: 100%;
+  line-height: 30px;
+  position: relative;
+  display: block;
+  cursor: default;
+  clear: both;
+  float: left;
+  white-space: nowrap;
+  border-bottom: 1px solid #111;
+  background-color: #000000;
+  color: #d54e53;
+  font-size: 22px;
+  font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;
+}
 .dir {
   color: #b9ca4a;
 }
@@ -145,6 +161,23 @@ body{
                 //dirdata.list[i].dir = (dirdata.list[i].dir == 'true' ? true : false);
             }*/
             //$('title').text('Dir[' + data.name + ']');
+            if(data.error !== undefined){
+            	dirdata = {
+            		"name": data.detail,
+            		"parent": ""
+            	}
+            	$('#data').append('<div class="line dir" data-info="parent">' + 
+                                  '<div class="size">DIR</div>' + 
+                                  '<div class="date">&nbsp;</div>' +
+                                  '<div class="name">..</div>' + 
+                                  '</div>');
+                $('#data').append('<div class="error">Cannot list the directory</div>');
+                $('.line').click(function(){selectItem($(this));});
+	            $('.line').dblclick(function(){
+	                selectItem($(this));onDirItem($(this));
+	            });
+	            $('#title').text('/' + dirdata.name);
+            }
             if(data.parent !== undefined && data.parent != data.name){
                 $('#data').append('<div class="line dir" data-info="parent">' + 
                                   '<div class="size">DIR</div>' + 
