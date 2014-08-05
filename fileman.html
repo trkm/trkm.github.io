@@ -143,7 +143,7 @@ body{
                 //dirdata.list[i].dir = (dirdata.list[i].dir == 'true' ? true : false);
             }*/
             //$('title').text('Dir[' + data.name + ']');
-            if(data.parent !== undefined){
+            if(data.parent !== undefined && data.parent != data.name){
                 $('#data').append('<div class="line dir" data-info="parent">' + 
                                   '<div class="size">DIR</div>' + 
                                   '<div class="date">&nbsp;</div>' +
