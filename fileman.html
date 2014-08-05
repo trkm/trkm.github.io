@@ -119,7 +119,7 @@
             $('title').text('Dir[' + data.name + ']');
             if(data.parent !== undefined){
                 $('#data').append('<div class="line dir" data-info="parent">' + 
-                                  '<div class="size">&nbsp;</div>' + 
+                                  '<div class="size">DIR;</div>' + 
                                   '<div class="date">&nbsp;</div>' +
                                   '<div class="name">..</div>' + 
                                   '</div>');
@@ -160,15 +160,24 @@
     function sizeToStr(size, dir){
 	//alert('dir='+dir);
       if(dir){
-        return '&nbsp;';
+        return 'DIR';
     }
       if(size <= 0){
-        return '0 KB';
+        return '0 K';
       }
       if(size <= 1024){
-        return '1 KB';
+        return size + ' B';
       }
-      return Math.ceil(size/1024) + ' KB';
+      size = Math.round(size/1024);
+      if(size <= 1024){
+      	return size + ' K';
+      }
+      size = Math.round(size/1024);
+      if(size <= 1024){
+      	return size + ' M';
+      }
+      size = Math.round(size/1024);
+      return size + ' G';
     }
     
     function selectItem(item){    
