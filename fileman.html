@@ -158,7 +158,7 @@ body{
             $('.line').dblclick(function(){
                 selectItem($(this));onDirItem($(this));
             });
-            $('#title').text(data.parent);
+            $('#title').text('/' + data.parent);
         }
 
         
@@ -302,8 +302,8 @@ body{
             }
             break;
         default:
-            $('#out').text(e.which);
-			return true;
+            //$('#out').text(e.which);
+	    return true;
             break;
             
       }
