@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>Console</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+  function sendRq(){
+    var rq = document.forms.rqform.request.value;
+    var url = document.forms.rqform.url.value;
+    $.ajax({
+    type: 'POST',
+    url: url,
+    crossDomain: true,
+    data: rq,
+    dataType: 'json',
+    success: function(responseData, textStatus, jqXHR) {
+        document.forms.rqform.response.value = JSON.stringify(responseData, undefined, 2)
+        //var value = responseData.someKey;
+    },
+    error: function (responseData, textStatus, errorThrown) {
+        alert('POST failed.');
+    }
+});
+    //document.forms.rqform.response.value = 'Url: ' + url + "\nRequest:\n" + rq
+    return false;
+  }
+</script>
+</head>
+<body>
+<form id="rqform">
+  <input name="url" type="text" value="http://192.168.100.83:8088/p/test" style="width: 700;">
+  <input type="button" onClick="sendRq();" value="Send"><br>
+  <textarea name="request" rows="15" style="width: 700;">{"test": "foo"}</textarea><br>
+  Response:<br>
+  <textarea name="response" rows="35" style="width: 700;" readonly>Response:</textarea>
+</form>
+</body>
+</html>
