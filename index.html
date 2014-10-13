@@ -2,23 +2,7 @@
 <head>
 <title>Under construction 2</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '554575921355933',
-      xfbml      : true,
-      version    : 'v2.1'
-    });
-  };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>
 </head>
 <body>
 <h1>Under construction</h1>
@@ -57,13 +41,11 @@
   }
 
   window.fbAsyncInit = function() {
-  FB.init({
-    appId      : '{your-app-id}',
-    cookie     : true,  // enable cookies to allow the server to access 
-                        // the session
-    xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.1' // use version 2.1
-  });
+    FB.init({
+      appId      : '554575921355933',
+      xfbml      : true,
+      version    : 'v2.1'
+    });
 
   // Now that we've initialized the JavaScript SDK, we call 
   // FB.getLoginStatus().  This function gets the state of the
