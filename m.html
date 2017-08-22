@@ -1,8 +1,19 @@
 <html>
 <head>
-<title>Hовости 11</title>
+<title>Hовости 12</title>
 <link rel="shortcut icon" href="https://news.yandex.ru/favicon.ico"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" sizes="24x24" href="https://yastatic.net/iconostasis/_/lQHbCexSgizAhisugKD79mTz__Q.png" type="image/png"/>
+<link rel="icon" sizes="32х32" href="https://yastatic.net/iconostasis/_/NOwNHktJskVNPZcTJcTvuXUXPzg.png" type="image/png"/>
+<link rel="icon" sizes="64x64" href="https://yastatic.net/iconostasis/_/UBaaXgpU3qo2rqZuvG9gLzr7708.png" type="image/png"/>
+<link rel="icon" sizes="96x96" href="https://yastatic.net/iconostasis/_/lcamcuh-DgDslnjBRGXI6VMyGLs.png" type="image/png"/>
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://yastatic.net/iconostasis/_/GO0yycKCJJU5p5tOiHr5HOMrhyc.png" type="image/png"/>
+<meta name="msapplication-square70x70logo" content="https://yastatic.net/iconostasis/_/KaeowKGGcZ8VOo_sQEwQv52RrQQ.png"/>
+<meta name="msapplication-square150x150logo" content="https://yastatic.net/iconostasis/_/ZWnn0QD-r6t3K196TXFK3mxVIsQ.png"/>
+<meta name="msapplication-wide310x150logo" content="https://yastatic.net/iconostasis/_/R0c8mHxczGfbgOfG8sqa2UCCAJ0.png"/>
+<meta name="msapplication-square310x310logo" content="https://yastatic.net/iconostasis/_/9p43qU7_ssDUVrFw6k34ncppLvQ.png"/>
+<meta name="msapplication-TileImage" content="https://yastatic.net/iconostasis/_/8-3jZv055heK2lRTnG6GBkH5cOE.png"/>
+<meta name="application-name" content="Новости"/>
+<!-- meta name="msapplication-TileColor" content=" #009900"/ -->
 <style>
 body { background-color: black; }
 a {
@@ -10,10 +21,10 @@ a {
     color: white;
 }
 hr {
-    border: none; /* Убираем границу для браузера Firefox */
-    color: gray; /* Цвет линии для остальных браузеров */
-    background-color: gray; /* Цвет линии для браузера Firefox и Opera */
-    height: 1px; /* Толщина линии */
+    border: none;
+    color: gray;
+    background-color: gray;
+    height: 1px;
 }
 </style>
 </head>
@@ -30,14 +41,12 @@ function sh(element_id){
 }
 function _print(w,rubric,prefix){
     var data=w[rubric];
-    if(!data||!data.length){return;}
-    function formatDate(ts){var d=new Date(ts*1000);return d.getHours()+':'+('0'+d.getMinutes()).substr(-2);}
+    if(!data||!data.length){return;}    
     var html='';
     for(var i=0;i<data.length;i++){
         var item=data[i];
-        html+='<p><div><a href="#" onClick="sh(\'news-1-' + prefix + i + '\')">'+item.title+'</a></div>'
-        html +='<div id="news-1-' + prefix + i + '" style="display: none;"><a href="'
-        html += item.url+'" target="_blank" style="color: gray;">'+item.descr+'</a></div></p>';
+        html+='<p><div><a href="#" onClick="sh(\'news-1-' + prefix + i + '\')">'+item.title+'</a></div>'+
+            '<div id="news-1-' + prefix + i + '" style="display: none;"><a href="'+item.url+'" target="_blank" style="color: gray;">'+item.descr+'</a></div></p>';
     }
     document.write(html);
 }
