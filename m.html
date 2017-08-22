@@ -14,11 +14,39 @@ a {
     /*color: #FA6800;*/
     color: white;
 }
+.ya-news__description a {
+    text-decoration: none;
+    color: gray;
+}
 </style>
 </head>
 <body>
+<script>
+function sh(element_id){
+  var x = document.getElementById(element_id);
+  if(x.style.display === 'none'){
+    x.style.display = 'block';
+  }else{
+    x.style.display = 'none';
+  }
+  return false
+}
+</script>
 <script src="https://news.yandex.ru/ru/index5.utf8.js" charset="utf-8"></script>
-<script>(function(w,rubric){var data=w[rubric];if(!data||!data.length){return;}function formatDate(ts){var d=new Date(ts*1000);return d.getHours()+':'+('0'+d.getMinutes()).substr(-2);}var html='';for(var i=0;i<data.length;i++){var item=data[i];html+='<p><div><span class="ya-news__title"><a href="'+item.url+'" target="_blank">'+item.title+'</a></span></div><div class="ya-news__description">'+item.descr+'</div></p>';}document.write(html);}(window, 'm_index'));</script>
+<script>
+    (function(w,rubric){
+        var data=w[rubric];
+        if(!data||!data.length){return;}
+        function formatDate(ts){var d=new Date(ts*1000);return d.getHours()+':'+('0'+d.getMinutes()).substr(-2);}
+        var html='';
+        for(var i=0;i<data.length;i++){
+            var item=data[i];
+            html+='<p><div><span class="ya-news__title"><a href="#" onClick="sh(\'news-1-' + i + '\')">'+item.title+'</a></span></div>'
+            html +='<div id="news-1-' + i + '" class="ya-news__description"><a href="'+item.url+'" target="_blank">'+item.descr+'</a></div></p>';
+        }
+        document.write(html);
+    }(window, 'm_index'));
+</script>
 
 <hr size="0" noshade>
 
