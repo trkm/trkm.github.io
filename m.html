@@ -25,7 +25,7 @@ function sh(element_id){
   }
   return false
 }
-function print(w,rubric,prefix){
+function _print(w,rubric,prefix){
     var data=w[rubric];
     if(!data||!data.length){return;}
     function formatDate(ts){var d=new Date(ts*1000);return d.getHours()+':'+('0'+d.getMinutes()).substr(-2);}
@@ -34,25 +34,25 @@ function print(w,rubric,prefix){
         var item=data[i];
         html+='<p><div><a href="#" onClick="sh(\'news-1-' + prefix + i + '\')">'+item.title+'</a></div>'
         html +='<div id="news-1-' + prefix + i + '" style="display: none;"><a href="'
-        html += item.url+'" target="_blank" style="color: gray;>'+item.descr+'</a></div></p>';
+        html += item.url+'" target="_blank" style="color: gray;">'+item.descr+'</a></div></p>';
     }
     document.write(html);
 }
 </script>
 <script src="https://news.yandex.ru/ru/index5.utf8.js" charset="utf-8"></script>
-<script>print(window, 'm_index', 'main'));</script>
+<script>_print(window, 'm_index', 'main'));</script>
 
 <hr size="0" noshade>
 
 <script src="https://news.yandex.ru/Moscow/index5.utf8.js" charset="utf-8"></script>
-<script>print(window, 'm_index', 'msk')</script>
+<script>_print(window, 'm_index', 'msk')</script>
 <!-- script>(function(w,rubric){var data=w[rubric];if(!data||!data.length){return;}function formatDate(ts){var d=new Date(ts*1000);return d.getHours()+':'+('0'+d.getMinutes()).substr(-2);}var html='';for(var i=0;i<data.length;i++){var item=data[i];html+='<p><div><span class="ya-news__title"><a href="'+item.url+'" target="_blank">'+item.title+'</a></span></div><div class="ya-news__description">'+item.descr+'</div></p>';}document.write(html);}(window, 'm_index'));</script -->
 
 <hr size="0" noshade>
 
 <script src="https://news.yandex.ru/ru/computers5.utf8.js" charset="utf-8"></script>
 <!-- script>(function(w,rubric){var data=w[rubric];if(!data||!data.length){return;}function formatDate(ts){var d=new Date(ts*1000);return d.getHours()+':'+('0'+d.getMinutes()).substr(-2);}var html='';for(var i=0;i<data.length;i++){var item=data[i];html+='<p><div><span class="ya-news__title"><a href="'+item.url+'" target="_blank">'+item.title+'</a></span></div><div class="ya-news__description">'+item.descr+'</div><p/>';}document.write(html);}(window, 'm_computers'));</script -->
-<script>print(window, 'm_computers', 'm_computers')</script>   
+<script>)print(window, 'm_computers', 'm_computers')</script>   
 
 </body>
 </html>
