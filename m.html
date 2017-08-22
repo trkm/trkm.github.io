@@ -46,7 +46,7 @@ function _print(w,rubric,prefix){
     var html='';
     for(var i=0;i<data.length;i++){
         var item=data[i];
-        html+='<p><div><a href="#" onClick="sh(\'news-1-' + prefix + i + '\')">'+item.title+'</a></div>'+
+        html+='<p><div><a href="#" onClick="return sh(\'news-1-' + prefix + i + '\')">'+item.title+'</a></div>'+
             '<div id="news-1-' + prefix + i + '" style="display: none;"><a href="'+item.url+'" target="_blank" style="color: gray;">'+item.descr+'</a></div></p>';
     }
     document.write(html);
