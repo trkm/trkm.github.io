@@ -14,7 +14,10 @@ a {
     /*color: #FA6800;*/
     color: white;
 }
-.ya-news__description a {
+.description {
+    display: none;
+}
+.description a {
     text-decoration: none;
     color: gray;
 }
@@ -42,7 +45,7 @@ function sh(element_id){
         for(var i=0;i<data.length;i++){
             var item=data[i];
             html+='<p><div><span class="ya-news__title"><a href="#" onClick="sh(\'news-1-' + i + '\')">'+item.title+'</a></span></div>'
-            html +='<div id="news-1-' + i + '" class="ya-news__description"><a href="'+item.url+'" target="_blank">'+item.descr+'</a></div></p>';
+            html +='<div id="news-1-' + i + '" class="description"><a href="'+item.url+'" target="_blank">'+item.descr+'</a></div></p>';
         }
         document.write(html);
     }(window, 'm_index'));
