@@ -56,10 +56,10 @@ url = 'https://iss.moex.com/iss/engines/currency/markets/selt/securities.jsonp?s
         var t = '?'
         var eur = '?'
         for(i = 0; i < j["marketdata"]["data"].length; i++){
-          if(j["marketdata"]["data"][i][20].startsWith('EUR')){
+          if(j["marketdata"]["data"][i][20].indexOf('EUR') === 0){
             eur = j["marketdata"]["data"][i][8]            
           }
-          else if(j["marketdata"]["data"][i][20].startsWith('USD')){
+          else if(j["marketdata"]["data"][i][20].indexOf('USD') === 0){
             usd = j["marketdata"]["data"][i][8]
             t = j["marketdata"]["data"][i][18]
           }
