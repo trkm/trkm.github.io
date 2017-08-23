@@ -38,20 +38,14 @@ hr {
 <body>
 <div id='moex'></div>
 <script>
-document.getElementById('moex').innerHTML = 'bp1'
 var r = new XMLHttpRequest();
-document.getElementById('moex').innerHTML = 'bp2'
 url = 'https://iss.moex.com/iss/engines/currency/markets/selt/securities.jsonp?securities=CETS%3AUSD000UTSTOM%2CCETS%3AEUR_RUB__TOM&lang=ru'
-    r.open("GET", url, true);
-    document.getElementById('moex').innerHTML = 'bp3'
-    r.onreadystatechange = function(){
-        document.getElementById('moex').innerHTML = 'bp4 ' + r.status
+r.open("GET", url, true);
+document.getElementById('moex').innerHTML = 'bp3'
+r.onreadystatechange = function(){        
+    try {
         if(r.readyState != 4 || r.status != 200) return;
-        document.getElementById('moex').innerHTML = 'bp5'
         var j = JSON.parse(r.responseText)        
-        document.getElementById('moex').innerHTML = 'bp6'
-        try {
-
         var usd = '?'
         var t = '?'
         var eur = '?'
@@ -64,20 +58,18 @@ url = 'https://iss.moex.com/iss/engines/currency/markets/selt/securities.jsonp?s
             t = j["marketdata"]["data"][i][18]
           }
         }
-        document.getElementById('moex').innerHTML = 'bp7'
         function f(x){
-            return x //x.toFixed(2)
+            return x.toFixed(2)
         }
-        document.getElementById('moex').innerHTML = 'bp8'
         document.getElementById('moex').innerHTML = '<span class="cur">USD: </span>' + f(usd) + 
                                                     ' <span class="cur">EUR: </span>' + f(eur) +
                                                     ' <span class="cur">' + t + '</span>'
-        }
-        catch (err) {
-            document.getElementById('moex').innerHTML = 'err' + err
-        }
-    };
-    r.send()        
+    }
+    catch (err) {
+        document.getElementById('moex').innerHTML = 'err' + err
+    }
+};
+r.send()        
 </script>
 <script>
 function sh(element_id){
