@@ -27,6 +27,12 @@ hr {
     background-color: gray;
     height: 1px;
 }
+#moex {
+    color: white;
+}
+#moex span {
+    color: gray;
+}
 </style>
 </head>
 <body>
@@ -49,7 +55,9 @@ url = 'https://iss.moex.com/iss/engines/currency/markets/selt/securities.jsonp?s
             t = j["marketdata"]["data"][i][18]
           }
         }
-        document.getElementById('moex').innerHTML = 'USD:' + usd.toFixed(2) + ' EUR: ' + eur.toFixed(2) + ' ' + t
+        document.getElementById('moex').innerHTML = '<span class="cur">USD: </span>' + usd.toFixed(2) + 
+                                                    ' <span class="cur">EUR: </span>' + eur.toFixed(2) +
+                                                    ' <span class="cur">' + t + '</span>
     };
     r.send()        
 </script>
