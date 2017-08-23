@@ -50,6 +50,8 @@ url = 'https://iss.moex.com/iss/engines/currency/markets/selt/securities.jsonp?s
         document.getElementById('moex').innerHTML = 'bp5'
         var j = JSON.parse(r.responseText)        
         document.getElementById('moex').innerHTML = 'bp6'
+        try {
+
         var usd = '?'
         var t = '?'
         var eur = '?'
@@ -70,6 +72,10 @@ url = 'https://iss.moex.com/iss/engines/currency/markets/selt/securities.jsonp?s
         document.getElementById('moex').innerHTML = '<span class="cur">USD: </span>' + f(usd) + 
                                                     ' <span class="cur">EUR: </span>' + f(eur) +
                                                     ' <span class="cur">' + t + '</span>'
+        }
+        catch (err) {
+            document.getElementById('moex').innerHTML = 'err' + err
+        }
     };
     r.send()        
 </script>
