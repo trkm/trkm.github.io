@@ -36,6 +36,7 @@ hr {
 </style>
 </head>
 <body>
+<div id='moex'></div>
 <script>
 var r = new XMLHttpRequest();
 url = 'https://iss.moex.com/iss/engines/currency/markets/selt/securities.jsonp?securities=CETS%3AUSD000UTSTOM%2CCETS%3AEUR_RUB__TOM&lang=ru'
@@ -58,13 +59,13 @@ url = 'https://iss.moex.com/iss/engines/currency/markets/selt/securities.jsonp?s
         function f(x){
             return x //x.toFixed(2)
         }
+        alert(usd)
         document.getElementById('moex').innerHTML = '<span class="cur">USD: </span>' + f(usd) + 
                                                     ' <span class="cur">EUR: </span>' + f(eur) +
                                                     ' <span class="cur">' + t + '</span>'
     };
     r.send()        
 </script>
-<div id='moex'></div>
 <script>
 function sh(element_id){
   var x = document.getElementById(element_id);
