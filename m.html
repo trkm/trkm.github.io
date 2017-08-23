@@ -31,6 +31,30 @@ hr {
 </head>
 <body>
 <script>
+var r = new XMLHttpRequest();
+url = 'https://iss.moex.com/iss/engines/currency/markets/selt/securities.jsonp?securities=CETS%3AUSD000UTSTOM%2CCETS%3AEUR_RUB__TOM&lang=ru'
+    r.open("GET", url, true);
+    r.onreadystatechange = function(){
+        if(r.readyState != 4 || r.status != 200) return;
+        var j = JSON.parse(r.responseText)        
+        var usd = '?'
+        var t = '?'
+        var eur = '?'
+        for(i = 0; i < j["marketdata"]["data"].length; i++){
+          if(j["marketdata"]["data"][i][20].startsWith('EUR')){
+            eur = j["marketdata"]["data"][i][8]            
+          }
+          else if(j["marketdata"]["data"][i][20].startsWith('USD')){
+            usd = j["marketdata"]["data"][i][8]
+            t = j["marketdata"]["data"][i][18]
+          }
+        }
+        document.getElementById('moex').innerHTML = 'USD:' + usd.toFixed(2) + ' EUR: ' + eur.toFixed(2) + ' ' + t
+    };
+    r.send()        
+</script>
+<div id='moex'></div>
+<script>
 function sh(element_id){
   var x = document.getElementById(element_id);
   if(x.style.display === 'none'){
