@@ -36,12 +36,11 @@ hr {
 </style>
 </head>
 <body>
-<div id='moex'></div>
+<div id='moex'>&nbsp;</div>
 <script>
 var r = new XMLHttpRequest();
 url = 'https://iss.moex.com/iss/engines/currency/markets/selt/securities.jsonp?securities=CETS%3AUSD000UTSTOM%2CCETS%3AEUR_RUB__TOM&lang=ru'
 r.open("GET", url, true);
-document.getElementById('moex').innerHTML = 'bp3'
 r.onreadystatechange = function(){        
     try {
         if(r.readyState != 4 || r.status != 200) return;
