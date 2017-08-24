@@ -46,7 +46,7 @@ r.onreadystatechange = function(){
         if(r.readyState != 4 || r.status != 200) return;
         var j = JSON.parse(r.responseText)        
         var usd = '?'
-        var t = '?'
+        var dt = '?'
         var eur = '?'
         for(i = 0; i < j["marketdata"]["data"].length; i++){
           if(j["marketdata"]["data"][i][20].indexOf('EUR') === 0){
@@ -54,7 +54,7 @@ r.onreadystatechange = function(){
           }
           else if(j["marketdata"]["data"][i][20].indexOf('USD') === 0){
             usd = j["marketdata"]["data"][i][8]              
-            var dt = j["marketdata"]["data"][i][39]
+            dt = j["marketdata"]["data"][i][39]
             dt = dt.substring(11,16) + ' ' + dt.substring(8,10) + '.' + dt.substring(5,7)
           }
         }
@@ -63,7 +63,7 @@ r.onreadystatechange = function(){
         }
         var res = '<span class="cur">USD: </span>' + f(usd) + 
                   ' <span class="cur">EUR: </span>' + f(eur) +
-                  ' <span class="cur">' + t + '</span>'
+                  ' <span class="cur">' + dt + '</span>'
         document.getElementById('moex').innerHTML = res
         localStorage.setItem('usd_eur', res)
     }
