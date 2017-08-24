@@ -69,6 +69,7 @@ r.onreadystatechange = function(){
     }
     catch (err) {        
         document.getElementById('moex').innerHTML = localStorage.getItem('usd_eur') + "*"
+        console.log(err)
     }
 };
 r.send()        
