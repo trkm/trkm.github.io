@@ -56,8 +56,8 @@ r.onreadystatechange = function(){
           else if(j["marketdata"]["data"][i][20].indexOf('USD') === 0){
             usd = j["marketdata"]["data"][i][8]              
             dt = j["marketdata"]["data"][i][39]
-            dt = dt.substring(11,16)
             dd = ' ' + dt.substring(8,10) + '.' + dt.substring(5,7)
+            dt = dt.substring(11,16)
           }
         }
         function f(x){
@@ -67,7 +67,7 @@ r.onreadystatechange = function(){
                   ' <span class="cur">EUR: </span>' + f(eur) +
                   ' <span class="cur">' + dt + '</span>'
         document.getElementById('moex').innerHTML = res
-        localStorage.setItem('usd_eur', res + dd + "*")
+        localStorage.setItem('usd_eur', res + dd)
     }
     catch (err) {        
         document.getElementById('moex').innerHTML = localStorage.getItem('usd_eur')
