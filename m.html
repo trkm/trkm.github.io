@@ -81,7 +81,7 @@ r.onreadystatechange = function(){
         var res = '<span class="cur">USD: </span>' + f(usd) + 
                   ' <span class="cur">EUR: </span>' + f(eur) +
                   ' <span class="cur">' + dt + '</span>' +
-                  ' <span class="cnt">' + cnt + '</span>'
+                  ' <span class="cnt">&nbsp;' + cnt + '&nbsp;</span>'
         document.getElementById('moex').innerHTML = res
         localStorage.setItem('usd_eur', res + dd)
     }
@@ -109,7 +109,8 @@ function _print(w,rubric,prefix){
     for(var i=0;i<data.length;i++){
         var item=data[i];
         html+='<p><div><a href="#" onClick="return sh(\'news-1-' + prefix + i + '\')">'+item.title+'</a></div>'+
-            '<div id="news-1-' + prefix + i + '" style="display: none;"><a href="'+item.url+'" target="_blank" style="color: gray;">'+item.descr+'</a></div></p>';
+            '<div id="news-1-' + prefix + i + '" style="display: none;"><a href="'+item.url+
+            '" target="_blank" style="color: gray;">'+item.descr+'</a></div></p>';
     }
     document.write(html);
 }
