@@ -63,9 +63,20 @@ r.onreadystatechange = function(){
         function f(x){
             return x.toFixed(2)
         }
+        var cnt = 1
+        var ymd = (new Date()).toISOString().slice(0,10)
+        if(localStorage.getItem('last_ymd') == ymd){
+            cnt = parseInt(localStorage.getItem('last_cnt')) + 1
+            localStorage.setItem('last_cnt', '' + cnt)
+        }
+        else{
+            localStorage.setItem('last_ymd', ymd)
+            localStorage.setItem('last_cnt', '' + cnt)
+        }
         var res = '<span class="cur">USD: </span>' + f(usd) + 
                   ' <span class="cur">EUR: </span>' + f(eur) +
-                  ' <span class="cur">' + dt + '</span>'
+                  ' <span class="cur">' + dt + '</span>' +
+                  ' &nbsp;&nbsp;<span class="cur">(' + cnt + '!)</span>'
         document.getElementById('moex').innerHTML = res
         localStorage.setItem('usd_eur', res + dd)
     }
