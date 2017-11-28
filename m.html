@@ -33,6 +33,11 @@ hr {
 #moex span {
     color: gray;
 }
+span.cnt {
+    color: gray;
+    float: right;
+    border: 1px solid gray;
+}
 </style>
 </head>
 <body>
@@ -76,7 +81,7 @@ r.onreadystatechange = function(){
         var res = '<span class="cur">USD: </span>' + f(usd) + 
                   ' <span class="cur">EUR: </span>' + f(eur) +
                   ' <span class="cur">' + dt + '</span>' +
-                  ' &nbsp;&nbsp;<span class="cur">(' + cnt + '!)</span>'
+                  ' <span class="cnt">' + cnt + '</span>'
         document.getElementById('moex').innerHTML = res
         localStorage.setItem('usd_eur', res + dd)
     }
