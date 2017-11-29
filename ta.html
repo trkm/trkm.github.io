@@ -23,6 +23,7 @@ body, html {
   margin: 0px;
   padding: 0px;
   scroll: none;
+  filter: invert(100%);
 }
 div {
   padding: 10px;
@@ -50,13 +51,15 @@ div.header a{
   width: 100%;
   min-height: calc(100% - 70px);
   max-height: calc(100% - 70px0px);    
-  color: #fff;
-  background: black;
+  /*color: #fff;*/
+  color: #black;
+  /*background: black;*/
+  background: white;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, Courier, monospace;
   font-size: 20px;
   margin: 0px;
   border: 0px solid;
-  caret-color: white;
+  /*caret-color: white;*/
 }
 textarea:focus {
   outline: none;
@@ -65,7 +68,7 @@ textarea:focus {
 </style>
 </head>    
 <body>
-<div class="header"><a href="#" onClick="alert('y!');">#</a><span>*</span></div>
+<div class="header"><a href="#" onClick="alert('y!');">#2</a><span>*</span></div>
 <div style="border-top: 1px solid #333;"><textarea id="editor">test me!
 line2
 line3
