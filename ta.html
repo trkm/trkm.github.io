@@ -15,6 +15,7 @@
 <meta name="application-name" content="Новости"/>
 <meta name="msapplication-TileColor" content="#FA6800"/>
 <meta name="apple-mobile-web-app-capable" content="yes" />
+<script src="sha512.js"></script>
 <style>   
 body, html { 
   width: 100%;
@@ -70,12 +71,65 @@ textarea:focus {
 </style>
 </head>    
 <body>
-<div class="header"><a href="#" onClick="alert('y!');">DD-MM-YYYY</a><span id="modified">*</span></div>
+<div class="header"><a href="#" onClick="enc()">ENC</a> | <a href="#" onClick="dec()">DEC</a></div>
 <div class="pane"><textarea id="editor">test me!
 line2
 line3
 line4
 Я
 2</textarea></div>
+<script>
+function crypt(str, psw, decode){
+    var hash = sha512.create()    
+    hash.update(psw)
+    var mask = hash.array()
+    var len = str.length
+    var res = new Uint8Array(len)
+    for(var i = 0; i < len; i++){
+        res[i] = str[i] ^ mask[i % 64]
+        if((i+1) % 64 == 0){
+            hash = sha512.create()
+            var x = decode ? res.slice(i-63,i+1) : str.slice(i-63,i+1) 
+            var c = new Uint8Array(psw.length + x.length);
+            c.set(psw, 0);
+            c.set(x, psw.length);
+            hash.update(c)
+            mask = hash.array()
+        }
+    }
+    return res
+}
+function getPsw(){
+    return 'test'
+}
+function enc(){
+    var psw = getPsw()
+    var msg = document.getElementById('editor').value
+    psw = new TextEncoder("utf-8").encode(psw)
+    msg = new TextEncoder("utf-8").encode(msg)
+    var data = crypt(msg, psw, false)
+    data = String.fromCharCode.apply(null, data)
+    var msg = window.btoa(data)
+    var msg2 = ''
+    for(var i = 0; i < msg.length; i += 64){
+        msg2 += msg.substring(i, i+64) + '\n'
+    }
+    document.getElementById('editor').value = msg2
+    document.getElementById('editor').select();
+    document.execCommand("Copy");
+    window.getSelection().removeAllRanges();
+}
+function dec(){
+    var psw = getPsw()
+    var msg = window.atob(document.getElementById('editor').value)
+    var list = [];
+    for(var i = 0; i < msg.length; i++){
+        list.push(msg.charCodeAt(i))
+    }
+    msg = new Uint8Array(list)
+    psw = new TextEncoder("utf-8").encode(psw)
+    document.getElementById('editor').value = new TextDecoder("utf-8").decode(crypt(msg, psw, true))
+}
+</script>
 </body>
 </html>
