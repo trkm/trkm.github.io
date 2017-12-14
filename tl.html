@@ -132,7 +132,7 @@ function onStart(){
         out('<form onSubmit="return onPsw(this.psw.value)">' +
             '<div id="pswmsg">enter password:</div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)">' +
-            '<input type="submit" style="display: none">' +
+            '<input type="submit" style="xdisplay: none">' +
             '</form>')        
     }
     else{
@@ -140,7 +140,7 @@ function onStart(){
             '<div id="pswmsg">create password:</div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)">' +
             '<input type="password" class="psw" id="psw2" name="psw2" onInput="onPswChanged(this)">' +
-            '<input type="submit" style="display: none">' +
+            '<input type="submit" style="xdisplay: none">' +
             '</form>')        
     }
     document.getElementById('psw').focus()
