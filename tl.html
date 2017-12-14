@@ -221,7 +221,7 @@ function onPageBlur(){
             localStorage.setItem('trace:txt', txt)
             localStorage.setItem('trace:sync', 1)
             saved_txt = ''
-            sync()
+            //sync()
         }
         saved_txt = ''
     }
@@ -394,8 +394,8 @@ function init(){
         return
     }
     if(!localStorage.getItem('trace:token')){
-        location = 'https://www.dropbox.com/oauth2/authorize?client_id=2j1lttwog9j9gd4&response_type=token&redirect_uri=https%3A%2F%2Fm1-gpu01%3A8443%2Fstatic%2Findex.html'
-        return
+        //location = 'https://www.dropbox.com/oauth2/authorize?client_id=2j1lttwog9j9gd4&response_type=token&redirect_uri=https%3A%2F%2Fm1-gpu01%3A8443%2Fstatic%2Findex.html'
+        //return
     }
     window.onfocus = onPageFocus
     window.onblur = onPageBlur
