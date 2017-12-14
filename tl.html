@@ -35,6 +35,17 @@ div#pane{
   height: 100%;
 }
     
+div#indicator{
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  margin-top: -8px;
+  margin-left: -8px;
+  width: 5px;
+  height: 5px;
+  background: red;
+}
+    
 button#auth {
   position: absolute;
   top: 50%;
@@ -113,6 +124,7 @@ textarea:focus {
 </head>    
 <body onLoad="init()">
 <div id="pane"></div>
+<div id="indicator"></div>
 <script>
 function onStart(){
     var arr = localStorage.getItem('trace:txt')
@@ -187,21 +199,33 @@ function onPswInit(el1, el2){
         return false
     }   
     password = psw1
-    showEditor()
+    showEditor('')
     return false
 }
     
 function onEditor(txt){
+    if(txt != saved_txt){
+        document.getElementById('indicator').style.visibility = "visible"
+    }
+    else{
+        document.getElementById('indicator').style.visibility = "hidden"
+    }
     //console.log('onEditor: ' + txt.substring(0,10))
 }
     
 function onPageBlur(){
     if(document.getElementById('editor')){
-        var txt = ToBase64(encode(document.getElementById('editor').value, password))
-        localStorage.setItem('trace:txt', txt)
-        out('')
-        password = ''
+        var txt = document.getElementById('editor').value
+        if(txt != saved_txt){
+            txt = ToBase64(encode(txt, password))
+            localStorage.setItem('trace:txt', txt)
+            localStorage.setItem('trace:sync', 1)
+            saved_txt = ''
+            sync()
+        }
+        saved_txt = ''
     }
+    password = ''
     out('')
 }
 
@@ -223,6 +247,8 @@ function showEditor(txt){
     ta.value = ''
     ta.value = txt
     ta.scrollTop = ta.scrollHeight
+    saved_txt = txt
+    document.getElementById('indicator').style.visibility = "hidden"
 }
     
 function encode(txt, password){
@@ -301,11 +327,79 @@ function FromBase64(str){
     return atob(str).split('').map(function (c) { return c.charCodeAt(0); });
 }
     
+function initAccessTokenFromUrl(){
+  var str = window.location.hash;
+  var ret = Object.create(null);
+  if(typeof str !== 'string'){
+    return false
+  }
+  str = str.trim().replace(/^(\?|#|&)/, '');
+  if(!str){
+    return false
+  }
+  str.split('&').forEach(function (param){
+    var parts = param.replace(/\+/g, ' ').split('=')
+    var key = parts.shift()
+    var val = parts.length > 0 ? parts.join('=') : undefined
+    key = decodeURIComponent(key)
+    val = val === undefined ? null : decodeURIComponent(val)
+    if(ret[key] === undefined){
+      ret[key] = val
+    }else if(Array.isArray(ret[key])){
+      ret[key].push(val)
+    }else{
+      ret[key] = [ret[key], val]
+    }
+  });
+  if(ret.access_token){
+    localStorage.setItem('trace:token', ret.access_token)
+    return true
+  }
+  return false
+}
+    
+function revokeToken(){
+    var r = new XMLHttpRequest();
+    r.open("POST", "https://api.dropboxapi.com/2/auth/token/revoke", true);
+    r.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('trace:token'))
+    r.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
+    r.onreadystatechange = function(){
+        if(r.readyState != 4 || r.status != 200) return;
+        localStorage.removeItem('trace:token')
+        reload()
+    }
+    r.send(JSON.stringify(null))
+}
+    
+function sync(){
+    var r = new XMLHttpRequest();
+    r.open("POST", "https://content.dropboxapi.com/2/files/upload", true);
+    r.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('trace:token'))
+    r.setRequestHeader('Content-Type', 'application/octet-stream')
+    r.setRequestHeader('Dropbox-API-Arg', JSON.stringify({"path": "/_.txt", 'mode': 'overwrite'}))
+    r.onreadystatechange = function(){
+        if(r.readyState == 4 && r.status == 401){
+            revokeToken()
+            return;
+        }
+        if(r.readyState != 4 || r.status != 200) return;
+        localStorage.removeItem('trace:sync')
+    }
+    r.send(localStorage.getItem('trace:txt'))
+}
+    
 function init(){
-    //console.log('init')
+    if(initAccessTokenFromUrl()){
+        location = './index.html'
+        return
+    }
+    if(!localStorage.getItem('trace:token')){
+        location = 'https://www.dropbox.com/oauth2/authorize?client_id=2j1lttwog9j9gd4&response_type=token&redirect_uri=https%3A%2F%2Fm1-gpu01%3A8443%2Fstatic%2Findex.html'
+        return
+    }
     window.onfocus = onPageFocus
     window.onblur = onPageBlur
-    password = '123'
+    password = ''
     onStart()
 }
 </script>
