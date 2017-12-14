@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Trace v1</title>
+<title>Trace v2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon" href="https://news.yandex.ru/favicon.ico"/>
 <link rel="icon" sizes="24x24" href="https://yastatic.net/iconostasis/_/lQHbCexSgizAhisugKD79mTz__Q.png" type="image/png"/>
@@ -121,7 +121,7 @@ function onStart(){
         out('<form onSubmit="return onPsw(this.psw.value)">' +
             '<div id="pswmsg">enter password:</div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)">' +
-            '<input type="submit" id="submit" value="OK">' +
+            '<input type="submit" class="psw" id="submit" value="OK">' +
             '</form>')        
     }
     else{
@@ -129,7 +129,7 @@ function onStart(){
             '<div id="pswmsg">create password:</div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)">' +
             '<input type="password" class="psw" id="psw2" name="psw2" onInput="onPswChanged(this)">' +
-            '<input type="submit" id="submit" value="OK">' +
+            '<input type="submit" class="psw" id="submit" value="OK">' +
             '</form>')        
     }
     document.getElementById('psw').focus()
