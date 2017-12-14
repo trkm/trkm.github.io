@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Test</title>
+    </head>
+    <body>
+        <div>Token: <input type="text" id="token"> <button onClick="list();">List</button></div>
+        <pre id="out"></pre>
+<script>
+function list(){
+    rq ={"path":"","recursive":false} 
+    var r = new XMLHttpRequest();
+    r.open("POST", 'https://api.dropboxapi.com/2/files/list_folder', true);
+    r.setRequestHeader('Authorization', 'Bearer ' + document.getElementById('token').value)
+    r.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
+    r.onreadystatechange = function(){
+        if(r.readyState == 4 && r.status == 401){
+            alert('unauth!')
+            return;
+        }
+        if(r.readyState != 4 || r.status != 200) return;        
+        console.log('ok')
+        console.log(r.responseText)
+        document.getElementById('out').innerText = JSON.stringify(JSON.parse(r.responseText), null, '  ')
+    }
+    r.send(JSON.stringify(rq))
+} 
+</script>
+    </body>
+</html>
