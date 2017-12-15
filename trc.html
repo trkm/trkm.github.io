@@ -36,6 +36,7 @@ div#indicator{
   width: 5px;
   height: 5px;
   background: red;
+  visibility: hidden;
 }    
 input.psw {
   position: absolute;
@@ -61,6 +62,11 @@ input#psw2 {
 } 
 input#submit {
   margin-top: 60px;
+}
+input#reset {
+  top: 100%;
+  margin-top: -36px;
+  visibility: hidden;
 }
 input.psw:focus {
   outline: none;
@@ -113,7 +119,7 @@ function onStart(){
             '<div id="pswmsg"><a href="./trr.html">view</a></div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)" placeholder="password">' +
             '<input type="submit" class="psw" id="psw2" value="OK">' +
-            '<input type="button" class="psw" id="submit" value="Reset" onClick="onReset()">' +
+            '<input type="button" class="psw" id="reset" value="Reset" onClick="onReset()">' +
             '</form>')
         sync()
     }
@@ -372,11 +378,11 @@ function revokeToken(){
 }
     
 function sync(){
-    document.getElementById('indicator').style.visibility = "hidden"
     if(!localStorage.getItem('trace:sync')){
+        document.getElementById('reset').style.visibility = "visible"
         return
     }
-    document.getElementById('indicator').style.visibility = "visible"
+    document.getElementById('reset').style.visibility = "hidden"
     var r = new XMLHttpRequest();
     r.open("POST", "https://content.dropboxapi.com/2/files/upload", true);
     r.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('trace:token'))
@@ -389,7 +395,7 @@ function sync(){
         }
         if(r.readyState != 4 || r.status != 200) return;
         localStorage.removeItem('trace:sync')
-        document.getElementById('indicator').style.visibility = "hidden"
+        document.getElementById('reset').style.visibility = "visible"
     }
     r.send(localStorage.getItem('trace:txt'))
 }
