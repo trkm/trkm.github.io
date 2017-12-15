@@ -145,6 +145,7 @@ function showFile(fn){
             binary += String.fromCharCode( bytes[ i ] );
         }
         content = FromBase64(binary)
+        console.log('content length: ' + content.length)
         out('<form onSubmit="return onPsw(this.psw.value)">' +
             '<div id="pswmsg"></div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)" placeholder="password">' +
@@ -183,6 +184,7 @@ function onPsw(){
         el_msg.innerText = 'Password you entered is incorrect!'
         return false
     }
+    console.log('txt: [' + txt + ']')
     out('<a href="#" onClick="onStart(); return false">' + file_name + '</a><br><br>' + txt.replace(/\n/g, '<br/>'))
     return false
 }
