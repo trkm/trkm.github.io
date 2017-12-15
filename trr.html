@@ -89,7 +89,7 @@ div#pswmsg {
   margin: 0px;
   border: 0px solid;
 }
-div.item a {
+a {
   color: #0a0;
   text-decoration: none;
   margin: 5px;
@@ -119,21 +119,22 @@ function onStart(){
     
 function listFiles(response){
     var r = JSON.parse(response)
-    var res = '<div class="item"><a href="./trc.html">Edit</a></div><br>'
+    var res = '<div><a href="./trc.html">edit</a></div><br>'
     for(var i = 0; i < r.entries.length; i++){
         var file = r.entries[i].name
-        res += '<div class="item"><a href="#" onClick="return showFile(\'' +
+        res += '<div><a href="#" onClick="return showFile(\'' +
                file + '\')">' + file + '</a></div>'
     }
     out(res)
 }    
 
-function showFile(filename){
+function showFile(fn){
+    file_name = fn
     var r = new XMLHttpRequest();
     r.open("POST", "https://content.dropboxapi.com/2/files/download", true);
     r.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('trace:token'))
     r.setRequestHeader('Content-Type', 'text/plain; charset=utf-8')
-    r.setRequestHeader('Dropbox-API-Arg', JSON.stringify({"path": "/" + filename}))
+    r.setRequestHeader('Dropbox-API-Arg', JSON.stringify({"path": "/" + file_name}))
     r.responseType = "arraybuffer"
     r.onreadystatechange = function(){
         if(r.readyState != 4 || r.status != 200) return;
@@ -152,6 +153,7 @@ function showFile(filename){
         document.getElementById('psw').focus()
     }
     r.send()
+    return false
 }
     
 function isValidPassword(psw){
@@ -181,7 +183,7 @@ function onPsw(){
         el_msg.innerText = 'Password you entered is incorrect!'
         return false
     }
-    out(txt.replace(/\n/g, '<br/>'))
+    out('<a href="#" onClick="onStart(); return false">' + file_name + '</a><br><br>' + txt.replace(/\n/g, '<br/>'))
     return false
 }
     
