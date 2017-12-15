@@ -181,10 +181,7 @@ function onPsw(){
         el_msg.innerText = 'Password you entered is incorrect!'
         return false
     }
-    console.log(txt)
-    out(txt.replace('\n', '<br/>'))
-    console.log('----')
-    console.log(txt)
+    out(txt.replace(/\n/g, '<br/>'))
     return false
 }
     
