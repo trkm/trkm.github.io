@@ -95,6 +95,11 @@ div#pswmsg {
 textarea:focus {
   outline: none;
 }
+a {
+  color: #0a0;
+  text-decoration: none;
+  margin: 5px;
+}
 </style>
 </head>    
 <body onLoad="init()">
@@ -105,7 +110,7 @@ function onStart(){
     var arr = localStorage.getItem('trace:txt')
     if(arr){
         out('<form onSubmit="return onPsw(this.psw.value)">' +
-            '<div id="pswmsg"></div>' +
+            '<div id="pswmsg"><a href="./trr.html">view</a></div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)" placeholder="password">' +
             '<input type="submit" class="psw" id="psw2" value="OK">' +
             '<input type="button" class="psw" id="submit" value="Reset" onClick="onReset()">' +
@@ -114,7 +119,7 @@ function onStart(){
     }
     else{
         out('<form onSubmit="return onPswInit(this.psw, this.psw2)">' +
-            '<div id="pswmsg"></div>' +
+            '<div id="pswmsg"><a href="./trr.html">view</a></div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)" placeholder="new password">' +
             '<input type="password" class="psw" id="psw2" name="psw2" onInput="onPswChanged(this)" placeholder="confirm password">' +
             '<input type="submit" class="psw" id="submit" value="OK">' +
