@@ -149,6 +149,7 @@ function showFile(filename){
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)" placeholder="password">' +
             '<input type="submit" class="psw" id="submit" value="OK">' +
             '</form>')
+        document.getElementById('psw').focus()
     }
     r.send()
 }
@@ -180,7 +181,10 @@ function onPsw(){
         el_msg.innerText = 'Password you entered is incorrect!'
         return false
     }
+    console.log(txt)
     out(txt.replace('\n', '<br/>'))
+    console.log('----')
+    console.log(txt)
     return false
 }
     
