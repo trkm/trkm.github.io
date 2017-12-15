@@ -372,6 +372,7 @@ function revokeToken(){
 }
     
 function sync(){
+    document.getElementById('indicator').style.visibility = "hidden"
     if(!localStorage.getItem('trace:sync')){
         return
     }
