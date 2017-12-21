@@ -183,7 +183,7 @@ function onPsw(){
         el_msg.innerText = 'Password you entered is incorrect!'
         return false
     }
-    out('<a href="#" onClick="onStart(); return false">' + file_name + '</a><br><br>' +
+    out('<a id="nav" href="#" onClick="onStart(); return false">' + file_name + '</a><br><br>' +
         txt.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/\n/g, '<br/>'))
     if(localStorage.getItem('trace:filename') == file_name){
         var y = localStorage.getItem('trace.scrolltop')
@@ -208,8 +208,10 @@ function onPsw(){
     window.onscroll = function(){
         var y = window.scrollY || window.pageYOffset || 
                 document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0)
-        localStorage.setItem('trace.scrolltop', y)
-        console.log('on y=' + localStorage.getItem('trace.scrolltop'))
+        if(document.getElementById('nav')){
+          localStorage.setItem('trace.scrolltop', y)
+          console.log('on y=' + localStorage.getItem('trace.scrolltop'))
+        }
     }
     return false
 }
