@@ -188,7 +188,7 @@ function onPsw(){
     console.log('lsfn=[' + localStorage.getItem('trace:filename') + '] fn=[' + file_name + ']')
     if(localStorage.getItem('trace:filename') == file_name){
         var y = localStorage.getItem('trace.scrolltop')
-        window.scrollTo(y)      
+        window.scroll(0, y)    
         console.log('bp0 y=' + y)
       /*
         if(window.scrollY){
