@@ -185,12 +185,11 @@ function onPsw(){
     }
     out('<a id="nav" href="#" onClick="onStart(); return false">' + file_name + '</a><br><br>' +
         txt.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/\n/g, '<br/>'))
-    console.log('lsfn=[' + localStorage.getItem('trace:filename') + '] fn=[' + file_name + ']')
     if(localStorage.getItem('trace:filename') == file_name){
         var y = localStorage.getItem('trace.scrolltop')
         window.scroll(0, y)    
-        console.log('bp0 y=' + y)
-      /*
+        //console.log('bp0 y=' + y)
+        /*
         if(window.scrollY){
             window.scrollY = y
             console.log('bp1', y)
@@ -212,16 +211,13 @@ function onPsw(){
         }
         */
     }
-    else{
-      console.log('bp6')
-    }
     localStorage.setItem('trace:filename', file_name)
     window.onscroll = function(){
         var y = window.scrollY || window.pageYOffset || 
                 document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0)
         if(document.getElementById('nav')){
-          localStorage.setItem('trace.scrolltop', y)
-          console.log('on y=' + localStorage.getItem('trace.scrolltop'))
+            localStorage.setItem('trace.scrolltop', y)
+            //console.log('on y=' + localStorage.getItem('trace.scrolltop'))
         }
     }
     return false
