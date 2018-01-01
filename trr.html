@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>trr</title>
+<title>trr 1.01</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -130,6 +130,7 @@ function listFiles(response){
 
 function showFile(fn){
     file_name = fn
+    out('<div class="info">loading file: ' + fn + '</div>')
     var r = new XMLHttpRequest();
     r.open("POST", "https://content.dropboxapi.com/2/files/download", true);
     r.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('trace:token'))
