@@ -119,7 +119,7 @@ function onStart(){
     
 function listFiles(response){
     var r = JSON.parse(response)
-    var res = '<div><a href="./trc.html">edit</a></div><br>'
+    var res = '<div><a href="./trc.html">edit</a> <a href="./ntz.html">ntz</a></div><br>'
     for(var i = 0; i < r.entries.length; i++){
         var file = r.entries[i].name
         res += '<div><a href="#" onClick="return showFile(\'' +
