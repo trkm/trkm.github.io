@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 7</title>
+<title>ntz 8</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -328,6 +328,7 @@ function showBookList(){
 
 function getBookTitlte(book_ix){
   var title = ntz.books[book_ix].title.trim()
+  title = title.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
   if(title.length == 0){
     title = "???"
   }
@@ -385,6 +386,7 @@ function showBook(i){
 
 function getNoteTitlte(i,j){
   var title = ntz.books[i].notes[j].split('\n')[0].trim()
+  title = title.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
   if(title.length == 0){
     title = "???"
   }
