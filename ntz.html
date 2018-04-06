@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 18</title>
+<title>ntz 19</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -409,6 +409,7 @@ function navLine(book_ix, note_flag, btn_action, btn){
 }
 
 function showBookList(){
+  dlg_flag = false
   var html = navLine()
   for(i = 0; i < ntz.books.length; i++){
     html += '<div class="item" draggable="true" ondragover="dragover(event)"'
@@ -468,6 +469,7 @@ function deleteBook(i){
 }
 
 function showBook(i){
+  dlg_flag = false
   var html = navLine(i, false, 'deleteBook(' + i + ')', 'X')
   for(j = 0; j < ntz.books[i].notes.length; j++){
     html += '<div class="item" draggable="true" ondragover="dragover(event)"'
@@ -496,6 +498,7 @@ function getNoteTitlte(i,j){
 }
 
 function showNote(book_ix, note_ix){
+  dlg_flag = false
   var html = navLine(book_ix, true, 'return deleteNote(' + book_ix + ', ' + note_ix + ')', 'X')
   html += '<div id="viewer" ondblclick="return editNote(' + book_ix + ', ' + note_ix + ')">'
   var txt = ntz.books[book_ix].notes[note_ix]
@@ -531,6 +534,7 @@ function addNote(book_ix){
 }
 
 function editNote(book_ix, note_ix){
+  dlg_flag = false
   var exit = 'showNote(' + book_ix + ', ' + note_ix + ')'
   var html = navLine(book_ix, true, exit, 'V')
   html += '<textarea id="editor"'
@@ -607,18 +611,6 @@ function onDrop(ev){
     showBook(notes_list)
   }
   
-}
-    
-function showEditor(txt){
-    out('<textarea id="editor" onInput="onEditor(this.value)"></textarea>')
-    var ta = document.getElementById('editor')
-    ta.blur()
-    ta.focus()
-    ta.value = ''
-    ta.value = txt
-    ta.scrollTop = ta.scrollHeight
-    saved_txt = txt
-    document.getElementById('indicator').style.visibility = "hidden"
 }
     
 function encode(txt, password){
@@ -789,7 +781,7 @@ function reloadPage(){
 }
     
 function init(){
-    dlg_flag = false
+    dlg_flag = true
     if(initAccessTokenFromUrl()){
         reloadPage()
         return
