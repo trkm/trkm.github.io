@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 10</title>
+<title>ntz 11</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -274,21 +274,26 @@ function saveNtz(){
   document.getElementById('indicator').style.visibility = "hidden"
 }
   
-function _prompt(msg, val){
+function _prompt(msg, val){  
   dlg_flag = true
-  var res = prompt(msg, val)
+  console.log('_prompt >', dlg_flag)
+  var res = prompt(msg, val)  
   dlg_flag = false
+  console.log('_prompt <', dlg_flag)
   return res
 }
   
 function _confirm(msg){
   dlg_flag = true
-  var res = confirm(msg)
+  console.log('_confirm >', dlg_flag)
+  var res = confirm(msg)  
   dlg_flag = false
+  console.log('_confirm <', dlg_flag)
   return res
 }
     
 function onPageBlur(){
+    console.log('onPageBlur dlg_flag=', dlg_flag)
     if(dlg_flag){
       return
     }
@@ -299,6 +304,7 @@ function onPageBlur(){
     sync()
 }
 function onPageFocus(){
+    console.log('onPageFocus dlg_flag=', dlg_flag)
     if(dlg_flag){
       return
     }
