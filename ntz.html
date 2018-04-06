@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 20</title>
+<title>ntz 21</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -423,7 +423,7 @@ function showBookList(){
     html += ' ondragleave="dragexit(event)"'
     html += ' onDrop="onDrop(event)"'
     html += ' onDragStart="dragstart(event, '+ i + ')">'
-    html += ntz.books[i].title
+    html += getBookTitlte(i)
     html += '</div>'
     //console.log(i, list[i])
   }
