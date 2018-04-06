@@ -689,8 +689,8 @@ function sync(){
             return;
         }
         if(r.readyState != 4 || r.status != 200) return;
-        var r = JSON.parse(r.responseText)
-        localStorage.setItem('ntz:sync-remote-hash', r.content_hash)
+        var res = JSON.parse(r.responseText)
+        localStorage.setItem('ntz:sync-remote-hash', res.content_hash)
         localStorage.setItem('ntz:sync-local-hash', local_hash)
         localStorage.removeItem('ntz:sync')
         var el = document.getElementById('reset')
