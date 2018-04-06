@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 19</title>
+<title>ntz 20</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -358,17 +358,21 @@ function saveNtz(){
   document.getElementById('indicator').style.visibility = "hidden"
 }
   
+function resetDlgFlag(){
+  setTimeout(function(){dlg_flag = false}, 1000)
+}
+  
 function _prompt(msg, val){  
   dlg_flag = true
   var res = prompt(msg, val)  
-  setTimeout(function(){dlg_flag = false}, 1000)
+  resetDlgFlag()
   return res
 }
   
 function _confirm(msg){
   dlg_flag = true
   var res = confirm(msg)  
-  setTimeout(function(){dlg_flag = false}, 1000)
+  resetDlgFlag()
   return res
 }
     
@@ -409,7 +413,7 @@ function navLine(book_ix, note_flag, btn_action, btn){
 }
 
 function showBookList(){
-  dlg_flag = false
+  resetDlgFlag()
   var html = navLine()
   for(i = 0; i < ntz.books.length; i++){
     html += '<div class="item" draggable="true" ondragover="dragover(event)"'
@@ -469,7 +473,7 @@ function deleteBook(i){
 }
 
 function showBook(i){
-  dlg_flag = false
+  resetDlgFlag()
   var html = navLine(i, false, 'deleteBook(' + i + ')', 'X')
   for(j = 0; j < ntz.books[i].notes.length; j++){
     html += '<div class="item" draggable="true" ondragover="dragover(event)"'
@@ -498,7 +502,7 @@ function getNoteTitlte(i,j){
 }
 
 function showNote(book_ix, note_ix){
-  dlg_flag = false
+  resetDlgFlag()
   var html = navLine(book_ix, true, 'return deleteNote(' + book_ix + ', ' + note_ix + ')', 'X')
   html += '<div id="viewer" ondblclick="return editNote(' + book_ix + ', ' + note_ix + ')">'
   var txt = ntz.books[book_ix].notes[note_ix]
@@ -534,7 +538,7 @@ function addNote(book_ix){
 }
 
 function editNote(book_ix, note_ix){
-  dlg_flag = false
+  resetDlgFlag()
   var exit = 'showNote(' + book_ix + ', ' + note_ix + ')'
   var html = navLine(book_ix, true, exit, 'V')
   html += '<textarea id="editor"'
