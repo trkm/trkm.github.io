@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 3</title>
+<title>ntz 5</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -289,14 +289,14 @@ function out(html){
 }
     
 function navLine(book_ix, note_flag, btn_action, btn){
-  var html = '<div class="bc"><a href="#" onClick="showBookList()">Home</a> <span class="nav">&gt;</span> '
+  var html = '<div class="bc"><a href="#" onClick="return showBookList()">Home</a> <span class="nav">&gt;</span> '
   if(book_ix === undefined){
     return html + '</div>'
   }
   if(note_flag){
-    html += '<a href="#" onClick="showBook(' + book_ix + ')">'
+    html += '<a href="#" onClick="return showBook(' + book_ix + ')">'
   }else{
-    html += '<a href="#" onClick="renameBook(' + book_ix + ')">'
+    html += '<a href="#" onClick="return renameBook(' + book_ix + ')">'
   }
   html += getBookTitlte(book_ix)
   html += '</a>  <span class="nav">&gt;</span> '
@@ -309,7 +309,7 @@ function showBookList(){
   for(i = 0; i < ntz.books.length; i++){
     html += '<div class="item" draggable="true" ondragover="dragover(event)"'
     html += ' id="' + i + '"'
-    html += ' onclick="showBook(' + i + ')"'
+    html += ' onclick="return showBook(' + i + ')"'
     html += ' ondragenter="dragenter(event)"'
     html += ' ondragleave="dragexit(event)"'
     html += ' onDrop="onDrop(event)"'
@@ -318,9 +318,10 @@ function showBookList(){
     html += '</div>'
     //console.log(i, list[i])
   }
-  html += '<div class="item" onClick="addBook()">+</div>'
+  html += '<div class="item" onClick="return addBook()">+</div>'
   notes_list = undefined
   out(html)
+  return false
 }
 
 function getBookTitlte(book_ix){
@@ -338,6 +339,7 @@ function addBook(){
     saveNtz()
     showBookList()
   }
+  return false
 }
 
 function renameBook(i){
@@ -347,6 +349,7 @@ function renameBook(i){
     saveNtz()
     showBook(i)
   }
+  return false
 }
 
 function deleteBook(i){
@@ -364,7 +367,7 @@ function showBook(i){
   for(j = 0; j < ntz.books[i].notes.length; j++){
     html += '<div class="item" draggable="true" ondragover="dragover(event)"'
     html += ' id="' + j + '"'
-    html += ' onclick="showNote(' + i + ', ' + j + ')"'
+    html += ' onclick="return showNote(' + i + ', ' + j + ')"'
     html += ' ondragenter="dragenter(event)"'
     html += ' ondragleave="dragexit(event)"'
     html += ' onDrop="onDrop(event)"'
@@ -372,9 +375,10 @@ function showBook(i){
     html += getNoteTitlte(i, j)
     html += '</div>'
   }
-  html += '<div class="item" onClick="addNote(' + i + ')">+</div>'
+  html += '<div class="item" onClick="return addNote(' + i + ')">+</div>'
   notes_list = i
   out(html)
+  return false
 }
 
 function getNoteTitlte(i,j){
@@ -386,15 +390,16 @@ function getNoteTitlte(i,j){
 }
 
 function showNote(book_ix, note_ix){
-  var html = navLine(book_ix, true, 'deleteNote(' + book_ix + ', ' + note_ix + ')', 'X')
-  html += '<div id="viewer" ondblclick="editNote(' + book_ix + ', ' + note_ix + ')">'
+  var html = navLine(book_ix, true, 'return deleteNote(' + book_ix + ', ' + note_ix + ')', 'X')
+  html += '<div id="viewer" ondblclick="return editNote(' + book_ix + ', ' + note_ix + ')">'
   var txt = ntz.books[book_ix].notes[note_ix]
   txt = txt.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split('\n')
-  txt[0] = '<b onClick="editNote(' + book_ix + ', ' + note_ix + ')">' + txt[0] + '</b>'
+  txt[0] = '<b onClick="return editNote(' + book_ix + ', ' + note_ix + ')">' + txt[0] + '</b>'
   txt = txt.join('<br>')
   html += txt
   html += '</div>'
   out(html)
+  return false
 }
 
 function deleteNote(book_ix, note_ix){
@@ -404,6 +409,7 @@ function deleteNote(book_ix, note_ix){
     saveNtz()
     showBook(book_ix)
   }
+  return false
 }
 
 function addNote(book_ix){
@@ -412,6 +418,7 @@ function addNote(book_ix){
   notes[note_ix] = ''
   saveNtz()
   editNote(book_ix, note_ix)
+  return false
 }
 
 function editNote(book_ix, note_ix){
@@ -420,16 +427,17 @@ function editNote(book_ix, note_ix){
   html += '<textarea id="editor"'
   html += ' onkeyup="if(event.key == \'Escape\'){' + exit + '}else{ saveNote(' + book_ix + ', ' + note_ix + ')}"'
   html += ' onchange="saveNote(' + book_ix + ', ' + note_ix + ')">'
-  html += ntz.books[book_ix].notes[note_ix]
   html += '</textarea>'
   out(html)
+  document.getElementById('editor').value = ntz.books[book_ix].notes[note_ix]
   document.getElementById('editor').focus()
+  return false
 }
 
 function saveNote(book_ix, note_ix){
   var txt = document.getElementById('editor').value
   ntz.books[book_ix].notes[note_ix] = txt
-  saveNtz()
+  saveNtz()  
 }
 
 function dragstart(ev, i){
