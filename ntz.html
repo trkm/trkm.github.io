@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 15</title>
+<title>ntz 17/title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -174,23 +174,106 @@ textarea:focus {
 function onStart(){
     var arr = localStorage.getItem('ntz:txt')
     if(arr){
-        out('<form onSubmit="return onPsw(this.psw.value)">' +
+        if(localStorage.getItem('ntz:sync')){
+          showPswForm()
+          sync()
+          return
+        }
+        listRemote(downloadIfNew, showPswForm)
+    }
+    else{
+        listRemote(downloadAnyway, showPswInitForm)
+    }
+} 
+  
+function listRemote(cb_ntz, cb_no_ntz){
+    out('<div class="info">sync...</div>')
+    var rq ={"path":"","recursive":false} 
+    var r = new XMLHttpRequest();
+    r.open("POST", 'https://api.dropboxapi.com/2/files/list_folder', true);
+    r.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('trace:token'))
+    r.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
+    r.onreadystatechange = function(){
+        //TODO connection error -> cb_no_ntz
+        console.log('listRemote:')
+        console.log(r)
+        if(r.readyState == 4 && r.status == 401){
+            //revokeToken()
+            return;
+        }
+        if(r.readyState != 4 || r.status != 200) return;        
+        var res = JSON.parse(r.responseText)
+        for(var i = 0; i < res.entries.length; i++){
+          var file = res.entries[i].name
+          if(file == 'ntz.txt'){
+            cb_ntz(res.entries[i].content_hash)
+            return;
+          }
+        }
+        cb_no_ntz()
+    }
+    r.send(JSON.stringify(rq))
+}
+  
+function downloadIfNew(remote_hash){
+  if(remote_hash == localStorage.getItem('ntz:sync-remote-hash')){
+    showPswForm()
+  }
+  else{
+    downloadRemote(remote_hash, showPswForm)
+  }
+}
+  
+function downloadAnyway(remote_hash){
+  downloadRemote(remote_hash, showPswInitForm)
+}
+  
+function downloadRemote(remote_hash, cb_err){
+    var r = new XMLHttpRequest();
+    r.open("POST", "https://content.dropboxapi.com/2/files/download", true);
+    r.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('trace:token'))
+    r.setRequestHeader('Content-Type', 'text/plain; charset=utf-8')
+    r.setRequestHeader('Dropbox-API-Arg', JSON.stringify({"path": "/ntz.txt"}))
+    r.responseType = "arraybuffer"
+    r.onreadystatechange = function(){
+        //TODO connection error -> cb_no_ntz
+        console.log('downloadRemote:')
+        console.log(r)
+        if(r.readyState != 4 || r.status != 200) return;
+        var bytes = new Uint8Array(r.response)
+        var len = bytes.byteLength;
+        var binary = ''
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode( bytes[ i ] );
+        }
+        var local_content = binary
+        var local_hash = local_content.substring(0,10) + '..' + local_content.substring(Math.max(0, local_content.length - 10))
+        localStorage.setItem('ntz:sync-remote-hash', remote_hash)
+        localStorage.setItem('ntz:sync-local-hash', local_hash)
+        localStorage.setItem('ntz:txt', local_content)
+        showPswForm()
+    }
+    r.send()
+}
+  
+function showPswForm(){
+  out('<form onSubmit="return onPsw(this.psw.value)">' +
             '<div id="pswmsg">&nbsp;</div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)" placeholder="password">' +
             '<input type="submit" class="psw" id="psw2" value="OK">' +
             '<input type="button" class="psw" id="reset" value="Reset" onClick="onReset()">' +
             '</form>')
-        sync()
-    }
-    else{
-        out('<form onSubmit="return onPswInit(this.psw, this.psw2)">' +
+  document.getElementById('psw').focus()
+}
+  
+function showPswInitForm(){
+  out('<form onSubmit="return onPswInit(this.psw, this.psw2)">' +
             '<div id="pswmsg">&nbsp;</div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)" placeholder="new password">' +
             '<input type="password" class="psw" id="psw2" name="psw2" onInput="onPswChanged(this)" placeholder="confirm password">' +
             '<input type="submit" class="psw" id="submit" value="OK">' +
-            '</form>')        
-    }
-    document.getElementById('psw').focus()
+            '</form>') 
+  document.getElementById('psw').focus()
 }
     
 function onReset(){
