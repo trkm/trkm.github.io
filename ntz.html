@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 5</title>
+<title>ntz 6</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -394,6 +394,9 @@ function showNote(book_ix, note_ix){
   html += '<div id="viewer" ondblclick="return editNote(' + book_ix + ', ' + note_ix + ')">'
   var txt = ntz.books[book_ix].notes[note_ix]
   txt = txt.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split('\n')
+  if(txt[0].trim().length == 0){
+    txt[0] = '???'
+  }
   txt[0] = '<b onClick="return editNote(' + book_ix + ', ' + note_ix + ')">' + txt[0] + '</b>'
   txt = txt.join('<br>')
   html += txt
