@@ -86,6 +86,8 @@ div#viewer {
   height: 90vh;
   background-color: black;
   color: white;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
+  font-size: 20px;
 }
     
 div#indicator{
@@ -387,8 +389,8 @@ function showNote(book_ix, note_ix){
   var html = navLine(book_ix, true, 'deleteNote(' + book_ix + ', ' + note_ix + ')', 'X')
   html += '<div id="viewer" ondblclick="editNote(' + book_ix + ', ' + note_ix + ')">'
   var txt = ntz.books[book_ix].notes[note_ix]
-  txt = txt.split('\n')
-  txt[0] = '<b>' + txt[0] + '</b>'
+  txt = txt.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split('\n')
+  txt[0] = '<b onClick="editNote(' + book_ix + ', ' + note_ix + ')">' + txt[0] + '</b>'
   txt = txt.join('<br>')
   html += txt
   html += '</div>'
