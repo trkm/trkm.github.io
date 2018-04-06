@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz</title>
+<title>ntz 1</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -307,9 +307,9 @@ function navLine(book_ix, note_flag, btn_action, btn){
 }
 
 function showBookList(){
-  var html = navLine()//'<div class="bc"><a href="#" onClick="showBookList()">Home</a> &gt; </div>'
+  var html = navLine()
   for(i = 0; i < ntz.books.length; i++){
-    html += '<div class="item" draggable="true" ondragover="event.preventDefault()"'
+    html += '<div class="item" draggable="true" ondragover="dragover(event)"'
     html += ' id="' + i + '"'
     html += ' onclick="showBook(' + i + ')"'
     html += ' ondragenter="dragenter(event)"'
@@ -364,7 +364,7 @@ function deleteBook(i){
 function showBook(i){
   var html = navLine(i, false, 'deleteBook(' + i + ')', 'X')
   for(j = 0; j < ntz.books[i].notes.length; j++){
-    html += '<div class="item" draggable="true" ondragover="event.preventDefault()"'
+    html += '<div class="item" draggable="true" ondragover="dragover(event)"'
     html += ' id="' + j + '"'
     html += ' onclick="showNote(' + i + ', ' + j + ')"'
     html += ' ondragenter="dragenter(event)"'
@@ -434,12 +434,17 @@ function saveNote(book_ix, note_ix){
   saveNtz()
 }
 
-function dragstart(event, i){  
+function dragstart(ev, i){
   src = i
+  ev.dataTransfer.setData("text/plain", i)
+}
+
+function dragover(ev){
+  ev.preventDefault()
 }
 
 function dragenter(ev){
-  var el = ev.toElement
+  var el = ev.target || ev.toElement
   if(src >= el.id){
     el.style.borderTopColor = 'gray'
   }
@@ -448,19 +453,15 @@ function dragenter(ev){
   }
 }
 function dragexit(ev){
-  var el = ev.toElement
+  var el = ev.target || ev.toElement
   el.style.borderTopColor = 'transparent'
   el.style.borderColor = 'transparent'
 }
 
-function ondrg(ev){
-  ev.preventDefault();
-}
-    
 function onDrop(ev){
   ev.preventDefault();
   dragexit(ev)
-  var el = ev.toElement
+  var el = ev.target || ev.toElement
   var dst = parseInt(el.id)
   if(src == dst){
     return
@@ -475,6 +476,7 @@ function onDrop(ev){
     list.splice(dst, 0, list.splice(src, 1)[0])
     showBook(notes_list)
   }
+  
 }
     
 function showEditor(txt){
