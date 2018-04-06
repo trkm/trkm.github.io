@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 12</title>
+<title>ntz 13</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,6 +61,7 @@ div#pane{
   width: 100%;
   border-top: 2px solid transparent;
   border-bottom: 2px solid transparent;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -276,24 +277,19 @@ function saveNtz(){
   
 function _prompt(msg, val){  
   dlg_flag = true
-  console.log('_prompt >', dlg_flag)
   var res = prompt(msg, val)  
-  setTimeout(function(){dlg_flag = false; console.log('dlg_flag = false')}, 1000)
-  console.log('_prompt <', dlg_flag)
+  setTimeout(function(){dlg_flag = false}, 1000)
   return res
 }
   
 function _confirm(msg){
   dlg_flag = true
-  console.log('_confirm >', dlg_flag)
   var res = confirm(msg)  
-  setTimeout(function(){dlg_flag = false; console.log('dlg_flag = false')}, 1000)
-  console.log('_confirm <', dlg_flag)
+  setTimeout(function(){dlg_flag = false}, 1000)
   return res
 }
     
 function onPageBlur(){
-    console.log('onPageBlur dlg_flag=', dlg_flag)
     if(dlg_flag){
       return
     }
@@ -304,7 +300,6 @@ function onPageBlur(){
     sync()
 }
 function onPageFocus(){
-    console.log('onPageFocus dlg_flag=', dlg_flag)
     if(dlg_flag){
       return
     }
@@ -482,23 +477,30 @@ function dragover(ev){
 
 function dragenter(ev){
   var el = ev.target || ev.toElement
-  if(src >= el.id){
-    el.style.borderTopColor = 'gray'
-  }
-  else{
-    el.style.borderBottomColor = 'gray'
+  if(el){
+    if(src >= el.id){
+      el.style.borderTopColor = 'gray'
+    }
+    else{
+      el.style.borderBottomColor = 'gray'
+    }
   }
 }
 function dragexit(ev){
   var el = ev.target || ev.toElement
-  el.style.borderTopColor = 'transparent'
-  el.style.borderColor = 'transparent'
+  if(el){
+    el.style.borderTopColor = 'transparent'
+    el.style.borderColor = 'transparent'
+  }
 }
 
 function onDrop(ev){
   ev.preventDefault();
   dragexit(ev)
   var el = ev.target || ev.toElement
+  if(!el){
+    return
+  }
   var dst = parseInt(el.id)
   if(src == dst){
     return
