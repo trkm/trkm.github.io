@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 8</title>
+<title>ntz 9</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -193,7 +193,7 @@ function onStart(){
 }
     
 function onReset(){
-    if(confirm('Are you sure?')){
+    if(_confirm('Are you sure?')){
         localStorage.removeItem('ntz:txt')
         localStorage.removeItem('ntz:sync')
         revokeToken()
@@ -273,17 +273,35 @@ function saveNtz(){
   }
   document.getElementById('indicator').style.visibility = "hidden"
 }
+  
+function _prompt(msg, val){
+  dlg_flag = true
+  var res = prompt(msg, val)
+  dlg_flag = false
+  return res
+}
+  
+function _confirm(msg){
+  dlg_flag = true
+  var res = confirm(msg)
+  dlg_flag = false
+  return res
+}
     
 function onPageBlur(){
-    /*
+    if(dlg_flag){
+      return
+    }
     password = ''
     saved_txt = ''
     ntz = undefined
     out('')
     sync()
-    */
 }
 function onPageFocus(){
+    if(dlg_flag){
+      return
+    }
     onStart()
 }
 function out(html){
@@ -336,7 +354,7 @@ function getBookTitlte(book_ix){
 }
 
 function addBook(){
-  var name = prompt('Name')
+  var name = _prompt('Book title:')
   if(name){
     ntz.books[ntz.books.length] = {'title': name, 'notes': []}
     saveNtz()
@@ -346,7 +364,7 @@ function addBook(){
 }
 
 function renameBook(i){
-  var title = prompt('Rename', getBookTitlte(i))
+  var title = _prompt('Rename book:', getBookTitlte(i))
   if(title){
     ntz.books[i].title = title
     saveNtz()
@@ -356,7 +374,7 @@ function renameBook(i){
 }
 
 function deleteBook(i){
-  if(confirm('Delete book "' + getBookTitlte(i) + '"?')){
+  if(_confirm('Are you sure to delete book "' + getBookTitlte(i) + '"?')){
     //todo: -> recycleBin
     ntz.books.splice(i, 1)
     saveNtz()
@@ -410,7 +428,7 @@ function showNote(book_ix, note_ix){
 }
 
 function deleteNote(book_ix, note_ix){
-  if(confirm('Delete note: "' + getNoteTitlte(book_ix, note_ix) + '"?')){
+  if(_confirm('Are you sure to delete note: "' + getNoteTitlte(book_ix, note_ix) + '"?')){
     //todo: -> recycleBin
     ntz.books[book_ix].notes.splice(note_ix, 1)
     saveNtz()
@@ -628,10 +646,16 @@ function revokeToken(){
     
 function sync(){
     if(!localStorage.getItem('ntz:sync')){
-        document.getElementById('reset').style.visibility = "visible"
+        var el = document.getElementById('reset')
+        if(el){
+          el.style.visibility = "visible"
+        }
         return
     }
-    document.getElementById('reset').style.visibility = "hidden"
+    var el = document.getElementById('reset')
+    if(el){
+      el.style.visibility = "hidden"
+    }
     var r = new XMLHttpRequest();
     r.open("POST", "https://content.dropboxapi.com/2/files/upload", true);
     r.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('trace:token'))
@@ -644,7 +668,10 @@ function sync(){
         }
         if(r.readyState != 4 || r.status != 200) return;
         localStorage.removeItem('ntz:sync')
-        document.getElementById('reset').style.visibility = "visible"
+        var el = document.getElementById('reset')
+        if(el){
+          el.style.visibility = "visible"
+        }
     }
     r.send(localStorage.getItem('ntz:txt'))
 }
