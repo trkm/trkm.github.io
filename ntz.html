@@ -664,6 +664,12 @@ function sync(){
     if(el){
       el.style.visibility = "hidden"
     }
+    var local_content = localStorage.getItem('ntz:txt')
+    var local_hash = local_content.substring(0,10) + '..' + local_content.substring(Math.max(0, local_content.length - 10))
+    if(local_hash == localStorage.getItem('ntz:sync-local-hash')){
+      console.log('already saved')
+      return
+    }
     var r = new XMLHttpRequest();
     r.open("POST", "https://content.dropboxapi.com/2/files/upload", true);
     r.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('trace:token'))
@@ -675,13 +681,16 @@ function sync(){
             return;
         }
         if(r.readyState != 4 || r.status != 200) return;
+        var r = JSON.parse(r.responseText)
+        localStorage.setItem('ntz:sync-remote-hash', r.content_hash)
+        localStorage.setItem('ntz:sync-local-hash', local_hash)
         localStorage.removeItem('ntz:sync')
         var el = document.getElementById('reset')
         if(el){
           el.style.visibility = "visible"
         }
     }
-    r.send(localStorage.getItem('ntz:txt'))
+    r.send(local_content)
 }
     
 function reloadPage(){
