@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 21</title>
+<title>ntz 22</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -453,9 +453,9 @@ function addBook(){
 }
 
 function renameBook(i){
-  var title = _prompt('Rename book:', getBookTitlte(i))
+  var title = _prompt('Rename book:', ntz.books[i].title.trim())
   if(title){
-    ntz.books[i].title = title
+    ntz.books[i].title = title.trim()
     saveNtz()
     showBook(i)
   }
@@ -493,7 +493,7 @@ function showBook(i){
 }
 
 function getNoteTitlte(i,j){
-  var title = ntz.books[i].notes[j].split('\n')[0].trim()
+  var title = ntz.books[i].notes[j].note.split('\n')[0].trim()
   title = title.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
   if(title.length == 0){
     title = "???"
@@ -505,7 +505,9 @@ function showNote(book_ix, note_ix){
   resetDlgFlag()
   var html = navLine(book_ix, true, 'return deleteNote(' + book_ix + ', ' + note_ix + ')', 'X')
   html += '<div id="viewer" ondblclick="return editNote(' + book_ix + ', ' + note_ix + ')">'
-  var txt = ntz.books[book_ix].notes[note_ix]
+  var txt = ntz.books[book_ix].notes[note_ix].note
+  var mod = ntz.books[book_ix].notes[note_ix].modified
+  console.log('modified:', new Date().setTime(mod))
   txt = txt.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split('\n')
   if(txt[0].trim().length == 0){
     txt[0] = '???'
@@ -531,7 +533,7 @@ function deleteNote(book_ix, note_ix){
 function addNote(book_ix){
   var notes = ntz.books[book_ix].notes
   var note_ix = notes.length
-  notes[note_ix] = ''
+  notes[note_ix] = {'note': '', 'modified': Date.now()}
   saveNtz()
   editNote(book_ix, note_ix)
   return false
@@ -546,14 +548,15 @@ function editNote(book_ix, note_ix){
   html += ' onchange="saveNote(' + book_ix + ', ' + note_ix + ')">'
   html += '</textarea>'
   out(html)
-  document.getElementById('editor').value = ntz.books[book_ix].notes[note_ix]
+  document.getElementById('editor').value = ntz.books[book_ix].notes[note_ix].note
   document.getElementById('editor').focus()
   return false
 }
 
 function saveNote(book_ix, note_ix){
   var txt = document.getElementById('editor').value
-  ntz.books[book_ix].notes[note_ix] = txt
+  ntz.books[book_ix].notes[note_ix].note = txt
+  ntz.books[book_ix].notes[note_ix].modified = Date.now()
   saveNtz()  
 }
 
