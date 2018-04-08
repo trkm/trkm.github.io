@@ -504,6 +504,16 @@ function getNoteTitlte(i,j){
   }
   return title
 }
+  
+function ymdhms(modified){
+  var d = new Date().setTime(modified)
+  return (d.getDate() < 10 ? '0' + d.getDate() : d.getDate()) + '.' +
+    (d.getMonth() < 9 ? '0' + (1 + d.getMonth()) : (1 + d.getMonth())) + '.' +
+    (d.getFullYear()) + ' ' +
+    (d.getHours() < 10 ? '0' + d.getHours() : d.getHours()) + ':' +
+    (d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()) + ':' +
+    (d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds())
+}
 
 function showNote(book_ix, note_ix){
   resetDlgFlag()
@@ -517,7 +527,7 @@ function showNote(book_ix, note_ix){
     txt[0] = '???'
   }
   txt[0] = '<b onClick="return editNote(' + book_ix + ', ' + note_ix + ')">' + txt[0] + '</b>' +
-           '<span class="modified">' + new Date(mod).toString() + '</span>'
+           '<span class="modified">' + ymdhms(mod) + '</span>'
   txt = txt.join('<br>')
   html += txt
   html += '</div>'
