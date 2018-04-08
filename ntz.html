@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 22</title>
+<title>ntz 23</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,6 +77,10 @@ a:hover {
 }
 span.fr {
   float: right;
+}
+span.modified {
+  float: right;
+  color: gray;
 }
 span.nav {
   color: gray;
@@ -512,7 +516,8 @@ function showNote(book_ix, note_ix){
   if(txt[0].trim().length == 0){
     txt[0] = '???'
   }
-  txt[0] = '<b onClick="return editNote(' + book_ix + ', ' + note_ix + ')">' + txt[0] + '</b>'
+  txt[0] = '<b onClick="return editNote(' + book_ix + ', ' + note_ix + ')">' + txt[0] + '</b>' +
+           '<span class="modified">' + new Date(mod).toString() + '</span>'
   txt = txt.join('<br>')
   html += txt
   html += '</div>'
