@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 23</title>
+<title>ntz 24</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -506,7 +506,8 @@ function getNoteTitlte(i,j){
 }
   
 function ymdhms(modified){
-  var d = new Date().setTime(modified)
+  var d = new Date()
+  d.setTime(modified)
   return (d.getDate() < 10 ? '0' + d.getDate() : d.getDate()) + '.' +
     (d.getMonth() < 9 ? '0' + (1 + d.getMonth()) : (1 + d.getMonth())) + '.' +
     (d.getFullYear()) + ' ' +
