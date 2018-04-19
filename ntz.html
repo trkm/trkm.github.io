@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 25</title>
+<title>ntz 26</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -261,21 +261,21 @@ function downloadRemote(remote_hash, cb_err){
 }
   
 function showPswForm(){
-  out('<form onSubmit="return onPsw(this.psw.value)">' +
+  out('<form onSubmit="onPsw(getElementById(\'psw\').value); return false;">' +
             '<div id="pswmsg">&nbsp;</div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)" placeholder="password">' +
-            '<input type="submit" class="psw" id="psw2" value="OK">' +
-            '<input type="button" class="psw" id="reset" value="Reset" onClick="onReset()">' +
+            '<input type="button" class="psw" id="psw2" value="OK" onClick="onPsw(getElementById(\'psw\').value); return false;">' +
+            '<input type="button" class="psw" id="reset" value="Reset" onClick="onReset(); return false;">' +
             '</form>')
   document.getElementById('psw').focus()
 }
   
 function showPswInitForm(){
-  out('<form onSubmit="return onPswInit(this.psw, this.psw2)">' +
+  out('<form onSubmit="onPswInit(getElementById(\'psw\').value, getElementById(\'psw2\').value); return false;">' +
             '<div id="pswmsg">&nbsp;</div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)" placeholder="new password">' +
             '<input type="password" class="psw" id="psw2" name="psw2" onInput="onPswChanged(this)" placeholder="confirm password">' +
-            '<input type="submit" class="psw" id="submit" value="OK">' +
+            '<input type="button" class="psw" id="submit" value="OK" onClick="return onPswInit(this.psw, this.psw2)">' +
             '</form>') 
   document.getElementById('psw').focus()
 }
