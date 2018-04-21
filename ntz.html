@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 26</title>
+<title>ntz 27</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -430,12 +430,13 @@ function showBookList(){
     html += ' onDrop="onDrop(event)"'
     html += ' onDragStart="dragstart(event, '+ i + ')">'
     html += getBookTitlte(i)
-    html += '</div>'
+    html += '</div>'    
     //console.log(i, list[i])
   }
   html += '<div class="item" onClick="return addBook()">+</div>'
   notes_list = undefined
   out(html)
+  onEsc = function(){}
   return false
 }
 
@@ -495,6 +496,7 @@ function showBook(i){
   html += '<div class="item" onClick="return addNote(' + i + ')">+</div>'
   notes_list = i
   out(html)
+  onEsc = function(){showBookList()}
   return false
 }
 
@@ -535,6 +537,7 @@ function showNote(book_ix, note_ix){
   html += txt
   html += '</div>'
   out(html)
+  onEsc = function(){showBook(book_ix)}
   return false
 }
 
@@ -562,12 +565,13 @@ function editNote(book_ix, note_ix){
   var exit = 'showNote(' + book_ix + ', ' + note_ix + ')'
   var html = navLine(book_ix, true, exit, 'V')
   html += '<textarea id="editor"'
-  html += ' onkeyup="if(event.key == \'Escape\'){' + exit + '}else{ saveNote(' + book_ix + ', ' + note_ix + ')}"'
+  html += ' onkeyup="if(event.key == \'Escape\'){onEsc()}else{ saveNote(' + book_ix + ', ' + note_ix + ')}"'
   html += ' onchange="saveNote(' + book_ix + ', ' + note_ix + ')">'
   html += '</textarea>'
   out(html)
   document.getElementById('editor').value = ntz.books[book_ix].notes[note_ix].note
   document.getElementById('editor').focus()
+  onEsc = function(){showNote(book_ix, note_ix)}
   return false
 }
 
@@ -818,6 +822,8 @@ function init(){
     window.onfocus = onPageFocus
     window.onblur = onPageBlur
     window.onunload = onPageBlur
+    onEsc = function(){}
+    window.onkeyup = function(event){if(event.key == 'Escape'){onEsc()}}
     password = ''
     onStart()
 }
