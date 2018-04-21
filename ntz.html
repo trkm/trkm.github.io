@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 27</title>
+<title>ntz 28</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -561,17 +561,17 @@ function addNote(book_ix){
 }
 
 function editNote(book_ix, note_ix){
+  onEsc = function(){showNote(book_ix, note_ix)}
   resetDlgFlag()
   var exit = 'showNote(' + book_ix + ', ' + note_ix + ')'
   var html = navLine(book_ix, true, exit, 'V')
   html += '<textarea id="editor"'
-  html += ' onkeyup="if(event.key == \'Escape\'){onEsc()}else{ saveNote(' + book_ix + ', ' + note_ix + ')}"'
+  html += ' onkeyup="saveNote(' + book_ix + ', ' + note_ix + ')"'
   html += ' onchange="saveNote(' + book_ix + ', ' + note_ix + ')">'
   html += '</textarea>'
   out(html)
   document.getElementById('editor').value = ntz.books[book_ix].notes[note_ix].note
   document.getElementById('editor').focus()
-  onEsc = function(){showNote(book_ix, note_ix)}
   return false
 }
 
