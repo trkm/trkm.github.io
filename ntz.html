@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ntz 28</title>
+<title>ntz 29</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -526,7 +526,6 @@ function showNote(book_ix, note_ix){
   html += '<div id="viewer" ondblclick="return editNote(' + book_ix + ', ' + note_ix + ')">'
   var txt = ntz.books[book_ix].notes[note_ix].note
   var mod = ntz.books[book_ix].notes[note_ix].modified
-  console.log('modified:', new Date().setTime(mod))
   txt = txt.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").split('\n')
   if(txt[0].trim().length == 0){
     txt[0] = '???'
@@ -577,6 +576,9 @@ function editNote(book_ix, note_ix){
 
 function saveNote(book_ix, note_ix){
   var txt = document.getElementById('editor').value
+  if(txt == ntz.books[book_ix].notes[note_ix].note){
+    return
+  }
   ntz.books[book_ix].notes[note_ix].note = txt
   ntz.books[book_ix].notes[note_ix].modified = Date.now()
   saveNtz()  
