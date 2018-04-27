@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>trr 1.08</title>
+<title>trr 1.09</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -333,7 +333,8 @@ function reloadPage(){
     
 function init(){
     if(location.toString().substring(0, 5) != 'https'){
-        localtion = 'https://trkm.github.io/trr.html'
+        location = 'https://trkm.github.io/trr.html'
+        return 
     }
     if(initAccessTokenFromUrl()){
         reloadPage()
