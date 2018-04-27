@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>trr 1.05</title>
+<title>trr 1.06</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -343,6 +343,9 @@ function init(){
         if(!token || token.length < 10){
           location = 'https://www.dropbox.com/oauth2/authorize?client_id=2j1lttwog9j9gd4&response_type=token&redirect_uri=https%3A%2F%2Ftrkm.github.io%2Ftrr.html'
           return
+        }
+        else{
+          localStorage.setItem('trace:token', token)
         }
     }
     window.onfocus = onPageFocus
