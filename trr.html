@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>trr 1.03</title>
+<title>trr 1.04</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,7 +108,9 @@ function onStart(){
     r.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
     r.onreadystatechange = function(){
         if(r.readyState == 4 && r.status == 401){
-            revokeToken()
+            if(confirm('revoke token?')){
+              revokeToken();
+            }
             return;
         }
         if(r.readyState != 4 || r.status != 200) return;        
@@ -334,14 +336,13 @@ function init(){
         reloadPage()
         return
     }
-    console.log('trace:token', localStorage.getItem('trace:token'))
+   
     if(!localStorage.getItem('trace:token')){
-        console.log("!localStorage.getItem('trace:token')", !localStorage.getItem('trace:token'))
-        //location = 'https://www.dropbox.com/oauth2/authorize?client_id=2j1lttwog9j9gd4&response_type=token&redirect_uri=https%3A%2F%2Ftrkm.github.io%2Ftrr.html'
-        //return
-    }
-    else{
-      console.log('bp1')
+        console.log('trace:token', localStorage.getItem('trace:token'))
+        if(confirm('auth?')){
+          location = 'https://www.dropbox.com/oauth2/authorize?client_id=2j1lttwog9j9gd4&response_type=token&redirect_uri=https%3A%2F%2Ftrkm.github.io%2Ftrr.html'
+          return
+        }
     }
     window.onfocus = onPageFocus
     window.onblur = onPageBlur
