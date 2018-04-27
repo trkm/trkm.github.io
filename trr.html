@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>trr 1.01</title>
+<title>trr 1.02</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -334,10 +334,11 @@ function init(){
         reloadPage()
         return
     }
-    if(!localStorage.getItem('trace:token')){
+    console.log('trace:token', localStorage.getItem('trace:token'))
+    /*if(!localStorage.getItem('trace:token')){
         location = 'https://www.dropbox.com/oauth2/authorize?client_id=2j1lttwog9j9gd4&response_type=token&redirect_uri=https%3A%2F%2Ftrkm.github.io%2Ftrr.html'
         return
-    }
+    }*/
     window.onfocus = onPageFocus
     window.onblur = onPageBlur
     window.onunload = onPageBlur
