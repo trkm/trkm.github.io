@@ -4,11 +4,16 @@
 </head>
 <body>
 <div id="out">0</div>
-<button onclick="xclick();">OK</button>
+<button onclick="xclick();">+1</button>
+<a href="#" onclick="xclick2();return false;">-1</a>
 <script>
 x = 0
 function xclick(){
   x += 1
+  document.getElementById('out').innerText = x
+}
+function xclick2(){
+  x -= 1
   document.getElementById('out').innerText = x
 }
 </script>
