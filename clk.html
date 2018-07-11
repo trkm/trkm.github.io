@@ -17,5 +17,41 @@ function xclick2(){
   document.getElementById('out').innerText = x
 }
 </script>
+  
+<hr>
+  
+<script type="text/javascript"> 
+     
+    function displayAnswer () 
+    { 
+        var question = document.getElementById('question'); 
+        var selected = -1; 
+        for (var i=0; i<question.answer.length; i++) 
+        { 
+            if (question.answer[i].checked) { 
+                selected = i; 
+                break; 
+            } 
+        } 
+        if (selected > -1) { 
+              alert("You answered:  " + question.answer[selected].value ); 
+              return false; 
+        } 
+ 
+        alert("Please select an answer."); 
+        return false; 
+      } 
+     
+</script> 
+ 
+ 
+<form id="question" action="#" name="question" onsubmit="return(displayAnswer())"> 
+    <p style="font-size: xx-large">Are you a turtle?</p> 
+    <p><label><input name="answer" type="radio" value="YES" />YES</label></p> 
+    <p><label><input name="answer" type="radio" value="NO" />NO</label></p> 
+    <p><label><input name="answer" type="radio" value="MAYBE" />MAYBE</label></p> 
+    <p><input type="submit" value="SUBMIT" />&nbsp;&nbsp; 
+    <input type="reset" value="RESET" /></p> 
+</form> 
 </body>
 </html>
