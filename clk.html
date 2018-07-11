@@ -92,14 +92,14 @@ function xclick2(){
       '<p style="font-size: xx-large">Are you a turtle?</p>' +
       '<p><input name="answer2" type="text" value="YES"/></p>' +
       '<p><input type="submit" value="SUBMIT" />&nbsp;&nbsp;' +
-      '<input type="reset" value="RESET" /></p>'
-</form> 
-
+      '<input type="reset" value="RESET" /></p>' +
+      '</form>'
+    return false;
   }
      
 </script> 
-  <button onclick="onBtnX()">X</button>
-  <div id="out3"></div> 
+  <button onclick="return(onBtnX())">X</button>
+  <div id="out3">...</div> 
  
 </body>
 </html>
