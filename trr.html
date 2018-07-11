@@ -148,10 +148,10 @@ function showFile(fn){
             binary += String.fromCharCode( bytes[ i ] );
         }
         content = FromBase64(binary)
-        out('<form onsubmit="return(onPsw())">' +
+        out('<form onsubmit="return(onPswForm())">' +
             '<div id="pswmsg"></div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)" placeholder="password">' +
-            '<input type="submit" class="psw" id="submit" value="OK">' +
+            '<input type="submit" class="psw" id="submit" value="*OK*">' +
             '</form>')
         document.getElementById('psw').focus()
     }
@@ -179,7 +179,7 @@ function onPswChanged(el){
     }
 }
     
-function onPsw(){ 
+function onPswForm(){ 
     var txt = decode(content, document.getElementById('psw').value)
     if(txt === false){
         var el_msg = document.getElementById('pswmsg')
