@@ -73,6 +73,33 @@ function xclick2(){
     <p><input name="answer2" type="text" value="YES"/></p> 
     <p><input type="submit" value="SUBMIT" />&nbsp;&nbsp; 
     <input type="reset" value="RESET" /></p> 
+  
+  
+<hr>
+  
+<hr>
+  
+<script type="text/javascript"> 
+     
+    function displayAnswer3() 
+    { 
+        var question = document.getElementById('question3'); 
+        alert("You answered:  " + question.answer2.value ); 
+        return false; 
+      } 
+  function onBtnX(){
+    document.getElementById('out3').innerHtml =  '<form id="question3" action="#" name="question" onsubmit="return(displayAnswer2())">' +
+      '<p style="font-size: xx-large">Are you a turtle?</p>' +
+      '<p><input name="answer2" type="text" value="YES"/></p>' +
+      '<p><input type="submit" value="SUBMIT" />&nbsp;&nbsp;' +
+      '<input type="reset" value="RESET" /></p>'
 </form> 
+
+  }
+     
+</script> 
+  <button onclick="onBtnX()">X</button>
+  <div id="out3"></div> 
+ 
 </body>
 </html>
