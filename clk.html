@@ -85,19 +85,21 @@ function xclick2(){
         alert("You answered:  " + question.answer2.value ); 
         return false; 
       } 
-  function onBtnX(){
+  function xclick2{
+    console.log('lll')
     document.getElementById('out3').innerHtml =  '<form id="question3" action="#" name="question" onsubmit="return(displayAnswer3())">' +
       '<p style="font-size: xx-large">Are you a turtle?</p>' +
       '<p><input name="answer2" type="text" value="YES"/></p>' +
       '<p><input type="submit" value="SUBMIT" />&nbsp;&nbsp;' +
       '<input type="reset" value="RESET" /></p>' +
       '</form>'
+    console.log('lllxxx')
     return false;
   }
      
 </script> 
   
-  <button onclick="return(onBtnX())"> -X- </button>
+  <button onclick="xclick2();">****</button>
   <div id="out3">...</div> 
  
 </body>
