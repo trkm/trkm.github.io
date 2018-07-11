@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>trr 1.09</title>
+<title>trr 1.10</title>
 <meta name="application-name" content="trc"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -148,7 +148,7 @@ function showFile(fn){
             binary += String.fromCharCode( bytes[ i ] );
         }
         content = FromBase64(binary)
-        out('<form onSubmit="return onPsw(this.psw.value)">' +
+        out('<form onsubmit="return(onPsw(this.psw.value))">' +
             '<div id="pswmsg"></div>' +
             '<input type="password" class="psw" id="psw" name="psw" onInput="onPswChanged(this)" placeholder="password">' +
             '<input type="submit" class="psw" id="submit" value="OK">' +
