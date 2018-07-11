@@ -73,9 +73,7 @@ function xclick2(){
     <p><input name="answer2" type="text" value="YES"/></p> 
     <p><input type="submit" value="SUBMIT" />&nbsp;&nbsp; 
     <input type="reset" value="RESET" /></p> 
-  
-  
-<hr>
+  </form>  
   
 <hr>
   
@@ -88,7 +86,7 @@ function xclick2(){
         return false; 
       } 
   function onBtnX(){
-    document.getElementById('out3').innerHtml =  '<form id="question3" action="#" name="question" onsubmit="return(displayAnswer2())">' +
+    document.getElementById('out3').innerHtml =  '<form id="question3" action="#" name="question" onsubmit="return(displayAnswer3())">' +
       '<p style="font-size: xx-large">Are you a turtle?</p>' +
       '<p><input name="answer2" type="text" value="YES"/></p>' +
       '<p><input type="submit" value="SUBMIT" />&nbsp;&nbsp;' +
@@ -98,7 +96,8 @@ function xclick2(){
   }
      
 </script> 
-  <button onclick="return(onBtnX())">X</button>
+  
+  <button onclick="return(onBtnX())"> -X- </button>
   <div id="out3">...</div> 
  
 </body>
