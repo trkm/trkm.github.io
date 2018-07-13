@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>gtkn 0.2</title>
+<title>gtkn 0.3</title>
 <meta name="application-name" content="gtkn"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,7 +46,7 @@ function initAccessTokenFromUrl(){
     }
   });
   if(ret.access_token){
-    var el = getElementById('out')
+    var el = document.getElementById('out')
     el.innerText = ret.access_token
     el.select()
     document.execCommand("copy")
