@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>gtkn 0.9</title>
+<title>gtkn 0.10</title>
 <meta name="application-name" content="gtkn"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,7 +30,8 @@ body, html {
 </head>    
 <body onLoad="init()">
 <!-- div id="out">???</div  -->
-<input type="text" id="out" value="???"/>
+  <input type="text" id="out" value="???"/><br>
+  <button onClick="return(btnClk())">copy</button>
 <script>
 function initAccessTokenFromUrl(){
   var str = window.location.hash;
@@ -58,17 +59,18 @@ function initAccessTokenFromUrl(){
   });
   if(ret.access_token){
     //document.getElementById('out').innerText = ret.access_token
-    
-    var el = document.getElementById('out')
-    el.value = ret.access_token
-    el.select()
-    document.designMode = "on"
-    setTimeout(function(){
-      document.execCommand("copy")
-      document.designMode = "off"
-    }, 1000)
+    document.getElementById('out').value = ret.access_token
     return true
   }
+  return false
+}
+  
+function btnClk(){
+  //document.designMode = "on"
+  var el = document.getElementById('out')
+  el.select()
+  document.execCommand("copy")
+  //document.designMode = "off"
   return false
 }
     
