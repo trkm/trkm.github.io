@@ -16,10 +16,17 @@ body, html {
   padding: 0px;
   /*scroll: none;*/
 }
+#out {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
 </style>
 </head>    
 <body onLoad="init()">
-<input type="text" id="out" value="???"/>
+<div id="out">???</div>
+<!-- input type="text" id="out" value="???"/ -->
 <script>
 function initAccessTokenFromUrl(){
   var str = window.location.hash;
@@ -46,12 +53,15 @@ function initAccessTokenFromUrl(){
     }
   });
   if(ret.access_token){
+    document.getElementById('out').innerText = ret.access_token
+    /*
     var el = document.getElementById('out')
     el.value = ret.access_token
     el.select()
     document.designMode = "on"
     document.execCommand("copy")
     document.designMode = "off"
+    */
     return true
   }
   return false
