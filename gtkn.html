@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>gtkn 0.1</title>
+<meta name="application-name" content="gtkn"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>   
+body, html { 
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: white;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
+  font-size: 20px;
+  margin: 0px;
+  padding: 0px;
+  /*scroll: none;*/
+}
+</style>
+</head>    
+<body onLoad="init()">
+<div id="out">???</div>
+<script>
+function initAccessTokenFromUrl(){
+  var str = window.location.hash;
+  var ret = Object.create(null);
+  if(typeof str !== 'string'){
+    return false
+  }
+  str = str.trim().replace(/^(\?|#|&)/, '');
+  if(!str){
+    return false
+  }
+  str.split('&').forEach(function (param){
+    var parts = param.replace(/\+/g, ' ').split('=')
+    var key = parts.shift()
+    var val = parts.length > 0 ? parts.join('=') : undefined
+    key = decodeURIComponent(key)
+    val = val === undefined ? null : decodeURIComponent(val)
+    if(ret[key] === undefined){
+      ret[key] = val
+    }else if(Array.isArray(ret[key])){
+      ret[key].push(val)
+    }else{
+      ret[key] = [ret[key], val]
+    }
+  });
+  if(ret.access_token){
+    var el = getElementById('out')
+    el.innerText = ret.access_token
+    el.select()
+    document.execCommand("copy")
+    return true
+  }
+  return false
+}
+    
+function init(){
+    if(location.toString().substring(0, 5) != 'https'){
+        location = 'https://trkm.github.io/gtkn.html'
+        return 
+    }
+    if(initAccessTokenFromUrl()){
+        return
+    }
+    location = 'https://www.dropbox.com/oauth2/authorize?client_id=	
+z2gilj93985g4gz&response_type=token&redirect_uri=https%3A%2F%2Ftrkm.github.io%2Fgtkn.html'    
+}
+</script>
+</body>
+</html>
