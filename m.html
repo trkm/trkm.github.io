@@ -80,6 +80,7 @@ r.onreadystatechange = function(){
         }
         var res = '<span class="cur">USD: </span>' + f(usd) + 
                   ' <span class="cur">EUR: </span>' + f(eur) +
+                  ' ' + (eur/usd).toFixed(4) +
                   ' <span class="cur">' + dt + '</span>' +
                   ' <span class="cnt">&nbsp;' + cnt + '&nbsp;</span>'
         document.getElementById('moex').innerHTML = res
