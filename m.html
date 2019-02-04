@@ -2,6 +2,7 @@
 <head>
 <title>Hовости</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 
 <link rel="shortcut icon" href="https://news.yandex.ru/favicon.ico"/>
 <link rel="icon" sizes="24x24" href="https://yastatic.net/iconostasis/_/lQHbCexSgizAhisugKD79mTz__Q.png" type="image/png"/>
 <link rel="icon" sizes="32х32" href="https://yastatic.net/iconostasis/_/NOwNHktJskVNPZcTJcTvuXUXPzg.png" type="image/png"/>
@@ -15,6 +16,7 @@
 <meta name="application-name" content="Новости"/>
 <meta name="msapplication-TileColor" content="#FA6800"/>
 <meta name="apple-mobile-web-app-capable" content="yes" />
+-->
 <style>
 body { background-color: black; }
 a {
@@ -37,6 +39,7 @@ span.cnt {
     color: gray;
     float: right;
     border: 1px solid gray;
+    border-radius: 2px;
 }
 </style>
 </head>
@@ -78,8 +81,8 @@ r.onreadystatechange = function(){
             localStorage.setItem('last_ymd', ymd)
             localStorage.setItem('last_cnt', '' + cnt)
         }
-        var res = '<span class="cur">USD: </span>' + f(usd) + 
-                  ' <span class="cur">EUR: </span>' + f(eur) +
+        var res = '<span class="cur">$ </span>' + f(usd) + 
+                  ' <span class="cur">&euro; </span>' + f(eur) +
                   ' ' + (eur/usd).toFixed(4) +
                   ' <span class="cur">' + dt + '</span>' +
                   ' <span class="cnt">&nbsp;' + cnt + '&nbsp;</span>'
@@ -110,8 +113,9 @@ function _print(w,rubric,prefix){
     for(var i=0;i<data.length;i++){
         var item=data[i];
         html+='<p><div><a href="#" onClick="return sh(\'news-1-' + prefix + i + '\')">'+item.title+'</a></div>'+
-            '<div id="news-1-' + prefix + i + '" style="display: none;"><a href="'+item.url+
-            '" target="_blank" style="color: gray;">'+item.descr+'</a></div></p>';
+            '<div id="news-1-' + prefix + i + '" style="display: none;">' + item.descr + '</div></p>';
+            //'<a href="'+item.url+
+            //'" target="_blank" style="color: gray;">'+item.descr+'</a></div></p>';
     }
     document.write(html);
 }
