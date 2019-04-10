@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <title>ntz</title>
@@ -369,7 +370,7 @@ function showSettings(){
     html += '<div id="token_hash" class="settings-group">...</div>'
     html += '<div><input type="password" id="master" onInput="onMaster(this.value)" placeholder="master"></div>'
     html += '<div id="master_hash" class="settings-group">...</div>'
-    html += '<div><input type="password" id="pin" placeholder="pin" onKeyup="if(event.keyCode == 13){onSettings()}" onInput="onPswChanged(this)"></div>'
+    html += '<div><input type="password" id="pin" placeholder="pin" onKeyup="if(event.keyCode == 13){return onSettings()}" onInput="onPswChanged(this)"></div>'
     html += '<div>&nbsp;</div><div><a href="#" onClick="return onReset()">reset</a></div>'
     html += '</article>'
     out(html)
@@ -412,6 +413,7 @@ function onSettings(){
     localStorage.setItem('ntz4.tkn', encode(token, pin))
     localStorage.setItem('ntz4.psw', encode(master, pin))
     init()
+    return false
 }
     
 function enterPin(){
