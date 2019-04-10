@@ -364,7 +364,7 @@ function init(){
     
 function showSettings(){
     onEsc = function(){}
-    document.getElementById("hdr").innerHTML = '<a href="#" onClick="return onSettings()">settings:</a>'
+    document.getElementById("hdr").innerHTML = '<a href="#" onClick="return onSettings()">settings:*</a>'
     var html = '<article>'
     html += '<div><input type="password" id="token" onInput="onToken(this.value)" placeholder="token" value=""></div>'
     html += '<div id="token_hash" class="settings-group">...</div>'
@@ -407,12 +407,17 @@ function onMaster(p){
 }
     
 function onSettings(){
+    try{
     var master = document.getElementById('master').value
     var token = document.getElementById('token').value
     var pin = document.getElementById('pin').value
     localStorage.setItem('ntz4.tkn', encode(token, pin))
     localStorage.setItem('ntz4.psw', encode(master, pin))
     init()
+    }
+    catch(err){
+        alert('err:' + err)
+    }
     return false
 }
     
