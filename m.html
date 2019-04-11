@@ -104,8 +104,7 @@ function init(){
     };
     r.send()        
 }
-</script>
-<script>
+
 function sh(element_id){
   var x = document.getElementById(element_id);
   if(x.style.display === 'none'){
@@ -115,6 +114,7 @@ function sh(element_id){
   }
   return false
 }
+
 function _print(w,rubric,prefix){
     var data=w[rubric];
     if(!data||!data.length){return;}    
@@ -131,7 +131,7 @@ function _print(w,rubric,prefix){
 </script>
 <script src="https://news.yandex.ru/ru/index5.utf8.js" charset="utf-8"></script>
 <script>_print(window, 'm_index', 'main');</script>
-<hr>
+<br/>
 <script src="https://news.yandex.ru/Moscow/index5.utf8.js" charset="utf-8"></script>
 <script>_print(window, 'm_index', 'msk')</script>
 
