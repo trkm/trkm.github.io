@@ -11,24 +11,19 @@
 <link rel="apple-touch-icon" sizes="152x152" href="trc.png">
 <style>
 body {
-    color: gray;
-    background-color: black;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
-    font-size: 20px;
+  color: #ccc;
+  background-color: black;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
+  font-size: 20px;
 }
+
 a {
-    text-decoration: none;
-    color: lightgreen;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
-    font-size: 20px;
+  text-decoration: none;
+  color: lightgreen;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
+  font-size: 20px;
 }
-/*hr {
-    border: none;
-    color: gray;
-    background-color: gray;
-    height: 1px;
-}
-*/
+
 hr {
   border: 0;
   height: 1px;
@@ -36,281 +31,39 @@ hr {
 }
 
 #hdr {
-    color: white;
-}
-#editor {
-    color: #ccc;
-    background-color: black;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
-    font-size: 20px;
-    border: 0px;
-    /*border-top: 1px solid #333;*/
-    /* previous syntax */
-        -webkit-box-flex: 5;
-           -moz-box-flex: 5;
-            -ms-box-flex: 5;
-                box-flex: 5;
-        /* current syntax */
-        -webkit-flex: 5;
-           -moz-flex: 5;
-            -ms-flex: 5;
-                flex: 5;
-}
-#viewpane {
-    color: gray;
-    background-color: black;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
-    font-size: 20px;
-    /*border: 1px solid gray;*/
-    /* previous syntax */
-        -webkit-box-flex: 5;
-           -moz-box-flex: 5;
-            -ms-box-flex: 5;
-                box-flex: 5;
-        /* current syntax */
-        -webkit-flex: 5;
-           -moz-flex: 5;
-            -ms-flex: 5;
-                flex: 5;
-}
-span.cnt {
-    color: gray;
-    float: right;
-    border: 1px solid gray;
-    border-radius: 2px;
-}
-      /* some basic styles. nothing to do with flexbox */
-      header, footer,
-      nav, article, aside, textarea {
-        /*border: 1px solid white;*/
-        padding: 0.25em;
-        margin: 0.25em;
-        /*border-radius: 0.25em;*/
-      }
-      /*
-        Force full width & height.
-        If this block is removed, the layout height/length will be determined by
-        the amount of content in the page. That might result in a page which has
-        a footer only a few inches from the top of the viewport, or one which
-        scrolls beyond the viewport.
-        This forces the layout to always be full screen regardless of how much,
-        or how little, content is in place. Neither is "right" or "wrong", there
-        are valid cases for each. I just want to be clear what's controlling the
-        page/viewport height.
-      */
-      html, body, .viewport {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-      }
-      /* encapsulate the various syntax in helper clases */
-      /* inspired by http://infrequently.org/2009/08/css-3-progress/ */
-      /* items flex/expand vertically */
-      .vbox {
-        /* previous syntax */
-        display: -webkit-box;
-        display:    -moz-box;
-        display:         box;
-        -webkit-box-orient: vertical;
-           -moz-box-orient: vertical;
-            -ms-box-orient: vertical;
-                box-orient: vertical;
-        /* current syntax */
-        display: -webkit-flex;
-        display:    -moz-flex;
-        display:     -ms-flex;
-        display:         flex;
-        -webkit-flex-direction: column;
-           -moz-flex-direction: column;
-            -ms-flex-direction: column;
-                flex-direction: column;
-      }
-      /* items flex/expand horizontally */
-      .hbox {
-        /* previous syntax */
-        display: -webkit-box;
-        display:    -moz-box;
-        display:     -ms-box;
-        display:         box;
-        -webkit-box-orient: horizontal;
-           -moz-box-orient: horizontal;
-            -ms-box-orient: horizontal;
-                box-orient: horizontal;
-        /* current syntax */
-        display: -webkit-flex;
-        display:    -moz-flex;
-        display:     -ms-flex;
-        display:         flex;
-        -webkit-flex-direction: row;
-           -moz-flex-direction: row;
-            -ms-flex-direction: row;
-                flex-direction: row;
-      }
-      .space-between {
-        /* previous syntax */
-        -webkit-box-pack: justify;
-           -moz-box-pack: justify;
-            -ms-box-pack: justify;
-                box-pack: justify;
-        /* current syntax */
-        -webkit-justify-content: space-between;
-           -moz-justify-content: space-between;
-            -ms-justify-content: space-between;
-                justify-content: space-between;
-      }
-      /* I went with a fixed height header & footer because it's a common case.
-        This could easily be altered to flex proportionally with the page.
-      */
-      header, footer {
-        /*height: 3px;*/
-      }
-      .main {
-        /* previous syntax */
-        -webkit-box-flex: 1;
-           -moz-box-flex: 1;
-            -ms-box-flex: 1;
-                box-flex: 1;
-        /* current syntax */
-        -webkit-flex: 1;
-           -moz-flex: 1;
-            -ms-flex: 1;
-                flex: 1;
-      }
-      article {
-        /* previous syntax */
-        -webkit-box-flex: 5;
-           -moz-box-flex: 5;
-            -ms-box-flex: 5;
-                box-flex: 5;
-        /* current syntax */
-        -webkit-flex: 5;
-           -moz-flex: 5;
-            -ms-flex: 5;
-                flex: 5;
-        /*border: 1px solid gray;*/
-      }
-      aside, nav {
-        /* previous syntax */
-        -webkit-box-flex: 1;
-           -moz-box-flex: 1;
-            -ms-box-flex: 1;
-                box-flex: 1;
-        /* current syntax */
-        -webkit-flex: 1;
-           -moz-flex: 1;
-            -ms-flex: 1;
-                flex: 1;
-      }
-      textarea:focus {
-  outline: none;
-}
-    
-    span#indicator {
-    /*float: right;*/
-    color: #F33;
-    visibility: hidden;
-    }
-    
-/*
-body, html { 
-  width: 100%;
-  height: 100%;
-  background: black;
   color: white;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
-  font-size: 20px;
-  margin: 0px;
-  padding: 0px;
-  scroll: none;
 }
-div#pane{
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  height: 100%;
-}
-div.info {
-  position: absolute;
-  top: 50%;
-  left: 0px;  
-  margin-top: -10px;
-  height: 20px;
-  width: 100%;
-  font-size:20px;
-  background: black;
-  color: #0a0;
-  text-align: center;
-}
-input.psw {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 150px;
-  margin-left: -75px;
-  height: 24px;
-  font:small-caption;
-  font-size:20px;
-  border: 1px solid #0a0;
-  background: black;
-  border-radius: 2px;
-  text-align: center;  
-  color: #0a0;
-  cursor: hand;
-}
-input#psw {
-  margin-top: -12px;
-} 
-input#submit {
-  margin-top: 24px;
-}
-input.psw:focus {
-  outline: none;
-}    
-div#pswmsg {
-  position: absolute;
-  top: 50%;
-  left: 0%;
-  width: 100%;
-  margin-top: -48px;  
-  height: 30px;
-  border: 0px;
-  background: black;
-  color: red;
-  text-align: center;
-}
-#viewer {        
-  min-width: 100%;
-  width: 100%;
-  max-width: 100%;
-  min-height: 100%;
-  height: 100%;
-  max-height: 100%;
-  color: #fff;
-  background: black;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
-  font-size: 20px;
-  margin: 0px;
-  border: 0px solid;
-}
-a {
-  color: #0a0;
-  text-decoration: none;
-}
-    
 
-a.link-folder {
-  color: orange; 
-  font-weight: bold;
-}
-*/
-a.link-file, a.nav-this {
-  color: white;    
-}
-/*span.nav-this {
-  color: white;
+#editor {
+  color: #ccc;
+  background-color: black;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
   font-size: 20px;
-}*/
+  border: 0px;
+  -webkit-box-flex: 5;
+  -moz-box-flex: 5;
+  -ms-box-flex: 5;
+  box-flex: 5;
+  -webkit-flex: 5;
+  -moz-flex: 5;
+  -ms-flex: 5;
+  flex: 5;
+}
+
+textarea:focus {
+  outline: none;
+}
+
+span#indicator {
+  /*float: right;*/
+  color: #F33;
+  visibility: hidden;
+}
+
+a.link-file, a.nav-this {
+  color: white;
+}
+
 span.sep {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
   font-size: 20px;
@@ -318,21 +71,140 @@ span.sep {
   margin-left: 5px;
   margin-right: 5px;
 }
-input, button {
-    color: white;
-    background-color: black;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
-    font-size: 20px;
-    border: 1px solid gray;
-    padding: 3px;
-    width: 100%;
-    max-width: 600px;
-}
-    
-div.settings-group {
-    margin-bottom: 10px;
+
+input {
+  color: white;
+  background-color: black;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
+  font-size: 20px;
+  border: 1px solid gray;
+  padding: 3px;
+  width: 100%;
+  max-width: 600px;
 }
 
+div.settings-group {
+  margin-bottom: 10px;
+}
+
+
+#viewpane {
+/*  color: gray;
+  background-color: black;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Lucida Console", Monaco, monospace, Courier;
+  font-size: 20px;*/
+  -webkit-box-flex: 5;
+  -moz-box-flex: 5;
+  -ms-box-flex: 5;
+  box-flex: 5;
+  -webkit-flex: 5;
+  -moz-flex: 5;
+  -ms-flex: 5;
+  flex: 5;
+}
+
+span.cnt {
+    color: gray;
+    float: right;
+    border: 1px solid gray;
+    border-radius: 2px;
+}
+
+header, footer, nav, article, aside, textarea {
+  padding: 0.25em;
+  margin: 0.25em;
+}
+
+html, body, .viewport {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.vbox {
+  display: -webkit-box;
+  display:    -moz-box;
+  display:         box;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical;
+  display: -webkit-flex;
+  display:    -moz-flex;
+  display:     -ms-flex;
+  display:         flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.hbox {
+  display: -webkit-box;
+  display:    -moz-box;
+  display:     -ms-box;
+  display:         box;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  -ms-box-orient: horizontal;
+  box-orient: horizontal;
+  display: -webkit-flex;
+  display:    -moz-flex;
+  display:     -ms-flex;
+  display:         flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+.space-between {
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -ms-box-pack: justify;
+  box-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+}
+
+header, footer {
+  /*height: 3px;*/
+}
+
+.main {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+article {
+  -webkit-box-flex: 5;
+  -moz-box-flex: 5;
+  -ms-box-flex: 5;
+  box-flex: 5;
+  -webkit-flex: 5;
+  -moz-flex: 5;
+  -ms-flex: 5;
+  flex: 5;
+}
+
+aside, nav {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
 </style>
 </head>    
 <body class="vbox viewport" onload="init()">
@@ -345,10 +217,6 @@ div.settings-group {
 function init(){
     db_token = false
     password = false
-
-    //window.onfocus = onPageFocus
-    //window.onblur = onPageBlur
-    //window.onunload = onPageBlur
 
     onEsc = function(){}
     window.onkeyup = function(event){if(event.key == 'Escape'){onEsc()}}
@@ -364,26 +232,34 @@ function init(){
     
 function showSettings(){
     onEsc = function(){}
-    document.getElementById("hdr").innerHTML = '<a href="#" onClick="return onSettings()">settings:*</a>'
+    document.getElementById("hdr").innerHTML = '<a href="#" onClick="return onSettings()">settings:</a>'
     var html = '<article>'
     html += '<div><input type="password" id="token" onInput="onToken(this.value)" placeholder="token" value=""></div>'
     html += '<div id="token_hash" class="settings-group">...</div>'
     html += '<div><input type="password" id="master" onInput="onMaster(this.value)" placeholder="master"></div>'
     html += '<div id="master_hash" class="settings-group">...</div>'
     html += '<div><input type="password" id="pin" placeholder="pin" onKeyup="if(event.keyCode == 13){return onSettings()}" onInput="onPswChanged(this)"></div>'
-    html += '<div>&nbsp;</div><div><a href="#" onClick="return onReset()">reset</a></div>'
     html += '</article>'
     out(html)
-    if(db_token){
-        document.getElementById('token').value = db_token
-        onToken(db_token)
-    }
     return false
 }
     
 function onReset(){
     if(!confirm('reset?')){
         return false
+    }
+    var pin = document.getElementById('pin').value
+    var _db_token = decode(localStorage.getItem('ntz4.tkn'), pin)
+    if(_db_token){
+        var r = new XMLHttpRequest();
+        r.open("POST", "https://api.dropboxapi.com/2/auth/token/revoke", true);
+        r.setRequestHeader('Authorization', 'Bearer ' + _db_token)
+        r.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
+        r.onreadystatechange = function(){
+            if(r.readyState != 4 || r.status != 200) return;
+            alert('token revoked')
+        }
+        r.send(JSON.stringify(null))
     }
     localStorage.removeItem('ntz4.dir')
     localStorage.removeItem('ntz4.psw')
@@ -395,6 +271,10 @@ function onReset(){
     onToken('')
     document.getElementById('master').value = ''
     onMaster('')
+
+    db_token = false
+    password = false
+
     return false
 }
 
@@ -404,20 +284,16 @@ function onToken(t){
 
 function onMaster(p){
     document.getElementById('master_hash').innerHTML = p.substring(13) + '&nbsp;'
+    onPswChanged(document.getElementById('master'))
 }
     
 function onSettings(){
-    try{
     var master = document.getElementById('master').value
     var token = document.getElementById('token').value
     var pin = document.getElementById('pin').value
     localStorage.setItem('ntz4.tkn', encode(token, pin))
     localStorage.setItem('ntz4.psw', encode(master, pin))
     init()
-    }
-    catch(err){
-        alert('err:' + err)
-    }
     return false
 }
     
@@ -425,8 +301,9 @@ function enterPin(){
     onEsc = function(){}
     document.getElementById("hdr").innerHTML = '<a href="#" onClick="return onPin()">pin:</a>'
     var html = '<article>'
-    html += '<div><input type="password" id="pin" placeholder="pin" onKeyup="if(event.keyCode == 13){onPin()}" onInput="onPswChanged(this)"></div>'    
-    html += '<div>&nbsp;</div><div><a href="#" onClick="return showSettings()">settings</a></div>'
+    html += '<div><input type="password" id="pin" placeholder="pin" onKeyup="if(event.keyCode == 13){onPin()}" onInput="onPswChanged(this)"></div>'
+    //html += '<div>&nbsp;</div><div><a href="#" onClick="return showSettings()">settings</a></div>'
+    html += '<div>&nbsp;</div><div><a href="#" onClick="return onReset()">reset</a></div>'
     html += '</article>'
     out(html)
     document.getElementById('pin').focus()
@@ -459,17 +336,21 @@ function onPin(){
     localStorage.removeItem('ntz4.cnt')
     
     if(isUnsaved()){
-        var efc = localStorage.getItem('ntz4.efc')
-        var efp = localStorage.getItem('ntz4.efp')
-        var str = decode(efc, password)
+        var _efc = localStorage.getItem('ntz4.efc')
+        var _efp = localStorage.getItem('ntz4.efp')
+        var str = decode(_efc, password)
         if(str === false){
             alert('wrong password for unsaved file')
-            return;
+            return false;
         }
-        editFile(efp, str)
+        efp = _efp
+        efc = str
+        unsaved = true
+        editFile()
         document.getElementById('indicator').style.visibility = "visible"
         return
     }
+    unsaved = false
     listDir(localStorage.getItem('ntz4.dir') || '')
     return false
 }
@@ -568,7 +449,12 @@ function ymdhms(ut){
 }
     
 function newFile(dirpath){
-    var filename = prompt('enter new file name', 'file')    
+    var d = new Date()
+    var ymd =  d.getFullYear() + '-' +
+               (d.getMonth() < 9 ? '0' + (1 + d.getMonth()) : (1 + d.getMonth())) + '-' +
+               (d.getDate() < 10 ? '0' + d.getDate() : d.getDate())
+
+    var filename = prompt('enter new file name', ymd)
     if(!filename){
         return false
     }
@@ -577,9 +463,9 @@ function newFile(dirpath){
         alert('invalid filename!')
         return false
     }
-    var filepath = dirpath + '/' + filename
-    var str = ''
-    editFile(filepath, str)
+    efc = ''
+    efp = dirpath + '/' + filename
+    editFile()
     return false
 }
     
@@ -602,7 +488,7 @@ function loadFile(filepath){
         if(str === false){
             alert('wrong password or file format')
             return;
-        }
+        }        
         showFile(filepath, str)
     }
     r.send()
@@ -617,28 +503,37 @@ function showFile(filepath, str){
     else{
         onEsc = function(){}
     }
+    efc = str
+    efp = filepath
     var s = htmlspecialchars(str)
-    var action = "return editFile('" + filepath + "','" + addslashes(s) + "')"
+    var action = "return editFile()"
     hdr(filepath, action)
     out('<article ondblclick="' + action + '">' + nl2br(s) + '</article>')
 }
     
-function editFile(filepath, str){
+function editFile(){
     onEsc = function(){saveFile()}
-    localStorage.setItem('ntz4.efp', filepath)
+    localStorage.setItem('ntz4.efp', efp)
     var action = "return saveFile()"
-    hdr(filepath, action)
+    hdr(efp, action)
     out('<textarea id="editor" onkeyup="bgSave()" onchange="bgSave()">' +
-        htmlspecialchars(str) + '</textarea>')
+        htmlspecialchars(efc) + '</textarea>')
     document.getElementById("editor").focus()
+    efc = document.getElementById("editor").value
     return false
 }
     
 function bgSave(){
-    document.getElementById('indicator').style.visibility = "visible"
     var str = document.getElementById("editor").value
-    var content = encode(str, password)
-    localStorage.setItem('ntz4.efc', content)
+    if((efc === false || str == efc) && !unsaved){
+        document.getElementById('indicator').style.visibility = "hidden"
+        return
+    }
+    document.getElementById('indicator').style.visibility = "visible"
+    if(str != efc){
+        var content = encode(str, password)
+        localStorage.setItem('ntz4.efc', content)
+    }
 }
     
 function isUnsaved(){
@@ -648,11 +543,21 @@ function isUnsaved(){
 }
     
 function saveFile(){
-    //TODO: check file is really modified
-    bgSave()    
-    //TODO: check overwrite !!!
     var filepath = localStorage.getItem('ntz4.efp')
-    var content = localStorage.getItem('ntz4.efc')
+    var str = document.getElementById("editor").value
+    if(str == efc && !unsaved){ //check file is really modified
+        localStorage.removeItem('ntz4.efc')
+        localStorage.removeItem('ntz4.efp')
+        efc = false
+        efp = false
+        //listDir(localStorage.getItem('ntz4.dir') || '')
+        loadFile(filepath)
+        return false
+    }
+    var content = encode(str, password)
+    localStorage.setItem('ntz4.efc', content)
+
+    //TODO: check overwrite !!!
     var r = new XMLHttpRequest();
     r.open("POST", "https://content.dropboxapi.com/2/files/upload", true);
     r.setRequestHeader('Authorization', 'Bearer ' + getToken())
@@ -671,24 +576,14 @@ function saveFile(){
         }
         localStorage.removeItem('ntz4.efc')
         localStorage.removeItem('ntz4.efp')
-        var dirpath = ''
-        var ix = filepath.lastIndexOf('/')
-        if(ix >= 0){
-            dirpath = filepath.substring(0, ix)            
-        }
-        listDir(dirpath)
+        efc = false
+        unsaved = false
+        document.getElementById('indicator').style.visibility = "hidden"
+        //listDir(localStorage.getItem('ntz4.dir') || '')
+        loadFile(filepath)
     }
     r.send(content)
     return false
-}
-
-function addslashes(s){
-    var map = {
-        '\n': '\\n',
-        '\r': '\\r',
-        '\t': '\\t',
-        }
-    return s.replace(/[\r\n\t]/g, function(m){ return map[m] })
 }
     
 function htmlspecialchars(s){
