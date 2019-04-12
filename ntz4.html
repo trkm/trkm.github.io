@@ -267,14 +267,9 @@ function onReset(){
     localStorage.removeItem('ntz4.cnt')
     localStorage.removeItem('ntz4.efc')
     localStorage.removeItem('ntz4.efp')
-    document.getElementById('token').value = ''
-    onToken('')
-    document.getElementById('master').value = ''
-    onMaster('')
-
     db_token = false
     password = false
-
+    showSettings()
     return false
 }
 
@@ -314,7 +309,7 @@ function onPin(){
     password = decode(localStorage.getItem('ntz4.psw'), pin)
     db_token = decode(localStorage.getItem('ntz4.tkn'), pin)
     if(password === false || db_token === false){
-        alert('wrong pin')
+        alert('Wrong pin!')
         var cnt = localStorage.getItem('ntz4.cnt') || 0
         cnt = 1 + parseInt(cnt)
         if(cnt > 3){
@@ -387,7 +382,7 @@ function listDir(dirpath){
     r.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
     r.onreadystatechange = function(){
         if(r.readyState == 4 && r.status != 200){
-            onDbError('list folder error: ' + r.response)
+            onDbError('List folder error: ' + r.response)
             //на случай если последнюю папку удалили, иначе никак из этого не вылезти:
             if(dirpath != ''){
                 listDir('')
@@ -411,11 +406,21 @@ function showDir(dirpath, response){
         onEsc = function(){}
     }
     var r = JSON.parse(response)
+    var files = r.entries
+    files.sort(function(a, b){
+        if(a['.tag'] != 'folder' && b['.tag'] == 'folder') return 1
+        if(a['.tag'] == 'folder' && b['.tag'] != 'folder') return -1
+        if(a.name < b.name) return -1
+        if(a.name > b.name) return 1
+        return 0
+    })
     var action = "return newFile('" + dirpath + "')"
     hdr(dirpath, action)
     var res = '<article>'
+    filenames = new Set()
     for(var i = 0; i < r.entries.length; i++){
         var name = r.entries[i].name
+        filenames.add(name)
         var path = r.entries[i].path_lower
         var type = r.entries[i]['.tag']
         var modified = r.entries[i].server_modified
@@ -454,17 +459,22 @@ function newFile(dirpath){
                (d.getMonth() < 9 ? '0' + (1 + d.getMonth()) : (1 + d.getMonth())) + '-' +
                (d.getDate() < 10 ? '0' + d.getDate() : d.getDate())
 
-    var filename = prompt('enter new file name', ymd)
+    var filename = prompt('Enter new file name:', ymd)
     if(!filename){
         return false
     }
     filename = filename.trim().toLowerCase()
+    if(filenames.has(filename)){
+        alert('A file named "' + filename + '" already exists!')
+        return false
+    }
     if(filename.length == 0){
-        alert('invalid filename!')
+        alert('Invalid filename!')
         return false
     }
     efc = ''
     efp = dirpath + '/' + filename
+    is_new_file = true
     editFile()
     return false
 }
@@ -478,7 +488,7 @@ function loadFile(filepath){
     r.responseType = "arraybuffer"
     r.onreadystatechange = function(){
         if(r.readyState == 4 && r.status != 200){
-            onDbError('file download error: ' + r.response)
+            onDbError('File download error: ' + r.response)
             return;
         }
         if(r.readyState != 4 || r.status != 200) return;
@@ -486,7 +496,7 @@ function loadFile(filepath){
         var str = decode(new TextDecoder("utf-8").decode(new Uint8Array(r.response)),
                          password)
         if(str === false){
-            alert('wrong password or file format')
+            alert('Wrong password or file format!')
             return;
         }        
         showFile(filepath, str)
@@ -505,6 +515,7 @@ function showFile(filepath, str){
     }
     efc = str
     efp = filepath
+    is_new_file = false
     var s = htmlspecialchars(str)
     var action = "return editFile()"
     hdr(filepath, action)
@@ -515,7 +526,8 @@ function editFile(){
     onEsc = function(){saveFile()}
     localStorage.setItem('ntz4.efp', efp)
     var action = "return saveFile()"
-    hdr(efp, action)
+    var right = '<span style="float:right"><a href="#" onClick="return onLeaveUnchanged()" style="color: red" alt="Leave unchanged" title="Leave unchanged">&#10005;</a></span>'
+    hdr(efp, action, right)
     out('<textarea id="editor" onkeyup="bgSave()" onchange="bgSave()">' +
         htmlspecialchars(efc) + '</textarea>')
     document.getElementById("editor").focus()
@@ -523,6 +535,22 @@ function editFile(){
     return false
 }
     
+function onLeaveUnchanged(){
+    var str = document.getElementById("editor").value
+    if((str == efc && !unsaved) || confirm('Lose changes to this file?')){
+        localStorage.removeItem('ntz4.efc')
+        localStorage.removeItem('ntz4.efp')
+        efc = false
+        efp = false
+        unsaved = false
+        document.getElementById('indicator').style.visibility = "hidden"
+        listDir(localStorage.getItem('ntz4.dir') || '')
+        return false
+    }
+    document.getElementById("editor").focus()
+    return false
+}
+
 function bgSave(){
     var str = document.getElementById("editor").value
     if((efc === false || str == efc) && !unsaved){
@@ -545,19 +573,23 @@ function isUnsaved(){
 function saveFile(){
     var filepath = localStorage.getItem('ntz4.efp')
     var str = document.getElementById("editor").value
-    if(str == efc && !unsaved){ //check file is really modified
+    if(str == efc && !unsaved){
         localStorage.removeItem('ntz4.efc')
         localStorage.removeItem('ntz4.efp')
         efc = false
         efp = false
-        //listDir(localStorage.getItem('ntz4.dir') || '')
-        loadFile(filepath)
+        if(is_new_file){
+            listDir(localStorage.getItem('ntz4.dir') || '')
+        }
+        else{
+            loadFile(filepath)
+        }
         return false
     }
     var content = encode(str, password)
     localStorage.setItem('ntz4.efc', content)
 
-    //TODO: check overwrite !!!
+    //TODO: advanced check overwrite?
     var r = new XMLHttpRequest();
     r.open("POST", "https://content.dropboxapi.com/2/files/upload", true);
     r.setRequestHeader('Authorization', 'Bearer ' + getToken())
@@ -565,21 +597,21 @@ function saveFile(){
     r.setRequestHeader('Dropbox-API-Arg', JSON.stringify({'path': filepath, 'mode': 'overwrite'}))
     r.onreadystatechange = function(){
         if(r.readyState == 4 && r.status != 200){
-            onDbError('file upload error: ' + r.response)
+            onDbError('File upload error: ' + r.response)
             return;
         }
         if(r.readyState != 4 || r.status != 200) return;
         var res = JSON.parse(r.responseText)
-        //TODO: check file hash !!!
+        //TODO: check file hash ?
         if(res.size != content.length){
-            onDbError('upload', '' + res.size + '!=' + content.length)
+            onDbError('File upload error: file size mismatch (' + res.size + '!=' + content.length + ')')
         }
         localStorage.removeItem('ntz4.efc')
         localStorage.removeItem('ntz4.efp')
         efc = false
+        efp = false
         unsaved = false
         document.getElementById('indicator').style.visibility = "hidden"
-        //listDir(localStorage.getItem('ntz4.dir') || '')
         loadFile(filepath)
     }
     r.send(content)
@@ -613,7 +645,7 @@ function out(html){
     document.getElementById("pane").innerHTML = html
 }
     
-function hdr(filepath, action){
+function hdr(filepath, action, x_action){
     var home_action = "return listDir('')"
     if(filepath == ''){
         home_action = action
@@ -637,7 +669,14 @@ function hdr(filepath, action){
         res += htmlspecialchars(pp[i])
         res += '</a>'
     }
-    res += '<span id="indicator">*</span></div>'
+    if(x_action){
+        res += ':'
+    }
+    res += '<span id="indicator">*</span>'
+    if(x_action){
+        res += x_action
+    }
+    res += '</div>'
     document.getElementById("hdr").innerHTML = res
 }
     
