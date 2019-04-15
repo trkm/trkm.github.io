@@ -223,7 +223,11 @@ function init(){
     password = false
 
     onEsc = function(){}
-    window.onkeyup = function(event){if(event.key == 'Escape'){onEsc()}}
+    onF2 = function(){}
+    window.onkeyup = function(event){
+        if(event.key == 'Escape'){onEsc()}
+        if(event.key == 'F2'){onF2()}
+    }
 
     if(!localStorage.getItem('ntz4.tkn') ||
        !localStorage.getItem('ntz4.psw')){
@@ -236,6 +240,7 @@ function init(){
     
 function showSettings(){
     onEsc = function(){}
+    onF2 = function(){}
     document.getElementById("hdr").innerHTML = '<a href="#" onClick="return onSettings()">settings:</a>'
     var html = '<article>'
     html += '<div><input type="password" id="token" onInput="onToken(this.value)" placeholder="token" value=""></div>'
@@ -298,6 +303,7 @@ function onSettings(){
     
 function enterPin(){
     onEsc = function(){}
+    onF2 = function(){}
     document.getElementById("hdr").innerHTML = '<a href="#" onClick="return onPin()">pin:</a>'
     var html = '<article>'
     html += '<div><input type="password" id="pin" placeholder="pin" onKeyup="if(event.keyCode == 13){onPin()}" onInput="onPswChanged(this)"></div>'
@@ -405,9 +411,11 @@ function showDir(dirpath, response){
     var ix = dirpath.lastIndexOf('/')
     if(ix >= 0){
         onEsc = function(){listDir(dirpath.substring(0, ix))}
+        onF2 = function(){}
     }
     else{
         onEsc = function(){}
+        onF2 = function(){}
     }
     var r = JSON.parse(response)
     var files = r.entries
@@ -423,11 +431,23 @@ function showDir(dirpath, response){
     var res = '<article>'
     filenames = new Set()
     for(var i = 0; i < r.entries.length; i++){
-        var name = r.entries[i].name
+        var e = r.entries[i]
+        var name = e.name
         filenames.add(name)
-        var path = r.entries[i].path_lower
-        var type = r.entries[i]['.tag']
-        var modified = r.entries[i].server_modified
+        var path = e.path_lower
+        var type = e['.tag']
+        var modified = e.server_modified
+        var size = e.size
+        var units = ['B', 'K', 'M', 'G']
+        var uix = 0
+        while(size > 1024){
+            if(uix == 3){
+                break
+            }
+            size /= 1024
+            uix += 1
+        }
+        size = Math.round(size*100)/100 + units[uix]
         var action = 'return '        
         if(type == 'folder'){
             action += "listDir('" + path + "')"
@@ -435,12 +455,12 @@ function showDir(dirpath, response){
         else{
             action += "loadFile('" + path + "')"
         }
-        res += '<div><a href="#" class="link-' + type + '" onClick="' + action
+        res += '<div><a href="#" class="link-' + type + '" onClick="' + action + '"'
         if(modified){
             modified = ymdhms(Date.parse(modified))
-            res += '" title="' + modified + '" alt="' + modified
+            res += '" title="' + modified + ' (' + size + ')"'
         }
-        res += '">' + name + '</a></div>'
+        res += '>' + name + '</a></div>'
     }
     res += '</article>'
     out(res)
@@ -535,9 +555,11 @@ function showFile(filepath, str){
     var ix = filepath.lastIndexOf('/')
     if(ix >= 0){
         onEsc = function(){listDir(filepath.substring(0, ix))}
+        onF2 = function(){return editFile()}
     }
     else{
         onEsc = function(){}
+        onF2 = function(){return editFile()}
     }
     efc = str
     efp = filepath
@@ -550,10 +572,14 @@ function showFile(filepath, str){
 }
     
 function editFile(){
+    if(efp.indexOf('.') >= 0){ //read only flag = dot in filepath
+        return false
+    }
     onEsc = function(){saveFile()}
+    onF2 = function(){} //saveFile()?
     localStorage.setItem('ntz4.efp', efp)
     var action = "return saveFile()"
-    var right = '<span style="float:right"><a href="#" onClick="return onLeaveUnchanged()" style="color: red" alt="Leave unchanged" title="Leave unchanged">&#10005;</a></span>'
+    var right = '<span style="float:right"><a href="#" onClick="return onLeaveUnchanged()" style="color: red" alt="Leave unchanged" title="Leave unchanged">x</a></span>' //&#10005; <-- увеличенная по высоте строка!
     hdr(efp, action, right)
     out('<textarea id="editor" onkeydown="onEditorKeyDownUp(event)" onkeyup="onEditorKeyDownUp(event)" onkeypressed="onEditorKeyPressed(event)" onchange="bgSave()">' +
         htmlspecialchars(efc) + '</textarea>')
@@ -768,7 +794,7 @@ function tobase64(u8){
     }
     return btoa(res)
 }
-    
+
 function decode(txt, password){     
     try {
         var arr_txt = frombase64(txt)
