@@ -24,6 +24,10 @@ a {
   font-size: 20px;
 }
 
+a.ext {
+  color: #99F;
+}
+
 hr {
   border: 0;
   height: 1px;
@@ -473,6 +477,12 @@ function newFile(dirpath){
         return false
     }
     efc = ''
+    if(filename == ymd){
+        efc = d.getDate() + ' '
+        efc += ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+                'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'][d.getMonth()]
+        efc += ' ' + d.getFullYear() + '.\n\n'
+    }
     efp = dirpath + '/' + filename
     is_new_file = true
     editFile()
@@ -505,6 +515,22 @@ function loadFile(filepath){
     return false
 }
     
+function linkify(s) {
+    //http://, https://, or ftp://
+    var p1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
+    var res  = s.replace(p1, '<a href="$1" target="_blank" class="ext">$1</a>')
+
+    //"www." (without // before it, or it'd re-link the ones done above).
+    var p2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim
+    res = res.replace(p2, '$1<a href="http://$2" target="_blank">$2</a>')
+
+    //email -> mailto::
+    var p3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim
+    res = res.replace(p3, '<a href="mailto:$1">$1</a>')
+
+    return res
+}
+
 function showFile(filepath, str){
     var ix = filepath.lastIndexOf('/')
     if(ix >= 0){
@@ -519,7 +545,8 @@ function showFile(filepath, str){
     var s = htmlspecialchars(str)
     var action = "return editFile()"
     hdr(filepath, action)
-    out('<article ondblclick="' + action + '">' + nl2br(s) + '</article>')
+    //s = nl2br(s)
+    out('<article ondblclick="' + action + '" style="white-space: pre-wrap">' + linkify(s) + '</article>')
 }
     
 function editFile(){
@@ -528,10 +555,11 @@ function editFile(){
     var action = "return saveFile()"
     var right = '<span style="float:right"><a href="#" onClick="return onLeaveUnchanged()" style="color: red" alt="Leave unchanged" title="Leave unchanged">&#10005;</a></span>'
     hdr(efp, action, right)
-    out('<textarea id="editor" onkeyup="bgSave()" onchange="bgSave()">' +
+    out('<textarea id="editor" onkeydown="onEditorKeyDownUp(event)" onkeyup="onEditorKeyDownUp(event)" onkeypressed="onEditorKeyPressed(event)" onchange="bgSave()">' +
         htmlspecialchars(efc) + '</textarea>')
     document.getElementById("editor").focus()
     efc = document.getElementById("editor").value
+    last_enc = efc
     return false
 }
     
@@ -551,16 +579,43 @@ function onLeaveUnchanged(){
     return false
 }
 
+function onEditorKeyPressed(e){
+    if(e.ctrlKey && e.which == 83){ //Ctrl+S
+        e.preventDefault()
+        e.stopPropagation()
+        saveFile()
+        return false
+    }
+    bgSave()
+}
+
+function onEditorKeyDownUp(e){
+    if(e.ctrlKey && e.which == 83){ //Ctrl+S
+        e.preventDefault()
+        e.stopPropagation()
+        if(e.type == "keyup"){
+            saveFile()
+        }
+        return false
+    }
+    if(e.type == "keyup"){
+        bgSave()
+    }
+}
+
 function bgSave(){
     var str = document.getElementById("editor").value
     if((efc === false || str == efc) && !unsaved){
+        last_enc = str
         document.getElementById('indicator').style.visibility = "hidden"
+        localStorage.removeItem('ntz4.efc')
         return
     }
     document.getElementById('indicator').style.visibility = "visible"
-    if(str != efc){
-        var content = encode(str, password)
-        localStorage.setItem('ntz4.efc', content)
+    if(str != last_enc){
+        enc = encode(str, password)
+        last_enc = str
+        localStorage.setItem('ntz4.efc', enc)
     }
 }
     
@@ -588,7 +643,6 @@ function saveFile(){
     }
     var content = encode(str, password)
     localStorage.setItem('ntz4.efc', content)
-
     //TODO: advanced check overwrite?
     var r = new XMLHttpRequest();
     r.open("POST", "https://content.dropboxapi.com/2/files/upload", true);
@@ -602,7 +656,7 @@ function saveFile(){
         }
         if(r.readyState != 4 || r.status != 200) return;
         var res = JSON.parse(r.responseText)
-        //TODO: check file hash ?
+        //TODO: check uploaded file hash?
         if(res.size != content.length){
             onDbError('File upload error: file size mismatch (' + res.size + '!=' + content.length + ')')
         }
