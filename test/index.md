@@ -1,5 +1,0 @@
-Test
-
-List:
-* A
-* B
