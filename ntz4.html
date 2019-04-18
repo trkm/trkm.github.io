@@ -538,11 +538,11 @@ function loadFile(filepath){
 function linkify(s) {
     //http://, https://, or ftp://
     var p1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim
-    var res  = s.replace(p1, '<a href="$1" target="_blank" class="ext">$1</a>')
+    var res  = s.replace(p1, '<a href="$1" target="_blank" class="ext" rel="noreferrer">$1</a>')
 
     //"www." (without // before it, or it'd re-link the ones done above).
     var p2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim
-    res = res.replace(p2, '$1<a href="http://$2" target="_blank" class="ext">$2</a>')
+    res = res.replace(p2, '$1<a href="http://$2" target="_blank" class="ext" rel="noreferrer">$2</a>')
 
     //email -> mailto::
     var p3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim
