@@ -227,6 +227,7 @@ function init(){
     window.onkeyup = function(event){
         if(event.key == 'Escape'){onEsc()}
         if(event.key == 'F2'){onF2()}
+        //rehash('up:' + event.keyCode + ' ts:' + event.timeStamp)
     }
 
     if(!localStorage.getItem('ntz4.tkn') ||
@@ -238,6 +239,12 @@ function init(){
     }
 }
     
+function rehash(s){
+    var hash = sha512.create()
+    hash.update((localStorage.getItem('ntz4.rnd') || '') + s + Date.now())
+    localStorage.setItem('ntz4.rnd', hash.hex())
+}
+
 function showSettings(){
     onEsc = function(){}
     onF2 = function(){}
@@ -722,6 +729,7 @@ function onDbError(msg){
 }    
 
 function out(html){
+    rehash('out:' + html)
     document.getElementById("pane").innerHTML = html
 }
     
@@ -761,26 +769,37 @@ function hdr(filepath, action, x_action){
 }
     
 function encode(txt, password){
+    var rnd = (localStorage.getItem('ntz4.rnd') || '') + txt + password + Date.now()
     var arr_psw = new TextEncoder("utf-8").encode(password)
     var arr_txt = new TextEncoder("utf-8").encode(txt)
     var hash = sha512.create()    
+    hash.update(rnd)
+    var rnd_hash = hash.array()
+    hash = sha512.create()    
     hash.update(arr_txt)
     var arr_hash = hash.array()
-    var arr = new Uint8Array(arr_hash.length + arr_txt.length);
-    arr.set(arr_hash, 0)
-    arr.set(arr_txt, arr_hash.length)
-    hash = sha512.create()    
+    var arr = new Uint8Array(rnd_hash.length + arr_hash.length + arr_txt.length);
+    arr.set(rnd_hash, 0)
+    arr.set(arr_hash, rnd_hash.length)
+    arr.set(arr_txt, rnd_hash.length + arr_hash.length)
+    hash = sha512.create()
     hash.update(arr_psw)
     var mask = hash.array()
     var res = new Uint8Array(arr.length)
-    var arr_msk = new Uint8Array(arr_psw.length + 64)
-    arr_msk.set(arr_psw, 0)
-    for(var i = 0; i < arr.length; i++){
+    for(var i = 0; i < rnd_hash.length; i++){
+        res[i] = arr[i] ^ mask[i % 64]
+    }    
+    hash = sha512.create()
+    hash.update(arr_psw)
+    hash.update(rnd_hash)
+    var mask = hash.array()
+    for(var i = 64; i < arr.length; i++){
         res[i] = arr[i] ^ mask[i % 64]
         if((i+1) % 64 == 0){
             hash = sha512.create()
-            arr_msk.set(arr.slice(i-63, i+1), arr_psw.length)
-            hash.update(arr_msk)
+            hash.update(arr_psw)
+            hash.update(mask)
+            hash.update(arr.slice(i-63, i+1))
             mask = hash.array()
         }
     }
@@ -808,28 +827,32 @@ function decode(txt, password){
     var arr_psw = new TextEncoder("utf-8").encode(password)
     var hash = sha512.create()    
     hash.update(arr_psw)
+    var mask = hash.array()
+    var rnd_hash = new Uint8Array(64)
+    for(var i = 0; i < 64; i++){
+        rnd_hash[i] = arr_txt[i] ^ mask[i]
+    }
+    hash = sha512.create()
+    hash.update(arr_psw)
+    hash.update(rnd_hash)
     mask = hash.array()
     var arr_hash = new Uint8Array(64)
-    var res = new Uint8Array(arr_txt.length - 64)
-    var arr_msk = new Uint8Array(arr_psw.length + 64)
-    arr_msk.set(arr_psw, 0)
-    for(var i = 0; i < arr_txt.length; i++){
-        if(i < 64){
-            arr_hash[i] = arr_txt[i] ^ mask[i]
-        }
-        else{
-            res[i-64] = arr_txt[i] ^ mask[i % 64]
-        }
-        if(i == 63){
+    for(var i = 0; i < 64; i++){
+        arr_hash[i] = arr_txt[i + 64] ^ mask[i]
+    }
+    hash = sha512.create()
+    hash.update(arr_psw)
+    hash.update(mask)
+    hash.update(arr_hash)
+    mask = hash.array()
+    var res = new Uint8Array(arr_txt.length - 128)
+    for(var i = 0; i < res.length; i++){
+        res[i] = arr_txt[i + 128] ^ mask[i % 64]
+        if((i+1) % 64 == 0){
             hash = sha512.create()
-            arr_msk.set(arr_hash, arr_psw.length)
-            hash.update(arr_msk)
-            mask = hash.array()
-        }
-        if(i > 63 && (i+1) % 64 == 0){
-            hash = sha512.create()
-            arr_msk.set(res.slice(i-127,i-63), arr_psw.length)
-            hash.update(arr_msk)
+            hash.update(arr_psw)
+            hash.update(mask)
+            hash.update(res.slice(i - 63, i + 1))
             mask = hash.array()
         }
     }
