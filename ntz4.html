@@ -319,7 +319,7 @@ function onSettings(){
 function enterPin(){
     onEsc = function(){}
     onF2 = function(){}
-    document.getElementById("hdr").innerHTML = '<a href="#" onClick="return onPin()" title="v.1.0.1">pin:</a>'
+    document.getElementById("hdr").innerHTML = '<a href="#" onClick="return onPin()" title="v.1.0.2">pin:</a>'
     var html = '<article>'
     html += '<div><input type="password" id="pin" placeholder="pin" onKeyup="if(event.keyCode == 13){onPin()}" onInput="onPswChanged(this)"></div>'
     //html += '<div>&nbsp;</div><div><a href="#" onClick="return showSettings()">settings</a></div>'
@@ -463,7 +463,7 @@ function showDir(dirpath, response){
             uix += 1
         }
         size = Math.round(size*100)/100 + units[uix]
-        var action = 'return '        
+        var action = ''
         if(type == 'folder'){
             action += "listDir('" + path + "')"
         }
