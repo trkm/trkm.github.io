@@ -18,11 +18,11 @@ body {
 }
 
 statuspanel {
-  display:none!important;
+  display: none !important;
 }
 
 #statuspanel {
-  display:none!important;
+  display: none !important;
 }
 
 a {
@@ -319,7 +319,7 @@ function onSettings(){
 function enterPin(){
     onEsc = function(){}
     onF2 = function(){}
-    document.getElementById("hdr").innerHTML = '<a href="#" onClick="return onPin()" title="v.1.0">pin:</a>'
+    document.getElementById("hdr").innerHTML = '<a href="#" onClick="return onPin()" title="v.1.0.1">pin:</a>'
     var html = '<article>'
     html += '<div><input type="password" id="pin" placeholder="pin" onKeyup="if(event.keyCode == 13){onPin()}" onInput="onPswChanged(this)"></div>'
     //html += '<div>&nbsp;</div><div><a href="#" onClick="return showSettings()">settings</a></div>'
@@ -470,7 +470,8 @@ function showDir(dirpath, response){
         else{
             action += "loadFile('" + path + "')"
         }
-        res += '<div><a href="#" class="link-' + type + '" onClick="' + action + '"'
+        res += '<div><a href="javascript:' + action + ';" class="link-' + type + '" '
+        //onClick="' + action + '"
         if(modified){
             modified = ymdhms(Date.parse(modified))
             res += '" title="' + modified + ' (' + size + ')"'
