@@ -7,9 +7,11 @@ jobs:
       - run: |
           echo "Hello!"
           echo `date`
-          echo "secrect TEST: ${TEST} =="
+          echo "secrect TEST: ${TEST} (len: ${#TEST})=="
           echo "Bye!"
           echo `ls -la`
           echo `pwd`
+          echo `which python`
+          echo `which python3`
         env:
           TEST: ${{ secrets.TEST }}
