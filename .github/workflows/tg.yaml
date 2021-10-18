@@ -4,14 +4,21 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - run: |
           echo "Hello!"
           echo `date`
           echo "secrect TEST: ${TEST} (len: ${#TEST})=="
-          echo "Bye!"
           echo `ls -la`
           echo `pwd`
           echo `which python`
           echo `which python3`
+          echo `python3 --version`
+          python test.py
+          echo "Bye!"
         env:
           TEST: ${{ secrets.TEST }}
