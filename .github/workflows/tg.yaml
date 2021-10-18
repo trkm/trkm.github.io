@@ -4,6 +4,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - env:
+        TEST: ${{ secrets.TEST }}
       - run: |
           echo "Hello!"
           echo `date`
