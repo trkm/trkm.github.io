@@ -7,7 +7,7 @@ jobs:
       - run: |
           echo "Hello!"
           echo `date`
-          echo $TEST
+          echo "secrect TEST: ${TEST} =="
           echo "Bye!"
         env:
           TEST: ${{ secrets.TEST }}
