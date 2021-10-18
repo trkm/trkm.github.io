@@ -9,5 +9,6 @@ jobs:
           echo `date`
           echo "secrect TEST: ${TEST} =="
           echo "Bye!"
+          python test.py
         env:
           TEST: ${{ secrets.TEST }}
