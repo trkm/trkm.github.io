@@ -1,4 +1,5 @@
-import urllib
+import urllib.parse
+import urllib.request
 import datetime
 import os
 
@@ -16,9 +17,11 @@ Today: {today}
 def send_message(txt):
     chat_id = os.environ['CHAT_ID']
     bot_key = os.environ['BOT_KEY']
-    text = urllib.urlencode(txt)
-    url = f'https://api.telegram.org/bot{bot_key}/sendMessage?' + \
-          f'chat_id={chat_id}&text={text}'
+    params = urllib.parse.urlencode({
+        'chat_id': chat_id,
+        'text': txt
+    })
+    url = f'https://api.telegram.org/bot{bot_key}/sendMessage?{params}'
     return urllib.request.urlopen(url)
 
 
