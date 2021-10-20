@@ -10,15 +10,9 @@ jobs:
         with:
           python-version: 3.8
       - run: |
-          echo "Hello!"
-          echo `date`
-          echo "secrect TEST: ${TEST} (len: ${#TEST})=="
-          echo `ls -la`
-          echo `pwd`
-          echo `which python`
-          echo `which python3`
-          echo `python3 --version`
-          python test.py
-          echo "Bye!"
+          python .github/workflows/mmnt.py
         env:
-          TEST: ${{ secrets.TEST }}
+          CHAT_ID: ${{ secrets.MMNT_CHAT_ID }}
+          BOT_KEY: ${{ secrets.MMNT_BOT_KEY }}
+          DATE_FROM: ${{ secrets.MMNT_DATE_FROM }}
+          DATE_TO: ${{ secrets.MMNT_DATE_TO }}
