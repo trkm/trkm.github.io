@@ -11,6 +11,7 @@ jobs:
           python-version: 3.8
       - run: |
           python .github/workflows/mmnt.py
+          echo `date`
         env:
           CHAT_ID: ${{ secrets.MMNT_CHAT_ID }}
           BOT_KEY: ${{ secrets.MMNT_BOT_KEY }}
