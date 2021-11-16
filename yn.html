@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+    <head>
+        <title>pwa</title>
+        <meta charset="utf-8">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+		<script>
+<!--//
+function load_yn(url, url2){
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+    script.id = 'yn_script'
+    console.log('loading ' + url)
+    script.onload = script.onreadystatechange = function() {
+        if(!this.readyState || this.readyState == 'complete'){
+            on_complete()
+            document.getElementById('yn_script').remove()
+            if(url2){
+                load_yn(url2, undefined)
+            }
+        }
+    }
+    var scriptTag = document.getElementsByTagName('script')[0];
+    scriptTag.parentNode.insertBefore(script, scriptTag);
+}
+
+function init(){
+    queue = []
+    viewed = JSON.parse(localStorage.getItem('yn') || '[]') 
+    load_data()
+}
+
+function load_data(){
+    load_yn('https://news.yandex.ru/ru/index5.utf8.js',
+            'https://news.yandex.ru/Moscow/index5.utf8.js')
+}
+
+function on_complete(script_id){
+    var data = window['m_index']
+    if(!data||!data.length){
+        return
+    }
+    var queue_length = queue.length
+    for(var i = 0; i < data.length; i++){
+        var item = data[i]
+        var fresh = true
+        for(var j = 0; j < viewed.length; j++){
+            if(viewed[j]['title'] == item['title']){
+                fresh = false
+                break
+            }
+        }
+        if(!fresh){
+            continue
+        }
+        queue.push(data[i])
+    }
+    update_view()
+}
+
+function update_view(){
+    document.getElementById("splash").style.display = 'none'
+    document.getElementById("card1").style.display = 'block'
+    if(queue.length == 0){
+        document.getElementById("title1").innerText = "Все!"
+		document.getElementById("title1").style.textAlign = 'center'
+        document.getElementById("description1").innerText = "Все новости прочитаны"
+		document.getElementById("description1").style.textAlign = 'center'
+        return
+    }
+    item = queue[0]
+    document.getElementById("title1").innerHTML = item["title"]
+	document.getElementById("title1").style.textAlign = 'left'
+    document.getElementById("description1").innerHTML = item["descr"]
+	document.getElementById("description1").style.textAlign = 'left'
+	/*
+    var max_cos = 0
+    var max_txt = ""
+    var max_url = ""
+    var v1 = txt_vector(item['title'].toLowerCase())
+    for(var i = 0; i < viewed.length; i++){
+        var v2 = txt_vector(viewed[i]['title'])
+        console.log()
+        var c = cos(v1, v2)
+        if(c > max_cos){
+            max_cos = c
+            max_txt = viewed[i]['title']
+            max_url = viewed[i]['url']
+        }
+    }
+    console.log("most sim: " + max_cos + " " + max_txt)
+    console.log(item['url'])
+    console.log(max_url)
+    var max_cos = 0
+    var max_txt = ""
+    var v1 = txt_vector(item['descr'].toLowerCase())
+    for(var i = 0; i < viewed.length; i++){
+        var v2 = txt_vector(viewed[i]['descr'])
+        console.log()
+        var c = cos(v1, v2)
+        if(c > max_cos){
+            max_cos = c
+            max_txt = viewed[i]['descr']
+        }
+    }
+    console.log("descr most sim: " + max_cos + " " + max_txt)
+	*/
+}
+
+function txt_vector(txt){
+    var v = new Object()
+    var ngr = 3
+    for(var i = 0; i < txt.length - ngr; i++){
+        var t = txt.substring(i, i + ngr)
+        if(!v[t]){
+            v[t] = 0
+        }
+        v[t]++
+    }
+    return v
+}
+
+function cos(v1, v2){
+    var v12 = 0
+    for(var key in v1){
+        if(v2[key]){
+            v12 += v1[key]*v2[key]
+        }
+    }
+    var v11 = 0
+    for(var key in v1){
+        v11 += v1[key]*v1[key]
+    }
+    var v22 = 0
+    for(var key in v2){
+        v22 += v2[key]*v2[key]
+    }
+    return v12/Math.sqrt(v11*v22)
+}
+
+function on_ok(){
+    if(queue.length == 0){
+        load_data()
+        return
+    }
+	viewed.splice(0, 0, queue[0])
+	viewed.splice(100, 1000)
+    localStorage.setItem('yn', JSON.stringify(viewed))
+    queue.splice(0, 1)
+    update_view()
+}
+
+function on_title(){
+	if(queue.length == 0){
+        return
+    }
+	var url = queue[0]['url']
+	alert(url)
+}
+//>
+		</script>
+		<style>
+			body {
+    margin: 0px;
+    color: white;
+    background-color: black;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+    overflow-x: hidden;
+}
+
+.container {
+    position: fixed;
+    top: 0px;
+    bottom:0px;
+}
+.view {
+    position: fixed;
+    top: 0px;
+    bottom: 70px;
+    width: 100vw;
+    overflow: hidden;
+}
+.header {
+    /*background-color: gray;*/
+    /*background-image: url(http://192.168.0.106:8081/504/1);*/
+    position: fixed;
+    top: 0px;
+    height: 40vh;
+    width: 100vw;
+}
+.title {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    font-size: x-large;
+    color: white;
+	text-align: center;
+}
+.body {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    top: 40vh;
+    bottom: 200px;
+    color: lightgray;
+}
+.ok {
+    position: fixed;
+    bottom: 5vh;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    border-style: none;
+    background-color: gray;
+    color: white;
+    left: 50%;
+    margin-left: -50px;
+	font-size: x-large;
+}
+#card1 {
+    display: none;
+}
+		</style>
+   </head>
+    <body onload="init()">
+		<div class="container">
+			<div id="splash" class="view">
+				<div class="header">
+					<div class="title" onclick="location.reload()">
+						Загружаем...
+					</div>
+				</div>
+			</div>
+			<div id="card1" class="view">
+				<div class="header">
+					<div id="title1" class="title" onclick="on_title()"></div>
+				</div>
+				<div class="body" id="description1"></div>
+				<button class="ok" onclick="on_ok()">OK</button>
+			</div>
+		</div>
+	</body>
+</html>
