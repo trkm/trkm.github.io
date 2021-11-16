@@ -1,9 +1,10 @@
 <!doctype html>
 <html>
     <head>
-        <title>pwa</title>
+        <title>Новости</title>
         <meta charset="utf-8">
 		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="manifest" href="yn.webmanifest">
 		<script>
 <!--//
 function load_yn(url, url2){
@@ -45,7 +46,7 @@ function on_complete(script_id){
     for(var i = 0; i < data.length; i++){
         var item = data[i]
         var fresh = true
-        for(var j = 0; j < viewed.length; j++){
+		for(var j = 0; j < viewed.length; j++){
             if(viewed[j]['title'] == item['title']){
                 fresh = false
                 break
@@ -62,6 +63,59 @@ function on_complete(script_id){
 function update_view(){
     document.getElementById("splash").style.display = 'none'
     document.getElementById("card1").style.display = 'block'
+	var index = 0
+	while(queue.length > 0){		
+		var v_title = txt_vector(queue[0]['title'].toLowerCase())
+		var v_descr = txt_vector(queue[0]['descr'].toLowerCase())
+		var title_cos_th = 0.5
+		var descr_cos_th = 0.5
+		var title_max_cos = 0
+		var title_max_txt = ''
+		var descr_max_cos = 0
+		var descr_max_txt = ''
+		for(var j = 0; j < viewed.length; j++){
+			var v2_title = txt_vector(viewed[j]['title'].toLowerCase())
+			var title_cos = cos(v_title, v2_title)
+			if(title_max_cos < title_cos){
+				title_max_cos = title_cos
+				title_max_txt = viewed[j]['title']
+			}
+			var v2_descr = txt_vector(viewed[j]['descr'].toLowerCase())
+			var descr_cos = cos(v_descr, v2_descr)
+			if(descr_max_cos < descr_cos){
+				descr_max_cos = descr_cos
+				descr_max_txt = viewed[j]['descr']
+			}
+			if(title_max_cos > title_cos_th || descr_max_cos > descr_cos_th){
+				break
+			}
+			var cos_descr = cos(v_descr, v2_descr)
+		}
+		if(title_max_cos > title_cos_th || descr_max_cos > descr_cos_th){
+			console.log('too similar:')
+			console.log("  title.new: " + queue[0]['title'])
+			console.log("  title.old: " + title_max_txt)
+			console.log("  title.cos: " + title_max_cos)
+			console.log("  descr.new: " + queue[0]['descr'])
+			console.log("  descr.old: " + descr_max_txt)
+			console.log("  descrcos: " + descr_max_cos)
+			viewed.splice(0, 0, queue[0])
+			viewed.splice(100, 1000)
+			localStorage.setItem('yn', JSON.stringify(viewed))
+			queue.splice(0, 1)
+		}
+		else{
+			console.log('new:')
+			console.log("  title.new: " + queue[0]['title'])
+			console.log("  title.old: " + title_max_txt)
+			console.log("  title.cos: " + title_max_cos)
+			console.log("  descr.new: " + queue[0]['descr'])
+			console.log("  descr.old: " + descr_max_txt)
+			console.log("  descrcos: " + descr_max_cos)
+			break
+		}
+	}
+
     if(queue.length == 0){
         document.getElementById("title1").innerText = "Все!"
 		document.getElementById("title1").style.textAlign = 'center'
@@ -74,38 +128,6 @@ function update_view(){
 	document.getElementById("title1").style.textAlign = 'left'
     document.getElementById("description1").innerHTML = item["descr"]
 	document.getElementById("description1").style.textAlign = 'left'
-	/*
-    var max_cos = 0
-    var max_txt = ""
-    var max_url = ""
-    var v1 = txt_vector(item['title'].toLowerCase())
-    for(var i = 0; i < viewed.length; i++){
-        var v2 = txt_vector(viewed[i]['title'])
-        console.log()
-        var c = cos(v1, v2)
-        if(c > max_cos){
-            max_cos = c
-            max_txt = viewed[i]['title']
-            max_url = viewed[i]['url']
-        }
-    }
-    console.log("most sim: " + max_cos + " " + max_txt)
-    console.log(item['url'])
-    console.log(max_url)
-    var max_cos = 0
-    var max_txt = ""
-    var v1 = txt_vector(item['descr'].toLowerCase())
-    for(var i = 0; i < viewed.length; i++){
-        var v2 = txt_vector(viewed[i]['descr'])
-        console.log()
-        var c = cos(v1, v2)
-        if(c > max_cos){
-            max_cos = c
-            max_txt = viewed[i]['descr']
-        }
-    }
-    console.log("descr most sim: " + max_cos + " " + max_txt)
-	*/
 }
 
 function txt_vector(txt){
@@ -156,7 +178,7 @@ function on_title(){
         return
     }
 	var url = queue[0]['url']
-	alert(url)
+	window.open(url, '_blank')
 }
 //>
 		</script>
@@ -212,9 +234,10 @@ function on_title(){
     width: 100px;
     height: 100px;
     border-radius: 50px;
-    border-style: none;
-    background-color: gray;
-    color: white;
+    border: 2px solid orange;
+    background-color: black;
+	cursor: pointer;
+    color: orange;
     left: 50%;
     margin-left: -50px;
 	font-size: x-large;
