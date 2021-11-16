@@ -37,6 +37,16 @@ function load_data(){
             'https://news.yandex.ru/Moscow/index5.utf8.js')
 }
 
+/*
+function formatDate(date){
+	var dd = date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
+	var mm = date.getMonth() + 1
+	mm =  mm < 9 ? "0" + mm : mm
+	var yyyy = date.getFullYear()
+	return "" + dd + "." + mm + "." + yyyy
+}
+*/
+
 function on_complete(script_id){
     var data = window['m_index']
     if(!data||!data.length){
@@ -57,7 +67,12 @@ function on_complete(script_id){
         }
         queue.push(data[i])
     }
-    update_view()
+	var now = new Date()
+	updated = (now.getHours() < 10 ? "0" + now.getHours() : now.getHours()) +
+	    ":" + (now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes()) +
+		":" + (now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds())
+	//updated_date = formatDate(now)
+	update_view()
 }
 
 function update_view(){
@@ -117,9 +132,10 @@ function update_view(){
 	}
 
     if(queue.length == 0){
-        document.getElementById("title1").innerText = "Все!"
+        document.getElementById("title1").innerText = "Всё!"
 		document.getElementById("title1").style.textAlign = 'center'
-        document.getElementById("description1").innerText = "Все новости прочитаны"
+		var html = "Все новости прочитаны.<br/>Обновлено в " + updated + "."
+        document.getElementById("description1").innerHTML = html
 		document.getElementById("description1").style.textAlign = 'center'
         return
     }
