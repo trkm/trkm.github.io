@@ -1,0 +1,21 @@
+{
+    "name": "Новости",
+    "short_name": "Новости",
+    "description": "Обзор новостей",
+    "icons": [
+        {
+            "src": "32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "yn.html",
+    "display": "fullscreen",
+    "theme_color": "#000000",
+    "background_color": "#000000"
+}
