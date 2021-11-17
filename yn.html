@@ -3,14 +3,13 @@
     <head>
         <title>Новости</title>
         <meta charset="utf-8">
-		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-		<link rel="apple-touch-icon" href="512.png">
-		<link rel="apple-touch-icon" sizes="152x152" href="152.png">
-		<link rel="apple-touch-icon" sizes="180x180" href="180.png">
-		<link rel="apple-touch-icon" sizes="167x167" href="167.png">
-		<link rel="manifest" href="yn.webmanifest">
-		<script>
-<!--//
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="apple-touch-icon" href="512.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="180.png">
+        <link rel="apple-touch-icon" sizes="167x167" href="167.png">
+        <link rel="manifest" href="yn.webmanifest">
+        <script><!--//
 function load_yn(url, url2){
     var script = document.createElement('script');
     script.type = 'text/javascript';
@@ -43,11 +42,11 @@ function load_data(){
 
 /*
 function formatDate(date){
-	var dd = date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
-	var mm = date.getMonth() + 1
-	mm =  mm < 9 ? "0" + mm : mm
-	var yyyy = date.getFullYear()
-	return "" + dd + "." + mm + "." + yyyy
+    var dd = date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
+    var mm = date.getMonth() + 1
+    mm =  mm < 9 ? "0" + mm : mm
+    var yyyy = date.getFullYear()
+    return "" + dd + "." + mm + "." + yyyy
 }
 */
 
@@ -60,7 +59,7 @@ function on_complete(script_id){
     for(var i = 0; i < data.length; i++){
         var item = data[i]
         var fresh = true
-		for(var j = 0; j < viewed.length; j++){
+        for(var j = 0; j < viewed.length; j++){
             if(viewed[j]['title'] == item['title']){
                 fresh = false
                 break
@@ -71,83 +70,83 @@ function on_complete(script_id){
         }
         queue.push(data[i])
     }
-	var now = new Date()
-	updated = (now.getHours() < 10 ? "0" + now.getHours() : now.getHours()) +
-	    ":" + (now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes()) +
-		":" + (now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds())
-	//updated_date = formatDate(now)
-	update_view()
+    var now = new Date()
+    updated = (now.getHours() < 10 ? "0" + now.getHours() : now.getHours()) +
+        ":" + (now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes()) +
+        ":" + (now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds())
+    //updated_date = formatDate(now)
+    update_view()
 }
 
 function update_view(){
     document.getElementById("splash").style.display = 'none'
     document.getElementById("card1").style.display = 'block'
-	var index = 0
-	while(queue.length > 0){		
-		var v_title = txt_vector(queue[0]['title'].toLowerCase())
-		var v_descr = txt_vector(queue[0]['descr'].toLowerCase())
-		var title_cos_th = 0.5
-		var descr_cos_th = 0.5
-		var title_max_cos = 0
-		var title_max_txt = ''
-		var descr_max_cos = 0
-		var descr_max_txt = ''
-		for(var j = 0; j < viewed.length; j++){
-			var v2_title = txt_vector(viewed[j]['title'].toLowerCase())
-			var title_cos = cos(v_title, v2_title)
-			if(title_max_cos < title_cos){
-				title_max_cos = title_cos
-				title_max_txt = viewed[j]['title']
-			}
-			var v2_descr = txt_vector(viewed[j]['descr'].toLowerCase())
-			var descr_cos = cos(v_descr, v2_descr)
-			if(descr_max_cos < descr_cos){
-				descr_max_cos = descr_cos
-				descr_max_txt = viewed[j]['descr']
-			}
-			if(title_max_cos > title_cos_th || descr_max_cos > descr_cos_th){
-				break
-			}
-			var cos_descr = cos(v_descr, v2_descr)
-		}
-		if(title_max_cos > title_cos_th || descr_max_cos > descr_cos_th){
-			console.log('too similar:')
-			console.log("  title.new: " + queue[0]['title'])
-			console.log("  title.old: " + title_max_txt)
-			console.log("  title.cos: " + title_max_cos)
-			console.log("  descr.new: " + queue[0]['descr'])
-			console.log("  descr.old: " + descr_max_txt)
-			console.log("  descrcos: " + descr_max_cos)
-			viewed.splice(0, 0, queue[0])
-			viewed.splice(100, 1000)
-			localStorage.setItem('yn', JSON.stringify(viewed))
-			queue.splice(0, 1)
-		}
-		else{
-			console.log('new:')
-			console.log("  title.new: " + queue[0]['title'])
-			console.log("  title.old: " + title_max_txt)
-			console.log("  title.cos: " + title_max_cos)
-			console.log("  descr.new: " + queue[0]['descr'])
-			console.log("  descr.old: " + descr_max_txt)
-			console.log("  descrcos: " + descr_max_cos)
-			break
-		}
-	}
+    var index = 0
+    while(queue.length > 0){        
+        var v_title = txt_vector(queue[0]['title'].toLowerCase())
+        var v_descr = txt_vector(queue[0]['descr'].toLowerCase())
+        var title_cos_th = 0.5
+        var descr_cos_th = 0.5
+        var title_max_cos = 0
+        var title_max_txt = ''
+        var descr_max_cos = 0
+        var descr_max_txt = ''
+        for(var j = 0; j < viewed.length; j++){
+            var v2_title = txt_vector(viewed[j]['title'].toLowerCase())
+            var title_cos = cos(v_title, v2_title)
+            if(title_max_cos < title_cos){
+                title_max_cos = title_cos
+                title_max_txt = viewed[j]['title']
+            }
+            var v2_descr = txt_vector(viewed[j]['descr'].toLowerCase())
+            var descr_cos = cos(v_descr, v2_descr)
+            if(descr_max_cos < descr_cos){
+                descr_max_cos = descr_cos
+                descr_max_txt = viewed[j]['descr']
+            }
+            if(title_max_cos > title_cos_th || descr_max_cos > descr_cos_th){
+                break
+            }
+            var cos_descr = cos(v_descr, v2_descr)
+        }
+        if(title_max_cos > title_cos_th || descr_max_cos > descr_cos_th){
+            console.log('too similar:')
+            console.log("  title.new: " + queue[0]['title'])
+            console.log("  title.old: " + title_max_txt)
+            console.log("  title.cos: " + title_max_cos)
+            console.log("  descr.new: " + queue[0]['descr'])
+            console.log("  descr.old: " + descr_max_txt)
+            console.log("  descrcos: " + descr_max_cos)
+            viewed.splice(0, 0, queue[0])
+            viewed.splice(100, 1000)
+            localStorage.setItem('yn', JSON.stringify(viewed))
+            queue.splice(0, 1)
+        }
+        else{
+            console.log('new:')
+            console.log("  title.new: " + queue[0]['title'])
+            console.log("  title.old: " + title_max_txt)
+            console.log("  title.cos: " + title_max_cos)
+            console.log("  descr.new: " + queue[0]['descr'])
+            console.log("  descr.old: " + descr_max_txt)
+            console.log("  descrcos: " + descr_max_cos)
+            break
+        }
+    }
 
     if(queue.length == 0){
-        document.getElementById("title1").innerText = "Всё!"
-		document.getElementById("title1").style.textAlign = 'center'
-		var html = "Все новости прочитаны.<br/>Обновлено в " + updated + "."
-        document.getElementById("description1").innerHTML = html
-		document.getElementById("description1").style.textAlign = 'center'
+        document.getElementById("title1").innerText = "Все новости прочитаны"
+        document.getElementById("title1").style.textAlign = 'center'
+        var descr = "Обновлено в " + updated + "."
+        document.getElementById("description1").innerText = descr
+        document.getElementById("description1").style.textAlign = 'center'
         return
     }
     item = queue[0]
     document.getElementById("title1").innerHTML = item["title"]
-	document.getElementById("title1").style.textAlign = 'left'
+    document.getElementById("title1").style.textAlign = 'left'
     document.getElementById("description1").innerHTML = item["descr"]
-	document.getElementById("description1").style.textAlign = 'left'
+    document.getElementById("description1").style.textAlign = 'left'
 }
 
 function txt_vector(txt){
@@ -186,24 +185,24 @@ function on_ok(){
         load_data()
         return
     }
-	viewed.splice(0, 0, queue[0])
-	viewed.splice(100, 1000)
+    viewed.splice(0, 0, queue[0])
+    viewed.splice(100, 1000)
     localStorage.setItem('yn', JSON.stringify(viewed))
     queue.splice(0, 1)
     update_view()
 }
 
 function on_title(){
-	if(queue.length == 0){
+    if(queue.length == 0){
         return
     }
-	var url = queue[0]['url']
-	window.open(url, '_blank')
+    var url = queue[0]['url']
+    window.open(url, '_blank')
 }
-//>
-		</script>
-		<style>
-			body {
+//-->
+        </script>
+        <style>
+body {
     margin: 0px;
     color: white;
     background-color: black;
@@ -221,15 +220,14 @@ function on_title(){
     top: 0px;
     bottom: 70px;
     width: 100vw;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 .header {
-    /*background-color: gray;*/
-    /*background-image: url(http://192.168.0.106:8081/504/1);*/
     position: fixed;
     top: 0px;
     height: 40vh;
     width: 100vw;
+    display: block;
 }
 .title {
     position: absolute;
@@ -238,51 +236,53 @@ function on_title(){
     right: 10px;
     font-size: x-large;
     color: white;
-	text-align: center;
+    text-align: center;
+    display: block;
 }
 .body {
     position: fixed;
     left: 10px;
     right: 10px;
     top: 40vh;
-    bottom: 200px;
+    bottom: 155px;
     color: lightgray;
+    display: block;
 }
 .ok {
     position: fixed;
-    bottom: 5vh;
+    bottom: 50px;
     width: 100px;
     height: 100px;
     border-radius: 50px;
     border: 2px solid orange;
     background-color: black;
-	cursor: pointer;
+    cursor: pointer;
     color: orange;
     left: 50%;
     margin-left: -50px;
-	font-size: x-large;
+    font-size: x-large;
 }
 #card1 {
     display: none;
 }
-		</style>
+        </style>
    </head>
     <body onload="init()">
-		<div class="container">
-			<div id="splash" class="view">
-				<div class="header">
-					<div class="title" onclick="location.reload()">
-						Загружаем...
-					</div>
-				</div>
-			</div>
-			<div id="card1" class="view">
-				<div class="header">
-					<div id="title1" class="title" onclick="on_title()"></div>
-				</div>
-				<div class="body" id="description1"></div>
-				<button class="ok" onclick="on_ok()">OK</button>
-			</div>
-		</div>
-	</body>
+        <div class="container">
+            <div id="splash" class="view">
+                <div class="header">
+                    <div class="title" onclick="location.reload()">
+                        Загружаем...
+                    </div>
+                </div>
+            </div>
+            <div id="card1" class="view">
+                <div class="header">
+                    <div id="title1" class="title" onclick="on_title()"></div>
+                </div>
+                <div class="body" id="description1"></div>
+                <button class="ok" onclick="on_ok()">OK</button>
+            </div>
+        </div>
+    </body>
 </html>
