@@ -9,7 +9,7 @@
         <link rel="apple-touch-icon" sizes="180x180" href="180.png">
         <link rel="apple-touch-icon" sizes="167x167" href="167.png">
         <link rel="manifest" href="yn.webmanifest">
-        <script><!--//
+        <script>
 function load_yn(url, url2){
     var script = document.createElement('script');
     script.type = 'text/javascript';
@@ -31,6 +31,11 @@ function load_yn(url, url2){
 
 function init(){
     queue = []
+    blured = ""
+    focused = ""
+    console.log('init')
+    window.addEventListener('focus', on_focus)
+    window.addEventListener('blur', on_blur)
     viewed = JSON.parse(localStorage.getItem('yn') || '[]') 
     load_data()
 }
@@ -42,6 +47,7 @@ function load_data(){
 
 /*
 function formatDate(date){
+    date = date || new Date()
     var dd = date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
     var mm = date.getMonth() + 1
     mm =  mm < 9 ? "0" + mm : mm
@@ -49,6 +55,13 @@ function formatDate(date){
     return "" + dd + "." + mm + "." + yyyy
 }
 */
+
+function formatTime(date){
+    date = date || new Date()
+    return (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) +
+        ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+        ":" + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds())
+}
 
 function on_complete(script_id){
     var data = window['m_index']
@@ -70,12 +83,10 @@ function on_complete(script_id){
         }
         queue.push(data[i])
     }
-    var now = new Date()
-    updated = (now.getHours() < 10 ? "0" + now.getHours() : now.getHours()) +
-        ":" + (now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes()) +
-        ":" + (now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds())
-    //updated_date = formatDate(now)
+    updated = formatTime()
+    //updated_date = formatDate()
     update_view()
+    console.log('updated: ' + (new Date()).valueOf())
 }
 
 function update_view(){
@@ -137,16 +148,20 @@ function update_view(){
     if(queue.length == 0){
         document.getElementById("title1").innerText = "Все новости прочитаны"
         document.getElementById("title1").style.textAlign = 'center'
-        var descr = "Обновлено в " + updated + "."
+        var descr = "Обновлено в " + updated  // + "."
         document.getElementById("description1").innerText = descr
         document.getElementById("description1").style.textAlign = 'center'
         return
     }
     item = queue[0]
+    document.getElementById("title1").style.color = 'black'
     document.getElementById("title1").innerHTML = item["title"]
     document.getElementById("title1").style.textAlign = 'left'
+    document.getElementById("title1").style.color = 'white'
+    document.getElementById("description1").style.color = 'black'
     document.getElementById("description1").innerHTML = item["descr"]
     document.getElementById("description1").style.textAlign = 'left'
+    document.getElementById("description1").style.color = 'lightgray'
 }
 
 function txt_vector(txt){
@@ -190,6 +205,10 @@ function on_ok(){
     localStorage.setItem('yn', JSON.stringify(viewed))
     queue.splice(0, 1)
     update_view()
+    if(queue.length == 0){
+        load_data()
+        return
+    }
 }
 
 function on_title(){
@@ -199,7 +218,18 @@ function on_title(){
     var url = queue[0]['url']
     window.open(url, '_blank')
 }
-//-->
+
+function on_focus(){
+    console.log('on_focus')
+    focused = "f: " + formatTime()
+    //document.getElementById('info').innerText = focused + ' ' + blured
+}
+
+function on_blur(){
+    console.log('on_blur')
+    blured = "b: " + formatTime()
+    //document.getElementById('info').innerText = focused + ' ' + blured
+}
         </script>
         <style>
 body {
@@ -262,6 +292,14 @@ body {
     margin-left: -50px;
     font-size: x-large;
 }
+#info {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    height: 20px;
+    color:gray;
+}
 #card1 {
     display: none;
 }
@@ -282,6 +320,7 @@ body {
                 </div>
                 <div class="body" id="description1"></div>
                 <button class="ok" onclick="on_ok()">OK</button>
+                <div id="info"></div>
             </div>
         </div>
     </body>
