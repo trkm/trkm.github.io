@@ -59,8 +59,8 @@ function formatDate(date){
 function formatTime(date){
     date = date || new Date()
     return (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) +
-        ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
-        ":" + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds())
+        ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes())
+        //+ ":" + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds())
 }
 
 function on_complete(script_id){
@@ -154,12 +154,13 @@ function update_view(){
         return
     }
     item = queue[0]
+    var tail = "<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;"
     document.getElementById("title1").style.color = 'black'
     document.getElementById("title1").innerHTML = item["title"]
     document.getElementById("title1").style.textAlign = 'left'
     document.getElementById("title1").style.color = 'white'
     document.getElementById("description1").style.color = 'black'
-    document.getElementById("description1").innerHTML = item["descr"]
+    document.getElementById("description1").innerHTML = item["descr"] + tail
     document.getElementById("description1").style.textAlign = 'left'
     document.getElementById("description1").style.color = 'lightgray'
 }
