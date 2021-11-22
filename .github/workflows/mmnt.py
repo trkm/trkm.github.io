@@ -4,7 +4,7 @@ import datetime
 import os
 
 
-MSG_TEMPLATE = "{f} / {fy} / {rf}"
+MSG_TEMPLATE = "{f} / {fy} / {rf}%"
 
 """
 -{p} days +{f}
