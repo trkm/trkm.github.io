@@ -128,9 +128,9 @@ function update_view(){
             console.log("  descr.new: " + queue[0]['descr'])
             console.log("  descr.old: " + descr_max_txt)
             console.log("  descrcos: " + descr_max_cos)
-            viewed.splice(0, 0, queue[0])
-            viewed.splice(100, 1000)
-            localStorage.setItem('yn', JSON.stringify(viewed))
+            // viewed.splice(0, 0, queue[0])
+            // viewed.splice(100, 1000)
+            // localStorage.setItem('yn', JSON.stringify(viewed))
             queue.splice(0, 1)
         }
         else{
@@ -212,6 +212,20 @@ function on_ok(){
     }
 }
 
+function on_prev(){
+    if(viewed.length == 0){
+        return
+    }
+    queue.splice(0, 0, viewed[0])
+    viewed.splice(0, 1)
+    localStorage.setItem('yn', JSON.stringify(viewed))
+    update_view()
+}
+
+function on_menu(){
+    alert("News reader, v.0.1")
+}
+
 function on_title(){
     if(queue.length == 0){
         return
@@ -223,13 +237,11 @@ function on_title(){
 function on_focus(){
     console.log('on_focus')
     focused = "f: " + formatTime()
-    //document.getElementById('info').innerText = focused + ' ' + blured
 }
 
 function on_blur(){
     console.log('on_blur')
     blured = "b: " + formatTime()
-    //document.getElementById('info').innerText = focused + ' ' + blured
 }
         </script>
         <style>
@@ -242,22 +254,29 @@ body {
 }
 
 .container {
-    position: fixed;
+    position: absolute;
     top: 0px;
     bottom:0px;
+    width: 100%;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto;
+    max-width: 400px;
+    max-height: 850px;
 }
 .view {
-    position: fixed;
+    position: absolute;
     top: 0px;
-    bottom: 70px;
-    width: 100vw;
+    bottom: 0px;
+    width: 100%;
     /*overflow: hidden;*/
 }
 .header {
-    position: fixed;
+    position: absolute;
     top: 0px;
-    height: 40vh;
-    width: 100vw;
+    height: 40%;
+    width: 100%;
     display: block;
 }
 .title {
@@ -271,7 +290,7 @@ body {
     display: block;
 }
 .body {
-    position: fixed;
+    position: absolute;    
     left: 10px;
     right: 10px;
     top: 40vh;
@@ -280,8 +299,8 @@ body {
     display: block;
 }
 .ok {
-    position: fixed;
-    bottom: 50px;
+    position: absolute;
+    bottom: 10px;
     width: 100px;
     height: 100px;
     border-radius: 50px;
@@ -290,16 +309,38 @@ body {
     cursor: pointer;
     color: orange;
     left: 50%;
+    line-height: 100px;
+    text-align: center;
     margin-left: -50px;
     font-size: x-large;
 }
-#info {
-    position: fixed;
-    bottom: 10px;
+
+.btn {
+    position: absolute;
+    bottom: 35px;
+    width: 50px;
+    height: 50px;
+    background-color: black;
+    cursor: pointer;
+    color: orange;
     left: 10px;
+    line-height: 50px;
+    text-align: center;
+    font-size: xx-large;
+}
+
+.btn2 {
+    position: absolute;
+    bottom: 35px;
+    width: 50px;
+    height: 50px;
+    background-color: black;
+    cursor: pointer;
+    color: orange;
     right: 10px;
-    height: 20px;
-    color:gray;
+    line-height: 50px;
+    text-align: center;
+    font-size: xx-large;
 }
 #card1 {
     display: none;
@@ -320,8 +361,10 @@ body {
                     <div id="title1" class="title" onclick="on_title()"></div>
                 </div>
                 <div class="body" id="description1"></div>
-                <button class="ok" onclick="on_ok()">OK</button>
-                <div id="info"></div>
+                <div class="btn" onclick="on_prev()">&lt;</div>
+                <div class="ok" onclick="on_ok()">OK</div>
+                <div class="btn2" onclick="on_ok()">&gt;</div>
+                <!-- div class="btn2" onclick="on_menu()">&#9776;</div -->
             </div>
         </div>
     </body>
