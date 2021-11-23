@@ -85,15 +85,15 @@ function on_complete(script_id){
     }
     updated = formatTime()
     //updated_date = formatDate()
-    update_view()
+    update_view(true)
     console.log('updated: ' + (new Date()).valueOf())
 }
 
-function update_view(){
+function update_view(check_similar){
     document.getElementById("splash").style.display = 'none'
     document.getElementById("card1").style.display = 'block'
     var index = 0
-    while(queue.length > 0){        
+    while(queue.length > 0 && check_similar){        
         var v_title = txt_vector(queue[0]['title'].toLowerCase())
         var v_descr = txt_vector(queue[0]['descr'].toLowerCase())
         var title_cos_th = 0.5
@@ -122,12 +122,14 @@ function update_view(){
         }
         if(title_max_cos > title_cos_th || descr_max_cos > descr_cos_th){
             console.log('too similar:')
+            /*
             console.log("  title.new: " + queue[0]['title'])
             console.log("  title.old: " + title_max_txt)
             console.log("  title.cos: " + title_max_cos)
             console.log("  descr.new: " + queue[0]['descr'])
             console.log("  descr.old: " + descr_max_txt)
             console.log("  descrcos: " + descr_max_cos)
+            */
             // viewed.splice(0, 0, queue[0])
             // viewed.splice(100, 1000)
             // localStorage.setItem('yn', JSON.stringify(viewed))
@@ -135,12 +137,14 @@ function update_view(){
         }
         else{
             console.log('new:')
+            /*
             console.log("  title.new: " + queue[0]['title'])
             console.log("  title.old: " + title_max_txt)
             console.log("  title.cos: " + title_max_cos)
             console.log("  descr.new: " + queue[0]['descr'])
             console.log("  descr.old: " + descr_max_txt)
             console.log("  descrcos: " + descr_max_cos)
+            */
             break
         }
     }
@@ -205,7 +209,7 @@ function on_ok(){
     viewed.splice(100, 1000)
     localStorage.setItem('yn', JSON.stringify(viewed))
     queue.splice(0, 1)
-    update_view()
+    update_view(true)
     if(queue.length == 0){
         load_data()
         return
@@ -216,10 +220,13 @@ function on_prev(){
     if(viewed.length == 0){
         return
     }
+    console.log(viewed[0])
     queue.splice(0, 0, viewed[0])
     viewed.splice(0, 1)
+    console.log(viewed[0])
+    console.log('---')
     localStorage.setItem('yn', JSON.stringify(viewed))
-    update_view()
+    update_view(false)
 }
 
 function on_menu(){
@@ -250,7 +257,7 @@ body {
     color: white;
     background-color: black;
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .container {
@@ -270,7 +277,14 @@ body {
     top: 0px;
     bottom: 0px;
     width: 100%;
-    /*overflow: hidden;*/
+}
+.gradient {
+    position: absolute;
+    bottom: 0px;
+    height: 300px;
+    left: 0px;
+    right: 0px;
+    background: linear-gradient(to top, black 0 50%, #ff000000 90% 100%);
 }
 .header {
     position: absolute;
@@ -300,7 +314,7 @@ body {
 }
 .ok {
     position: absolute;
-    bottom: 30px;
+    bottom: 50px;
     width: 100px;
     height: 100px;
     border-radius: 50px;
@@ -317,7 +331,7 @@ body {
 
 .btn {
     position: absolute;
-    bottom: 55px;
+    bottom: 75px;
     width: 50px;
     height: 50px;
     background-color: black;
@@ -331,7 +345,7 @@ body {
 
 .btn2 {
     position: absolute;
-    bottom: 55px;
+    bottom: 75px;
     width: 50px;
     height: 50px;
     background-color: black;
@@ -361,10 +375,12 @@ body {
                     <div id="title1" class="title" onclick="on_title()"></div>
                 </div>
                 <div class="body" id="description1"></div>
-                <div class="btn" onclick="on_prev()">&lt;</div>
-                <div class="ok" onclick="on_ok()">OK</div>
-                <div class="btn2" onclick="on_ok()">&gt;</div>
-                <!-- div class="btn2" onclick="on_menu()">&#9776;</div -->
+                <div class="gradient">
+                    <div class="btn" onclick="on_prev()">&lt;</div>
+                    <div class="ok" onclick="on_ok()">OK</div>
+                    <div class="btn2" onclick="on_ok()">&gt;</div>
+                    <!-- div class="btn2" onclick="on_menu()">&#9776;</div -->
+                </div>
             </div>
         </div>
     </body>
