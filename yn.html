@@ -382,33 +382,46 @@ body {
 }
 
 .btn {
-    position: absolute;
-    bottom: 85px;
+    display: inline-block;
+    margin: 10px;
     width: 15px;
     height: 15px;
-    left: 20px;
-    background-color: black;
-    cursor: pointer;
+    background-color: black;    
     border: solid orange;
     border-width: 0 3px 3px 0;
     padding: 3px;
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
 }
+.btn_wrapper {
+    position: absolute;
+    bottom: 75px;
+    width: 45px;
+    height: 45px;
+    left: 10px;
+    cursor: pointer;
+}
 
 .btn2 {
-    position: absolute;
-    bottom: 85px;
+    display: inline-block;
+    margin: 10px;
     width: 15px;
     height: 15px;
-    right: 20px;
-    background-color: black;
-    cursor: pointer;
+    background-color: black;    
     border: solid orange;
     border-width: 0 3px 3px 0;
     padding: 3px;
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
+}
+
+.btn2_wrapper {
+    position: absolute;
+    bottom: 75px;
+    width: 45px;
+    height: 45px;
+    right: 10px;
+    cursor: pointer;
 }
 #card1 {
     display: none;
@@ -433,9 +446,13 @@ body {
                 </div>
                 <div class="body" id="description1"></div>
                 <div class="gradient">
-                    <div class="btn" onclick="on_prev()"></div>
+                    <div class="btn_wrapper" onclick="on_prev()">
+                        <span class="btn"></span>
+                    </div>
                     <div class="ok" onclick="on_ok()">OK</div>
-                    <div class="btn2" onclick="on_ok()"></div>
+                    <div class="btn2_wrapper" onclick="on_prev()">
+                        <span class="btn2"></span>
+                    </div>
                     <!-- div class="btn2" onclick="on_menu()">&#9776;</div -->
                 </div>
             </div>
