@@ -383,32 +383,32 @@ body {
 
 .btn {
     position: absolute;
-    bottom: 75px;
-    width: 50px;
-    height: 50px;
+    bottom: 85px;
+    width: 15px;
+    height: 15px;
+    left: 20px;
     background-color: black;
     cursor: pointer;
-    font-family: 'SF Mono', SFMono-Regular, ui-monospace, 'DejaVu Sans Mono', Menlo, Consolas, monospace;
-    color: orange;
-    left: 0px;
-    line-height: 50px;
-    text-align: center;
-    font-size: xx-large;
+    border: solid orange;
+    border-width: 0 3px 3px 0;
+    padding: 3px;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
 }
 
 .btn2 {
     position: absolute;
-    bottom: 75px;
-    width: 50px;
-    height: 50px;
+    bottom: 85px;
+    width: 15px;
+    height: 15px;
+    right: 20px;
     background-color: black;
     cursor: pointer;
-    font-family: 'SF Mono', SFMono-Regular, ui-monospace, 'DejaVu Sans Mono', Menlo, Consolas, monospace;
-    color: orange;
-    right: 0px;
-    line-height: 50px;
-    text-align: center;
-    font-size: xx-large;
+    border: solid orange;
+    border-width: 0 3px 3px 0;
+    padding: 3px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
 }
 #card1 {
     display: none;
@@ -433,9 +433,9 @@ body {
                 </div>
                 <div class="body" id="description1"></div>
                 <div class="gradient">
-                    <div class="btn" onclick="on_prev()">&lt;</div>
+                    <div class="btn" onclick="on_prev()"></div>
                     <div class="ok" onclick="on_ok()">OK</div>
-                    <div class="btn2" onclick="on_ok()">&gt;</div>
+                    <div class="btn2" onclick="on_ok()"></div>
                     <!-- div class="btn2" onclick="on_menu()">&#9776;</div -->
                 </div>
             </div>
