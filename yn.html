@@ -234,7 +234,9 @@ function on_prev(){
 }
 
 function on_menu(){
-    alert("News reader, v.0.1")
+    var msg = "News reader, v.0.1\n" +
+              "history: " + viewed.length + " items"
+    alert(msg)
 }
 
 function on_title(){
@@ -450,8 +452,9 @@ body {
                         <span class="btn"></span>
                     </div>
                     <div class="ok" onclick="on_ok()">OK</div>
-                    <div class="btn2_wrapper" onclick="on_prev()">
-                        <span class="btn2"></span>
+                    <div class="btn2_wrapper" onclick="on_menu()">
+                        <!-- span class="btn2"></span -->
+                        &#9776;
                     </div>
                     <!-- div class="btn2" onclick="on_menu()">&#9776;</div -->
                 </div>
