@@ -95,6 +95,10 @@ input:focus {
   }
   
   function copypsw(){
+      if('clipboard' in navigator){
+          var text = document.getElementById('result').value
+          return navigator.clipboard.writeText(text);
+      }
       var key = document.getElementById('key')
       var result = document.getElementById('result')
       result.select()
