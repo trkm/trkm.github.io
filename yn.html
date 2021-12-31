@@ -51,11 +51,11 @@ function init(){
     window.addEventListener('touchend', e => {
         var x = e.changedTouches[0].screenX
         var y = e.changedTouches[0].screenY
-        if(x < touch_start_x){
-            on_prev()
-        }
-        if(x > touch_start_x){
+        if(x < touch_start_x){ //swipe left
             on_next()
+        }
+        if(x > touch_start_x){ //swipe right
+            on_prev()
         }
     })
 
@@ -345,6 +345,8 @@ body {
     margin-right: auto;
     max-width: 400px;
     max-height: 850px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 .view {
     position: absolute;
