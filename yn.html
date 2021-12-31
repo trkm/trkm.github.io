@@ -39,6 +39,26 @@ function init(){
     console.log('init')
     window.addEventListener('focus', on_focus)
     window.addEventListener('blur', on_blur)
+
+    let touch_start_x = 0
+    let touch_start_y = 0
+
+    window.addEventListener('touchstart', e => {
+        touch_start_x = e.changedTouches[0].screenX
+        touch_start_y = e.changedTouches[0].screenY
+    })
+
+    window.addEventListener('touchend', e => {
+        var x = e.changedTouches[0].screenX
+        var y = e.changedTouches[0].screenY
+        if(x < touch_start_x){
+            on_prev()
+        }
+        if(x > touch_start_x){
+            on_next()
+        }
+    })
+
     viewed = JSON.parse(localStorage.getItem('yn') || '[]') 
     load_data()
 }
@@ -204,7 +224,7 @@ function cos(v1, v2){
     return v12/Math.sqrt(v11*v22)
 }
 
-function on_ok(){
+function on_next(){
     if(queue.length == 0){
         load_data()
         return
@@ -332,14 +352,6 @@ body {
     bottom: 0px;
     width: 100%;
 }
-.gradient {
-    position: absolute;
-    bottom: 0px;
-    height: 300px;
-    left: 0px;
-    right: 0px;
-    background: linear-gradient(to top, black 0 50%, rgba(0, 0, 0, 0.0) 90% 100%);
-}
 .header {
     position: absolute;
     top: 0px;
@@ -356,77 +368,19 @@ body {
     color: white;
     text-align: center;
     display: block;
+    cursor: pointer;
 }
 .body {
     position: absolute;    
     left: 10px;
     right: 10px;
-    top: 40vh;
-    bottom: 155px;
+    top: 40%;
+    bottom: 10px;
     color: lightgray;
     display: block;
-}
-.ok {
-    position: absolute;
-    bottom: 50px;
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    border: 2px solid orange;
-    background-color: black;
-    cursor: pointer;
-    color: orange;
-    left: 50%;
-    line-height: 100px;
-    text-align: center;
-    margin-left: -50px;
-    font-size: x-large;
-}
-
-.btn {
-    display: inline-block;
-    margin: 10px;
-    width: 15px;
-    height: 15px;
-    background-color: black;    
-    border: solid orange;
-    border-width: 0 3px 3px 0;
-    padding: 3px;
-    transform: rotate(135deg);
-    -webkit-transform: rotate(135deg);
-}
-.btn_wrapper {
-    position: absolute;
-    bottom: 75px;
-    width: 45px;
-    height: 45px;
-    left: 10px;
     cursor: pointer;
 }
 
-.btn2 {
-    display: inline-block;
-    margin: 10px;
-    width: 15px;
-    height: 15px;
-    background-color: black;    
-    border: solid orange;
-    border-width: 0 3px 3px 0;
-    padding: 3px;
-    transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-}
-
-.btn2_wrapper {
-    position: absolute;
-    bottom: 75px;
-    width: 45px;
-    height: 45px;
-    right: 10px;
-    cursor: pointer;
-    color: orange;
-    font-size: x-large;
-}
 #card1 {
     display: none;
 }
@@ -448,18 +402,7 @@ body {
                 <div class="header">
                     <div id="title1" class="title" onclick="on_title()"></div>
                 </div>
-                <div class="body" id="description1" onclick="on_ok()"></div>
-                <div class="gradient">
-                    <div class="btn_wrapper" onclick="on_prev()">
-                        <span class="btn"></span>
-                    </div>
-                    <!-- div class="ok" onclick="on_ok()">OK</div -->
-                    <div class="btn2_wrapper" onclick="on_ok()">
-                        <span class="btn2"></span>
-                        <!-- &#9776; -->
-                    </div>
-                    <!-- div class="btn2" onclick="on_menu()">&#9776;</div -->
-                </div>
+                <div class="body" id="description1" onclick="on_next()"></div>
             </div>
         </div>
     </body>
