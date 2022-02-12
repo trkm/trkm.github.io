@@ -1,0 +1,175 @@
+<html>
+    <head>
+        <style>
+            body {
+                margin: 0px;
+                background-color: white;
+                color: black;
+                font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+                overflow: hidden;
+            }
+            .container {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translateX(-50%) translateY(-50%);
+                -webkit-transform: translate(-50%,-50%);
+                transform: translate(-50%,-50%);
+                width: 100%;
+                margin-left: auto; 
+                margin-right: auto;
+                min-width: 500px;
+                min-height: 400px;
+                max-width: 500px;
+                max-height: 400px;
+            }
+            #score {
+                position: absolute;
+                top: 0px;
+                text-align: center;
+                height: 100px;
+                line-height: 100px;
+                text-align: left;
+                bottom:100px;
+                width: 100%;
+                font-size: 30px;
+            }
+            #task {
+                position: absolute;
+                top: 100px;
+                text-align: center;
+                height: 200px;
+                line-height: 200px;
+                text-align: center;
+                bottom:300px;
+                /*background-color: pink;*/
+                width: 100%;
+                font-size: 50px;
+            }
+            #answers {
+                position: absolute;
+                top: 300px;
+                width: 100%;
+                text-align: center;
+            }
+            button {
+                min-width: 75px;
+                min-height: 50px;
+                margin: 10px;
+                font-size: 40px;
+            }
+        </style>
+        <script>
+            function select_random(min, max){
+                min = Math.ceil(min)
+                max = Math.floor(max)
+                return Math.floor(Math.random() * (max - min + 1)) + min
+            }
+
+            function task(min_a, max_a, min_b, max_b, min_c, max_c, num){
+                var tasks = []
+                for(var a = min_a; a <= max_a; a++){
+                    for(var b = min_b; b <= max_b; b++){
+                        var c = a + b
+                        if(c >= min_c && c <= max_c){
+                            tasks.push([a, b, c])
+                        }
+                    }
+                }
+                var result = []
+                for(var i = 0; i < num; i++){
+                    var index = select_random(0, tasks.length - 1)
+                    result.push(tasks.splice(index, 1))
+                }
+                return result
+            }
+
+            function update_score(){
+
+            }
+
+            function on_button(value){
+                var t = window.tasks[window.score.length][0]
+                var c = t[2]
+                if(value == c){
+                    score.push(1)
+                }
+                else{
+                    score.push(0)
+                }
+                if(score.length == window.num_tests){
+                    console.log('game over')
+                    show_score()
+                    var correct = score.reduce((a, b) => a + b, 0)
+                    var errors = window.num_tests - correct
+                    document.getElementById('task').innerText = "Game over!"
+                    document.getElementById('task').onclick = function(){
+                        location.reload()
+                    }
+                    document.getElementById('answers').style.display = 'none'
+                }
+                else{
+                    show_task()
+                }
+
+            }
+
+            function show_score(){
+                var score_txt = ''
+                score.forEach(element => {
+                        if(element){
+                            score_txt += "<span>&#128571;</span>"
+                        }
+                        else{
+                            score_txt += "<span>&#10060;</span>"
+                        }
+                })
+                document.getElementById('score').innerHTML = score_txt                
+            }
+
+            function show_task(){
+                var t = window.tasks[window.score.length][0]
+                console.log("task: ", t, t.length)
+                if(!t){
+                    return
+                }
+                var s = "" + t[0] + " + " + t[1] + " = ?"
+                document.getElementById("task").innerText = s
+                var answers_html = ''
+                for(var i = window.min_c; i <= window.max_c; i++){
+                    answers_html += '<button id="btn_1" onclick="on_button(' +
+                    i + ')">' + i + '</button>'
+                }
+                document.getElementById("answers").innerHTML = answers_html
+                show_score()                
+            }
+
+
+            function on_load(){
+                window.min_c = 1
+                window.max_c = 10
+                window.num_tests = 10
+                window.tasks = task(1, 10, 1, 10,
+                                    window.min_c, window.max_c,
+                                    window.num_tests)
+                window.score = []
+                show_task()
+            }
+        </script>
+    </head>
+    <body onload="on_load()">
+        <div class="container">
+            <div id="score">
+            </div>
+            <div id="task">
+            </div>
+            <div id="answers">
+                <button id="btn_1" onclick="on_button(this.innerText)"></button>
+                <button id="btn_2" onclick="on_button(this.innerText)"></button>
+                <button id="btn_3" onclick="on_button(this.innerText)"></button>
+                <button id="btn_4" onclick="on_button(this.innerText)"></button>
+                <button id="btn_5" onclick="on_button(this.innerText)"></button>
+            </div>
+        </div>
+    </body>
+</html>
