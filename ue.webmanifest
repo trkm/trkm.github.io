@@ -1,0 +1,16 @@
+{
+    "name": "$€₽",
+    "short_name": "$€₽",
+    "description": "$€₽",
+    "icons": [
+        {
+            "src": "usd_rub.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "ue.html",
+    "display": "fullscreen",
+    "theme_color": "#000000",
+    "background_color": "#000000"
+}
