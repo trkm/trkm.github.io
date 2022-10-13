@@ -1,7 +1,7 @@
 {
-    "name": "$€₽",
-    "short_name": "$€₽",
-    "description": "$€₽",
+    "name": "Курс",
+    "short_name": "Курс",
+    "description": "Курс $, €, Au",
     "icons": [
         {
             "src": "usd_rub.png",
