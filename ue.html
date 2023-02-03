@@ -50,11 +50,14 @@ function load_moex(){
             }
             var cnt = 1
             var ymd = (new Date()).toISOString().slice(0,10)
+	    gld_rub = Math.round(gld)
+            gld_usd = Math.round(28.3495*gld/usd)
             var res = '<p><span class="cur">$ </span>' + f(usd) + 
                       '</p><p><span class="cur">&euro; </span>' + f(eur) +
                       '</p><p><span class="cur">$/&euro; </span>'+ (eur/usd).toFixed(4) +
-                      '</p><p><span class="cur">Au </span>' + Math.round(gld) +
-                      '</p><p><span class="cur_date">' + dt + dd + '</span></p>'
+                      '</p><p><span class="cur">Au </span>' + gld_rub +
+		      '₽</p><p><span class="cur">Au </span>' + gld_rub +</p><p><span class="cur">Au </span>' + gld_usd +
+                      '$</p><p><span class="cur_date">' + dt + dd + '</span></p>'
             localStorage.setItem('usd_eur', res)
             update_view()
         }
