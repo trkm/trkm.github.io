@@ -51,7 +51,7 @@ function load_moex(){
             var cnt = 1
             var ymd = (new Date()).toISOString().slice(0,10)
 	    gld_rub = Math.round(gld)
-            gld_usd = Math.round(28.3495*gld/usd)
+            gld_usd = Math.round(31,1034768*gld/usd)
             var res = '<p><span class="cur">$ </span>' + f(usd) + 
                       '</p><p><span class="cur">&euro; </span>' + f(eur) +
                       '</p><p><span class="cur">$/&euro; </span>'+ (eur/usd).toFixed(4) +
