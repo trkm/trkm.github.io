@@ -13,13 +13,19 @@ function start(){
         var ss = d % 60
         ss = ss < 10 ? "0" + ss : ss
         d = (d - d%60)/60
-        var mm = d % 60
-        mm = mm < 10 ? "0" + mm : mm
+        var m = d % 60
+        mm = m < 10 ? "0" + m : m
         d = (d - d%60)/60
         var hh = d % 60
         //+ hh + ":" + 
-        document.getElementById("sw").innerText = "" + mm + ":" + ss
-        //console.log(d)
+        var txt = "" + mm + ":" + ss
+        if(m % 2 == 1){
+            txt = '&lt;&nbsp;' + txt + '&nbsp;&nbsp;'
+        }
+        else{
+            txt = '&nbsp;&nbsp;' + txt + '&nbsp;&gt;'
+        }
+        document.getElementById("sw").innerHTML = txt
     }, 100)
 }
         </script>
